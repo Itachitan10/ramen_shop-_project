@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Space+Mono:wght@400;700&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  --cream: #f7f1e5;
+  --paper: #fffdf8;
+  --ink: #211b16;
+  --muted: #766b5e;
+  --red: #d62828;
+  --yellow: #ffc72c;
+  --teal: #168aad;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "DM Sans", sans-serif;
+}
+
+.font-display {
+  font-family: "Manrope", sans-serif;
+}
+
+.font-mono {
+  font-family: "Space Mono", monospace;
+}
+
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
