@@ -5,10 +5,12 @@ import Register from "./client_folder/register";
 import MenuPage from "./client_folder/munepage";
 import CartDrawer from "./client_folder/component/cartDrawer";
 import CheckoutPage from "./client_folder/checkoutpage";
+import ProfilePage from "./client_folder/profilepage";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+       <Route path="/profile" element={<ProfilePage/>} />
        <Route path="/proceed" element={<CheckoutPage/>} />
         <Route path="/cart" element={<CartDrawer/>} />
          <Route path="/menu" element={<MenuPage/>} />

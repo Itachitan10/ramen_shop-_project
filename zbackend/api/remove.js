@@ -1,7 +1,7 @@
 const express = require('express')
 const routes = express.Router()
 const jwt = require('jsonwebtoken')
-
+const conn =  require('../database/database')
 
 
 
@@ -29,6 +29,8 @@ routes.delete("/delete", verfyJWT, async (req, res) => {
     const userId = req.id;
     const { id } = req.body;
 
+    console.log("Received IDs for deletion:", id);
+
     if (!Array.isArray(id) || id.length === 0) {
       return res.status(400).json({
         message: "No IDs provided",
@@ -37,13 +39,13 @@ routes.delete("/delete", verfyJWT, async (req, res) => {
 
     const sql = `DELETE FROM user_cart WHERE product_id IN (?)AND userid = ?`;
 
-    const [result] = await db.query(sql, [id, userId]);
+    const result = await conn(sql, [id, userId]);
+    console.log("Deleted rows:", result.affectedRows);
 
     res.json({
       message: "Cart items deleted successfully",
       deleted: result.affectedRows,
     });
-
   } catch (error) {
     console.error(error);
 

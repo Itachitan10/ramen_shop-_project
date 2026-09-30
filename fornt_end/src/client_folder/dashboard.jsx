@@ -13,29 +13,38 @@ function dashboard() {
   const [cartCount, setCartCount] = useState(0);
   const [products, setProducts] = useState([]);   
   const [cart_toogle , set_togle] = useState(false)
-  const [cart_item , setitem] = useState([])
+  const [cart_item , setitem] = useState('')
   const newLocal = JSON.parse(localStorage.getItem('token'));
   const jwt = newLocal
 
+console.log(cart_item);
 
+const handlecartitem = async (product) => {
+  
+  console.log(product);
+  
+  if (!jwt) return;
 
-const handlecartitem = async () => {
-  const response = await fetch(`${api_url}/cart_insert_item`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${jwt.token}`
-    },
-    body: JSON.stringify(cart_item)
-  });
+  try {
+    const response = await fetch(`${api_url}/cart_insert_item`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt.token}`,
+      },
+      body: JSON.stringify(product),
+    });
 
-  const data = await response.json();
-
+    if (response.ok) {
+      setCartCount((count) => count + 1);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-useEffect(() => {
-  handlecartitem();
-}, [cart_item]);
+
+
 
 
 const categorybutton = (e)=>{ 
@@ -63,8 +72,13 @@ useEffect(() => {
     <div className="min-h-screen text-[#211b16] font-['DM_Sans',sans-serif]" style={{ backgroundColor: "#f7f1e5" }}>
 
       {/* NAVBAR */}
-      <Navbar cartCount={cartCount} cart_toogle={cart_toogle} set_togle={set_togle} />
-      <CartDrawerTest isOpen={cart_toogle}  setIsOpen={set_togle} token={jwt} />
+      
+        <header className="border-b border-stone-200 bg-white">
+        <div className="mx-auto max-w-5xl px-6 py-4 text-lg font-semibold tracking-tight">
+         <Navbar cartCount={cartCount}cart_toogle={cart_toogle} set_togle={set_togle} click={handlecartitem}/>
+         <CartDrawerTest isOpen={cart_toogle}  setIsOpen={set_togle} token={jwt} />
+        </div>
+      </header>
       {/* HERO */}
       <section className="relative overflow-hidden min-h-[650px] px-[clamp(20px,6vw,100px)] py-20 grid grid-cols-1 lg:grid-cols-2 items-center gap-[70px]" style={{ background: "radial-gradient(circle at 90% 20%, rgba(255,199,44,.35), transparent 28%), radial-gradient(circle at 10% 90%, rgba(214,40,40,.08), transparent 30%)" }}>
         <div className="absolute w-[500px] h-[500px] border border-[#211b16]/10 rounded-full -right-[180px] -bottom-[220px]" />
@@ -163,11 +177,7 @@ useEffect(() => {
               )}
             </div>
  
-            <button
-            onClick={() => { setitem({ ...product });addToCart();}}
-              className="w-full py-[13px] rounded-[13px] bg-[#d62828] text-white font-['Poppins',sans-serif] text-[13px] font-extrabold hover:bg-[#ff4b30] hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(230,57,32,0.22)] active:scale-[0.97] transition-all">
-              Add to Cart
-            </button>
+                  <button onClick={() => handlecartitem(product)} className="w-full py-[13px] rounded-[13px] bg-[#d62828] text-white font-['Poppins',sans-serif] text-[13px] font-extrabold hover:bg-[#ff4b30] hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(230,57,32,0.22)] active:scale-[0.97] transition-all"> Add to Cart</button>
           </div>
              </article>
           ))}  

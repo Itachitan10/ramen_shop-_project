@@ -16,6 +16,8 @@ const [filter , setfilter] = useState(() =>{
 
 
 
+
+
 useEffect(() => {
   localStorage.setItem("cart", JSON.stringify(filter));
 }, [filter]);
@@ -116,7 +118,7 @@ const removeItem = async (id) => {
     if (!response.ok) {
       console.log(data); 
        return;}
-    console.log(data);
+     !data ? console.log("Item not found") : window,location.reload()
     setfilter((prev) =>
       prev.filter((item) => item.product_id !== id)
     );

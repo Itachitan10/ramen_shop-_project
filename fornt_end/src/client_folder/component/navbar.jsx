@@ -26,7 +26,7 @@ const Navbar = ({ cartCount ,cart_toogle , set_togle, click}) => {
         href="#"
         className="font-['Manrope',sans-serif] text-[22px] font-extrabold tracking-[-1px] text-[#211b16]"
       >
-        KUMO <span className="text-[#d62828]"></span>
+        KUMO <span className="text-[#d62828]">RAMEN</span>
       </a>
 
       {/* DESKTOP NAV */}
@@ -53,8 +53,7 @@ const Navbar = ({ cartCount ,cart_toogle , set_togle, click}) => {
       <div className="flex items-center gap-3">
 
         {/* CART */}
-        <button
-                  onClick={() => {set_togle(!cart_toogle);click();}}
+        <button   onClick={() => {set_togle(!cart_toogle);click();}}
           className="rounded-full border-0 bg-[#211b16] px-[18px] py-[11px] text-[13px] font-bold text-white transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(33,27,22,.2)]"
         >
           🛒 Cart ({cartCount})
