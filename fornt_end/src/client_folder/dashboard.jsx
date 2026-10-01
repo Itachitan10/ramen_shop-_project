@@ -5,8 +5,6 @@ import CartDrawerTest from "./component/cartDrawer";
 const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
 
 
-console.log(api_url);
-
 
 const categories = ["All", "Ramen", "Rice Bowls", "Sides", "Drinks", "Combos"];
 
@@ -30,7 +28,7 @@ const handlecartitem = async (product) => {
   if (!jwt) return;
 
   try {
-    const response = await fetch(`${api_url}cart_insert_item`, {
+    const response = await fetch(`${api_url}/cart_insert_item`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -48,6 +46,8 @@ const handlecartitem = async (product) => {
 };
 
 
+console.log(`This is the API URL: ${api_url}/products`);
+
 
 
 
@@ -56,7 +56,7 @@ const categorybutton = (e)=>{
   setActiveCategory(e.target.value)
 }
 useEffect(() => {
-  fetch(`${api_url}products`)
+  fetch(`${api_url}/products`)
     .then((res) => res.json())
     .then((data) => {
       setProducts(data);
