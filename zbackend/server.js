@@ -6,24 +6,16 @@ const path = require('path')
 const app = express()
 
 
-const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'https://ramen-shop-project.vercel.app',
-    'https://ramen-shop-project-git-main-itachitans-projects.vercel.app',
-    'https://ramen-shop-project-4ilojwq55-itachitans-projects.vercel.app'
-]
 
-app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    },
-    credentials: true
+
+app.use(cors({ 
+    origin : process.env.CORS || 'http://localhost:3000',
+   credentials: true
 }))
+
+
+console.log(process.env.CORS);
+
 
 app.use(express.json());
 app.use(session({ secret: 'yourSecret', resave: false, saveUninitialized: true }));
