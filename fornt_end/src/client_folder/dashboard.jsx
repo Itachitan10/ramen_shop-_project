@@ -8,6 +8,7 @@ const categories = ["All", "Ramen", "Rice Bowls", "Sides", "Drinks", "Combos"];
 
 
 
+console.log(api_url);
 
 
 function dashboard() {

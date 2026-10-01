@@ -7,13 +7,20 @@ const app = express()
 
 
 
-
-app.use(cors({ 
-    origin: process.env.CORS || 'http://localhost:3000',
-    credentials: true
-}))
-
-console.log(process.env.CORS);
+const allowedOrigins = (process.env.CORS || "http://localhost:3000")
+  .split(",")
+  .map((o) => o.trim());
+  
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
 
 
 app.use(express.json());
