@@ -5,6 +5,9 @@ import CartDrawerTest from "./component/cartDrawer";
 const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
 
 
+console.log(api_url);
+
+
 const categories = ["All", "Ramen", "Rice Bowls", "Sides", "Drinks", "Combos"];
 
 
