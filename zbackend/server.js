@@ -8,15 +8,22 @@ const app = express()
 
 
 
-app.use(cors({ 
-    origin : process.env.CORS || 'http://localhost:3000',
-   credentials: true
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://ramen-shop-project.vercel.app'
+]
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    },
+    credentials: true
 }))
-
-
-console.log(process.env.CORS);
-
-
 app.use(express.json());
 app.use(session({ secret: 'yourSecret', resave: false, saveUninitialized: true }));
 // app.use(passport.initialize());
