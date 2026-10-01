@@ -51,7 +51,7 @@ const categorybutton = (e)=>{
   setActiveCategory(e.target.value)
 }
 useEffect(() => {
-  fetch("http://localhost:4000/products")
+  fetch(`${api_url}/products`)
     .then((res) => res.json())
     .then((data) => {
       setProducts(data);

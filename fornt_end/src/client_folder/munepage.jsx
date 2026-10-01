@@ -27,6 +27,8 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-[#f7f1e5] text-[#211b16] font-['DM_Sans',sans-serif]">
 
+
+      
       {/* NAVBAR */}
       <Navbar cart_toogle={carttoggel}  set_togle={set_togle}/>
       <CartDrawer   isOpen={carttoggel} setIsOpen={set_togle} token={jwt} /> 
