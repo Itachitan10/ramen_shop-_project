@@ -46,12 +46,6 @@ const handlecartitem = async (product) => {
 };
 
 
-console.log(`This is the API URL: ${api_url}/products`);
-
-
-
-
-
 const categorybutton = (e)=>{ 
   setActiveCategory(e.target.value)
 }
@@ -65,6 +59,7 @@ useEffect(() => {
       console.error(error);
     }); 
 }, []);
+
 
   const filteredProducts = activeCategory === "All" ? products : products.filter(product => product.category === activeCategory);
   const addToCart = () => setCartCount(count => count + 1);
