@@ -5,17 +5,24 @@ const session = require('express-session');
 const path = require('path')
 const app = express()
 
+const previewRegex = /^https:\/\/ramen-shop-project(-[a-z0-9-]+)?-itachitans-projects\.vercel\.app$/
 
 app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'http://localhost:5173',
-        'https://ramen-shop-project.vercel.app'
-    ],
+    origin: function (origin, callback) {
+        const allowed = [
+            'http://localhost:3000',
+            'http://localhost:5173',
+            'https://ramen-shop-project.vercel.app'
+        ]
+        if (!origin || allowed.includes(origin) || previewRegex.test(origin)) {
+            callback(null, true)
+        } else {
+            callback(null, false)
+        }
+    },
     credentials: true
 }))
-
-
+console.log('Session secret:', process.env.CORS); // Debugging line
 
 app.use(express.json());
 app.use(session({ secret: 'yourSecret', resave: false, saveUninitialized: true }));
