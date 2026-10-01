@@ -46,6 +46,7 @@ const handlecartitem = async (product) => {
   }
 };
 
+console.log(api_url);
 
 
 
