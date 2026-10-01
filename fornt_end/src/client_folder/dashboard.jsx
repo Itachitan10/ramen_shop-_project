@@ -2,13 +2,11 @@ import { useState , useEffect} from "react";
 import Navbar from "./component/navbar";
 import Footer from "./component/footer";
 import CartDrawerTest from "./component/cartDrawer";
-const api_url = import.meta.envVITE_API_URL ||"http://localhost:4000"
+const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
+
 
 const categories = ["All", "Ramen", "Rice Bowls", "Sides", "Drinks", "Combos"];
 
-
-
-console.log(api_url);
 
 
 function dashboard() {
@@ -24,7 +22,7 @@ console.log(cart_item);
 
 const handlecartitem = async (product) => {
   
-  console.log(product);
+
   
   if (!jwt) return;
 
