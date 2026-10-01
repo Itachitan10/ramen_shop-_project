@@ -7,9 +7,6 @@ const api_url = import.meta.envVITE_API_URL ||"http://localhost:4000"
 const categories = ["All", "Ramen", "Rice Bowls", "Sides", "Drinks", "Combos"];
 
 
-console.log(
-  api_url
-);
 
 
 

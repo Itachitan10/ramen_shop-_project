@@ -46,7 +46,7 @@ app.use('/', register)
 app.use('/', user_cart)
 app.use('/' , delete_item)
 
-const port = process.env.PORT_backend || 4000
+const port = process.env.PORT || 4000
 
 
 
