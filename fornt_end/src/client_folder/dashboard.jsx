@@ -46,6 +46,7 @@ const handlecartitem = async (product) => {
 };
 
 
+
 const categorybutton = (e)=>{ 
   setActiveCategory(e.target.value)
 }

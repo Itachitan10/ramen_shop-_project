@@ -1,6 +1,6 @@
 const express = require('express'); 
 const router = express.Router();
-const port = process.env.PORT_backend || 4000
+const BASE_URL = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 4000}`
 
 router.get('/products' , (req , res)=>{ 
 const products = [
@@ -9,7 +9,7 @@ const products = [
     description: "Rich pork bone broth with chashu",
     price: 250.00,
     category: "Ramen",
-    image_url: `http://localhost:${port}/image/ramen.jpg`,
+    image_url: `${BASE_URL}/image/ramen.jpg`,
     status: "available",
     quantity : 1
   },
@@ -18,7 +18,7 @@ const products = [
     description: "Soy sauce based clear broth with sliced pork and nori",
     price: 220.00,
     category: "Ramen",
-    image_url: "https://www.yamachanramen.com/ramen-blog/shoyu-ramen",
+    image_url: `${BASE_URL}/image/shoyu-ramen.jpg`,
     status: "available",
     quantity : 1
   },
@@ -27,7 +27,7 @@ const products = [
     description: "Fermented soybean paste broth with corn and butter",
     price: 230.00,
     category: "Ramen",
-    image_url: "https://sudachirecipes.com/pork-miso-ramen/",
+    image_url: `${BASE_URL}/image/miso-ramen.jpg`,
     status: "available",
     quantity : 1
   },
@@ -36,7 +36,7 @@ const products = [
     description: "Light salt-based broth with bamboo shoots",
     price: 210.00,
     category: "Ramen",
-    image_url: "https://www.gettyimages.co.uk/photos/shio-ramen",
+    image_url: `${BASE_URL}/image/shio-ramen.jpg`,
     status: "available",
     quantity : 1
   },
