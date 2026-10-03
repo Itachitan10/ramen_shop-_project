@@ -3,19 +3,16 @@ const conn =require('../database/database')
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-
+require('dotenv').config();
 
 router.post('/login', async (req, res) => {
     const {email , password} = req.body
-
-    console.log(req.body);
-    
 
     
    if(!email || !password){ 
     res.status(400) .json({mess: 'please check your eamil or your password'})
     
-   }else{
+   }else{ 
 
     try{
         const sql ='SELECT * FROM register WHERE email = ? '
