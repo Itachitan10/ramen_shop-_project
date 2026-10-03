@@ -64,7 +64,7 @@ const handle_submit = async (e) => {
   if(!data){ 
     localStorage.removeItem('token')
   }else{
-    window.location.href='/dashboard'
+    // window.location.href='/dashboard'
     localStorage.setItem('token' ,JSON.stringify(data))
 
     // const data1 =JSON.parse(localStorage.getItem('token'))  

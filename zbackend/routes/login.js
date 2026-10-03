@@ -7,6 +7,10 @@ const jwt = require('jsonwebtoken')
 
 router.post('/login', async (req, res) => {
     const {email , password} = req.body
+
+    console.log(req.body);
+    
+
     
    if(!email || !password){ 
     res.status(400) .json({mess: 'please check your eamil or your password'})
@@ -18,7 +22,7 @@ router.post('/login', async (req, res) => {
        const response = await conn(sql , [email]) 
        
        if(!response.length > 0){
-          res.status(401).json({ mess: 'user not found' })
+         return res.status(401).json({ mess: 'user not found' })
           console.log('user not found');  
        }
       
