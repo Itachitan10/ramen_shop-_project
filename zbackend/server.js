@@ -59,7 +59,7 @@ app.use('/' , delete_item)
 
 const port = process.env.PORT || 4000
 
-
+console.log(port ,' this is port');
 app.listen(port, () =>{ 
     console.log(`running on port ${port}`);
     

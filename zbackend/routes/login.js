@@ -8,6 +8,7 @@ require('dotenv').config();
 router.post('/login', async (req, res) => {
     const {email , password} = req.body
 
+    console.log(email , password);
     
    if(!email || !password){ 
     res.status(400) .json({mess: 'please check your eamil or your password'})
@@ -22,14 +23,15 @@ router.post('/login', async (req, res) => {
          return res.status(401).json({ mess: 'user not found' })
           console.log('user not found');  
        }
-      
+    
        const user = response[0]; 
        const ismatch = await bcrypt.compare(password , user.password)
        if(!ismatch){
          res.status(401).json({ mess: 'invalid password' })
        }
-       const userid = response[0].id
-
+       const userid = response[0].id;
+       
+       console.log('this is user id',userid);
         const token = jwt.sign(
           {userid : user.id},
           process.env.JWT_SECRET,

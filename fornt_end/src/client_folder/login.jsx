@@ -4,11 +4,12 @@ const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
 
 
 
-console.log(api_url);
+
 
 
 export default function Login() {
 
+console.log(api_url);
 
   const [info, set_info] = useState({email: ""  ,password : "" , remember : false })
 
@@ -66,12 +67,7 @@ const handle_submit = async (e) => {
   }else{
     // window.location.href='/dashboard'
     localStorage.setItem('token' ,JSON.stringify(data))
-
     // const data1 =JSON.parse(localStorage.getItem('token'))  
-    
-
-    
-    
 
   }
 };
