@@ -15,16 +15,20 @@ function dashboard() {
   const [cartCount, setCartCount] = useState(0);
   const [products, setProducts] = useState([]);   
   const [cart_toogle , set_togle] = useState(false)
-  const [cart_item , setitem] = useState('')
+  // const [cart_item , setitem] = useState('')
   const newLocal = JSON.parse(localStorage.getItem('token'));
   const jwt = newLocal
 
-console.log(cart_item);
+// console.log(cart_item);
 
+// console.log('this is jwt',jwt);
+  console.log('this is jwt',jwt);
 const handlecartitem = async (product) => {
-  
 
   
+
+
+
   if (!jwt) return;
 
   try {

@@ -24,7 +24,6 @@ const  verifytoken  =(req , res , next ) =>{
 }
 
 
-
 routes.post('/cart_insert_item', verifytoken , async(req ,res , next)=>{ 
   
   
@@ -32,6 +31,14 @@ routes.post('/cart_insert_item', verifytoken , async(req ,res , next)=>{
     
     const user_Id = req.id
   const body = req.body
+
+  console.log(req.body);
+  console.log(user_Id);
+  
+  console.log(user_Id);
+
+  
+  
   const { product_name,description, price, category,image_url , quantity } = body
 
       if(!user_Id ||!product_name || !description ||  !price || !category || !image_url || !quantity){ 
