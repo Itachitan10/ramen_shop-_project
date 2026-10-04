@@ -32,18 +32,14 @@ routes.post('/cart_insert_item', verifytoken , async(req ,res , next)=>{
     const user_Id = req.id
   const body = req.body
 
-  console.log(req.body);
-  console.log(user_Id);
-  
-  console.log(user_Id);
 
-  
-  
-  const { product_name,description, price, category,image_url , quantity } = body
+        const { product_name,description, price, category,image_url , quantity } = body
+          const required = { product_name, description, price, category, image_url, quantity };
+      const missing = Object.keys(required).filter(k => !required[k]);
 
-      if(!user_Id ||!product_name || !description ||  !price || !category || !image_url || !quantity){ 
-        return  res.status(400).json({ mess: "data is undefined" });
-      }
+      if (!user_Id || missing.length) {
+        return res.status(400).json({ mess: "Missing fields", missing });
+         }
       const sql  = 'INSERT INTO user_cart(product_name, description, price ,category,userid, image_url , quantity ) VALUES(? ,? , ?  ,? , ? , ? ,? )'
       const value = [product_name,description, price , category , user_Id,image_url , quantity]
       const response = await conn(sql,value)
@@ -59,11 +55,10 @@ routes.post('/cart_insert_item', verifytoken , async(req ,res , next)=>{
         });
 
         
-    }catch(error){ 
-        return res.status(401).json({
-          mess: "token is invalid"
-        });
-    }
+          }catch(error){ 
+          console.log(error);
+          return res.status(500).json({ mess: "Server error" });
+      }
 
 })
 
