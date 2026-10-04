@@ -18,8 +18,6 @@ conn.connect((err) => {
 
     console.log('Database connected!')
 })
-
-
 module.exports = (query, value = []) => {
     return new Promise((resolve, reject) => {
         conn.query(query, value, (err, result) => {
@@ -29,6 +27,6 @@ module.exports = (query, value = []) => {
 
             resolve(result)
         })
-    })
+    }) 
 }
 

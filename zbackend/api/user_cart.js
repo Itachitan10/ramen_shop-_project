@@ -71,7 +71,8 @@ routes.get('/cart_item', verifytoken,async (req, res) => {
   try { 
   const user_id = req.id
 
-  console.log(user_id);
+
+  
   
   
   if(!user_id){ 

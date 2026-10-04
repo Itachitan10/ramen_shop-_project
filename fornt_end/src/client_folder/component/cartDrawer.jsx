@@ -2,8 +2,6 @@ import { useState , useEffect} from "react";
 const api_url = import.meta.env.VITE_API_URL ||  "http://localhost:4000"
 
 
-console.log(api_url);
-
 
 
 
@@ -14,6 +12,8 @@ const [items, setItems] = useState([]);
 const [filter , setfilter] = useState(() =>{ 
   return JSON.parse(localStorage.getItem('cart')) || []
 })
+
+console.log(filter);
 
 
 

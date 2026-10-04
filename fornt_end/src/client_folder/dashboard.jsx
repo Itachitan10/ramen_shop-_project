@@ -22,12 +22,9 @@ function dashboard() {
 // console.log(cart_item);
 
 // console.log('this is jwt',jwt);
-  console.log('this is jwt',jwt);
 const handlecartitem = async (product) => {
-
-  
-
-
+  console.log("product received:", JSON.stringify(product, null, 2));
+  console.log("jwt:", jwt, "| token:", jwt?.token);
 
   if (!jwt) return;
 
@@ -43,6 +40,9 @@ const handlecartitem = async (product) => {
 
     if (response.ok) {
       setCartCount((count) => count + 1);
+    } else {
+      const err = await response.text();
+      console.error("Cart error:", response.status, err);
     }
   } catch (error) {
     console.error(error);

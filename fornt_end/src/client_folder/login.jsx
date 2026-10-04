@@ -9,7 +9,6 @@ const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
 
 export default function Login() {
 
-console.log(api_url);
 
   const [info, set_info] = useState({email: ""  ,password : "" , remember : false })
 
