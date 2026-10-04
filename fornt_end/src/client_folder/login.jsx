@@ -61,12 +61,13 @@ const handle_submit = async (e) => {
 
   console.log(data);
   
-  if(!data){ 
+  if(!response.ok){ 
+    alert('Invalid email or password')
     localStorage.removeItem('token')
   }else{
     window.location.href='/dashboard'
     localStorage.setItem('token' ,JSON.stringify(data))
-    // const data1 =JSON.parse(localStorage.getItem('token'))  
+    
 
   }
 };
@@ -78,6 +79,7 @@ const handle_submit = async (e) => {
         <Link to="/" className="font-display font-extrabold text-[22px]">
           KUMO <span className="text-[#d62828]">RAMEN</span>
         </Link>
+    
 
         <Link to="/register" className="font-bold text-sm hover:text-[#d62828] transition">
           Create Account →
