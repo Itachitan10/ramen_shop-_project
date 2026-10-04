@@ -17,7 +17,7 @@ const Navbar = ({ cartCount ,cart_toogle , set_togle, click}) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "http://localhost:3000";
+    window.location.href = "/";
   };
   return (
     <nav className="sticky top-0 z-50 flex h-[76px] items-center justify-between border-b border-[#211b16]/15 bg-[#fffdf8]/95 px-[clamp(20px,5vw,80px)] backdrop-blur-[15px]">   
