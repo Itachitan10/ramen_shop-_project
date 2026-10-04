@@ -135,58 +135,103 @@ useEffect(() => {
               categorybutton(e)}  className={`whitespace-nowrap border-[1.5px] border-[#211b16] px-[18px] py-[10px] rounded-full text-[13px] font-bold transition-all ${activeCategory === category ? "bg-[#211b16] text-[#ffc72c]" : "bg-[#fffdf8] hover:bg-[#211b16] hover:text-[#ffc72c]"}`} >
                 {category}</button>
            ))}
-
-
         </div>
+      {/* PRODUCTS */}
+      <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+        {filteredProducts.slice(0, 6).map((product) => (
+          <article
+            key={product.product_name}
+            className="group rounded-2xl overflow-hidden border border-[#e4d9c8] bg-[#fffdf8]"
+          >
 
-        {/* PRODUCTS */}
-     <div className="grid mt-[100px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-15">
-     {filteredProducts.slice(0,6).map(product =>(
-       <article
-          key={product.product_name}
-          className="relative bg-[#fffdf8] border border-[#e8e8e8] rounded-[24px] shadow-[0_20px_45px_rgba(0,0,0,0.10)] overflow-visible transition-all duration-300 hover:-translate-y-2" >
-          {/* IMAGE AREA */}
-          <div className="relative h-[125px] flex justify-center items-start overflow-visible">
-            <img
-              src={product.image_url}
-              alt={product.product_name}
-              className="absolute -top-[55px] w-[145px] h-[145px] object-cover rounded-full border-[7px] border-[#fffdf8] shadow-[0_14px_28px_rgba(0,0,0,0.18)] transition-transform duration-500 hover:scale-[1.06] hover:rotate-[2deg]"
-            />
-            {product.badge && (
-              <div className="absolute top-[14px] right-[14px] z-10 px-[10px] py-[6px] bg-[#d62828] text-white rounded-full text-[9px] font-extrabold tracking-[0.5px]">
-                {product.badge}
-              </div>
-            )}
-          </div>
- 
-          {/* CONTENT */}
-          <div className="px-[21px] pb-[100px]">
-            <div className="mb-[5px] text-[#d62828] text-[10px] font-extrabold uppercase tracking-[1.6px]">
-              {product.category}
-            </div>
- 
-            <h3 className="mb-2 font-['Poppins',sans-serif] text-[22px] font-black tracking-[-0.4px]">
-              {product.product_name}
-            </h3>
- 
-            <p className="min-h-[45px] mb-[16px] text-[#777] text-[12px] leading-[1.6]">
-              {product.description}
-            </p>
- 
-            <div className="mb-[16px] font-['Poppins',sans-serif] text-[22px] font-black">
-              ₱<span className="text-[#d62828]">{product.price}</span>
-              {product.oldPrice && (
-                <span className="ml-2 text-[11px] text-[#999] line-through">
-                  ₱{product.oldPrice}
+            {/* IMAGE */}
+            <div className="relative aspect-[1/0.9] overflow-hidden bg-[#eee6da]">
+
+              <img
+                src={product.image_url}
+                alt={product.product_name}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+              />
+
+              {/* BADGE */}
+              {product.badge && (
+                <span className="absolute left-3 top-3 bg-[#8f1d18] px-2 py-1 text-[8px] font-bold uppercase tracking-wider text-white">
+                  {product.badge}
                 </span>
               )}
+
+              {/* FAVORITE */}
+              <button
+                type="button"
+                className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center bg-white/90 text-lg text-[#171412] transition hover:text-[#8f1d18]"
+              >
+                ♡
+              </button>
+
             </div>
- 
-                  <button onClick={() => handlecartitem(product)} className="w-full py-[13px] rounded-[13px] bg-[#d62828] text-white font-['Poppins',sans-serif] text-[13px] font-extrabold hover:bg-[#ff4b30] hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(230,57,32,0.22)] active:scale-[0.97] transition-all"> Add to Cart</button>
-          </div>
-             </article>
-          ))}  
+
+
+            {/* PRODUCT INFO */}
+            <div className="p-4">
+
+              {/* CATEGORY */}
+              <p className="mb-1 text-[9px] font-bold uppercase tracking-[1.5px] text-[#8f1d18]">
+                {product.category}
+              </p>
+
+              {/* NAME */}
+              <h3 className="text-[16px] font-bold leading-tight text-[#171412] sm:text-[17px]">
+                {product.product_name}
+              </h3>
+
+              {/* RATING */}
+              <div className="mt-2 flex items-center gap-2">
+                <span className="text-[10px] tracking-[-1px] text-[#b18a52]">
+                  ★★★★★
+                </span>
+
+                <span className="text-[10px] text-[#756e66]">
+                  {product.rating || "4.9"}
+                </span>
+              </div>
+
+              {/* DESCRIPTION */}
+              {product.description && (
+                <p className="mt-2 line-clamp-2 text-[10px] leading-relaxed text-[#756e66]">
+                  {product.description}
+                </p>
+              )}
+
+              {/* PRICE + CART */}
+              <div className="mt-4 flex items-center justify-between border-t border-[#e4d9c8] pt-3">
+
+                <div>
+                  <span className="text-[17px] font-bold text-[#171412]">
+                    ₱{product.price}
+                  </span>
+
+                  {product.oldPrice && (
+                    <span className="ml-2 text-[10px] text-[#999] line-through">
+                      ₱{product.oldPrice}
+                    </span>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => handlecartitem(product)}
+                  className="flex h-8 w-8 items-center justify-center bg-[#8f1d18] text-lg leading-none text-white transition hover:bg-[#a92820] active:scale-95"
+                >
+                  +
+                </button>
+
+              </div>
+
+            </div>
+          </article>
+        ))}
       </div>
+
         {filteredProducts.length === 0 && <div className="text-center py-20 text-[#766b5e]">No products found in this category.</div>}
           {/* Your "See More" button here */}
           <div className="flex justify-center mt-[40px]">
