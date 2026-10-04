@@ -17,6 +17,7 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.3",
+    "sileo": "^0.1.5",
     "tailwindcss": "^4.3.3",
     "usestate": "^1.1.3"
   },

@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
-
+import { sileo, Toaster } from "sileo";
 
 
 
 
 
 export default function Login() {
-
-
   const [info, set_info] = useState({email: ""  ,password : "" , remember : false })
+  const [loading, set_loading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
-
+  
   const handechange_email= (e)=>{ 
     e.preventDefault()
- 
+  
     const {name , value} = e.target;
 
     set_info({...info , [name] : value})
@@ -36,16 +36,12 @@ export default function Login() {
     set_info({ ...info  , [name] : type === 'checkbox' ?  checked  : value })
   }
 
-
-
-
-
 const handle_submit = async (e) => {
 
-  
+  set_loading(true);
   e.preventDefault();
 
-  const response = await fetch(`${api_url}/login`, {
+  const request =  fetch(`${api_url}/login`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -56,21 +52,48 @@ const handle_submit = async (e) => {
       password: info.password,
     }),
   
-  });
-  const data = await response.json();
-
-  console.log(data);
-  
-  if(!response.ok){ 
-    alert('Invalid email or password')
-    localStorage.removeItem('token')
-  }else{
-    window.location.href='/dashboard'
-    localStorage.setItem('token' ,JSON.stringify(data))
-    
-
+  }).then(async(response) => {
+   const data = await response.json();
+ if (!response.ok) {
+    localStorage.removeItem("token");
+    throw new Error(data.message || "Login failed");
   }
+else{
+   localStorage.setItem('token' ,JSON.stringify(data))
+
+    setTimeout(() => {
+      window.location.href='/dashboard'
+    }, 1000);
+   }
+  })
+ sileo.promise(request, {
+    loading: {
+      title: "Logging in..."
+    },
+    success: {
+      title: "Login successful"
+    },
+    error: {
+      title: "Failed to login, check your email or password"
+    }
+  });
+
+    try {
+    await request;
+  } catch (err) {
+    localStorage.removeItem("token");
+  } finally {
+    set_loading(false);
+  }
+
 };
+
+
+
+
+
+
+
   return (
     <div className="min-h-screen bg-[#f7f1e5] text-[#211b16]">
 
@@ -79,16 +102,16 @@ const handle_submit = async (e) => {
         <Link to="/" className="font-display font-extrabold text-[22px]">
           KUMO <span className="text-[#d62828]">RAMEN</span>
         </Link>
-    
+       
 
         <Link to="/register" className="font-bold text-sm hover:text-[#d62828] transition">
           Create Account →
         </Link>
       </nav>
-
+       <Toaster position="center"  />
+      
       {/* BACKGROUND */}
-      <main className="min-h-[calc(100vh-74px)] flex items-center justify-center px-5 py-12 bg-[repeating-linear-gradient(-45deg,#ffc72c_0px,#ffc72c_40px,#ffd35c_40px,#ffd35c_80px)]">
-
+      <main className="min-h-[calc(100vh-74px)] flex items-center justify-center px-5 py-14 bg-[repeating-linear-gradient(-45deg,#ffc72c_0px,#ffc72c_40px,#ffd35c_40px,#ffd35c_80px)]">  
         {/* CARD */}
         <section className="relative w-full max-w-[440px] bg-[#fffdf8] border-[4px] border-[#211b16] rounded-2xl p-7 sm:p-10 shadow-[10px_10px_0_#211b16]">
 
@@ -177,10 +200,10 @@ const handle_submit = async (e) => {
 
             {/* LOGIN */}
             <button
-              type="submit"
+              type="submit"  disabled={loading}
               className="w-full bg-[#d62828] text-white border-[3px] border-[#211b16] rounded-lg py-3.5 font-extrabold shadow-[6px_6px_0_#211b16] transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0_#211b16] active:translate-x-1 active:translate-y-1 active:shadow-[2px_2px_0_#211b16]"
             >
-              LOGIN →
+              {loading ? "Loading..." : "Login"}
             </button>
 
           </form>

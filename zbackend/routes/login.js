@@ -38,7 +38,7 @@ router.post('/login', async (req, res) => {
           process.env.JWT_SECRET,
           {expiresIn : '1h'}
         )
-
+        
           res.json({token , email :user.email , name : user.name })
         
        
