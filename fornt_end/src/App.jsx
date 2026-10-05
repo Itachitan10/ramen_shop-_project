@@ -6,10 +6,12 @@ import MenuPage from "./client_folder/munepage";
 import CartDrawer from "./client_folder/component/cartDrawer";
 import CheckoutPage from "./client_folder/checkoutpage";
 import ProfilePage from "./client_folder/profilepage";
+import ForgotPasswordPage from "./client_folder/forget-password";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
        <Route path="/profile" element={<ProfilePage/>} />
        <Route path="/proceed" element={<CheckoutPage/>} />
         <Route path="/cart" element={<CartDrawer/>} />

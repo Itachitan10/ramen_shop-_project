@@ -11,6 +11,12 @@ router.post('/register' , async(req , res)=>{
     
    const {first_name , last_name , email, mobile_number , password} = req.body
 
+   if(first_name , last_name , email, mobile_number , password){ 
+      
+   res.status(200).json({mess :' registration success'})
+   }else{ 
+      res.status(400).json({message: 'Please fill in all fields'})
+   }
 
    const hashedpassword = await bcrypt.hash(password , 10)
 
@@ -39,3 +45,7 @@ router.post('/register' , async(req , res)=>{
 
 
 module.exports = router;
+
+
+
+  
