@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState , useEffect } from "react";
+import Toggle from './toogle'
 const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000"
+
+
 
 export default function Register() {
 
@@ -10,31 +13,40 @@ export default function Register() {
    const [email , set_email] = useState('')
    const [mobile , set_mobile] = useState('')    
    const [password , setpass] = useState('')
-    
-console.log(first_name , last_name , email, mobile , password);
-   const handle_submit = async(e) =>{
 
-    const response = await fetch(`${api_url}/register`, { 
+   const [identify , setidentify ] = useState(null) 
+
+
+
+   const handle_submit = async(e) =>{
+        e.preventDefault()
+
+    const req= await fetch(`${api_url}/register`, { 
           method: "POST",
         credentials : "include" , 
        headers: {"Content-Type": "application/json"},
         body : JSON.stringify({first_name : first_name  , last_name : last_name  , email : email, mobile_number :mobile , password : password})
     })
-   const data =  await response.json()
-    
-
-
-    
+   const data =  await req.json()
+   console.log(data)
+   if(req.ok){
+    setidentify({status: true  , title : "Registration Successful!", description: "Your account has been created. Would you like to log in now?", distanation  : '/'})
+    return
+   }else{ 
+    setidentify({status: false, title: "Registration Failed!", description: data.message || "Registration failed" , distanation  : '/register'})
+    throw new Error(data.message  || "Registration failed");
    }
-
+  }
   return (
     <div className="min-h-screen bg-[#ffc72c] flex items-center justify-center p-5">
-
       <div className="w-full max-w-[500px]">
+
+        <Toggle identify={identify} />
 
         <Link to="/"   className="block text-center text-3xl font-black tracking-[-2px] text-[#211b16] mb-8" >
           KUMO <span className="text-[#d62828]">RAMEN</span>
         </Link>
+        
 
         <div className="relative bg-[#fffdf8] border-[4px] border-[#211b16] rounded-2xl p-8 shadow-[8px_8px_0_#211b16]">
           <span className="absolute -top-4 right-6 bg-[#ffc72c] border-2 border-[#211b16] px-3 py-1 rounded font-mono text-xs font-bold rotate-3">  NEW 🍜 </span>
@@ -49,7 +61,7 @@ console.log(first_name , last_name , email, mobile , password);
             Save your address, track orders, and get member-only deals.
           </p>
 
-          <form className="space-y-5">
+          <form  onSubmit={handle_submit} className="space-y-5">
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
@@ -141,7 +153,7 @@ console.log(first_name , last_name , email, mobile , password);
               </span>
             </label>
 
-            <button onClick={handle_submit}
+            <button 
               type="submit"
               className="w-full bg-[#d62828] text-white border-[3px] border-[#211b16] py-3.5 rounded-lg font-black shadow-[5px_5px_0_#211b16] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0_#211b16] transition"
             >
