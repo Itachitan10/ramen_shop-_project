@@ -32,7 +32,6 @@ router.post('/register' , async(req , res)=>{
    
    }catch(err){ 
      console.log('this is the error on line 19',err);
-
    
         res.status(500).json({
             message: 'Registration failed'

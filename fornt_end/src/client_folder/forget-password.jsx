@@ -1,155 +1,116 @@
-import { useState } from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { useState  } from "react";  
+const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
 
-export default function ForgotPasswordPage({ onBack }) {
-  const [value, setValue] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState(null);
+import { sileo, Toaster } from "sileo";
+console.log(api_url);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    setError(null);
 
-    if (!value.trim()) {
-      setError("Please enter your email address.");
-      return;
-    }
 
-    setLoading(true);
+export default function ForgotPasswordPage() {
 
-    // Temporary muna habang wala pa yung actual forgot-password API
-    setTimeout(() => {
-      setLoading(false);
-      setSent(true);
-    }, 900);
-  }
-
+    const [email, setEmail] = useState("");
+    
+    
+    const handleSubmit  =  async() => {
+        try{ 
+        if(!email.includes("@")){ 
+            // babalikan para i fix
+            sileo.error({
+        title: "Something went wrong",
+      });
+        }else{
+      const req = await fetch(`${api_url}/forgot-password`, { 
+            method: "POST",
+             headers: {
+             "Content-Type": "application/json",
+             },
+            body: JSON.stringify({gmail : email}),
+            }) 
+            if(!req.ok){ 
+                   sileo.error({title: "Something went wrong" });
+                   return
+            }
+           sileo.success({ title: "Reset email sent",});
+            }
+            }catch(err){ 
+              console.error(err);
+                sileo.error({
+                title: "Server error",
+                });
+            }
+ 
+    } 
   return (
     <div className="min-h-screen bg-[#F7F1E5] px-4 py-8 text-[#2B2118]">
-      <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-md items-center justify-center">
 
+      <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-sm items-center justify-center">
+             
         <div className="w-full">
-
-          {/* Back */}
+             <Toaster position="center-top" />
           <button
             type="button"
-            onClick={onBack}
-            className="mb-6 flex items-center gap-2 text-sm font-medium text-[#6F6256] transition hover:text-[#D62828]"
+            onClick={() => {
+              window.location.href = "/";
+            }}
+            className="mb-4 flex items-center gap-1.5 text-sm font-medium text-[#6F6256] hover:text-[#D62828]"
           >
-            <ArrowLeft
-              className="h-4 w-4"
-              strokeWidth={2}
-            />
+            <ArrowLeft size={16} />
             Back to log in
           </button>
 
-          {/* Main Card */}
-          <div className="border-2 border-[#2B2118] bg-[#FFFDF7] p-6 shadow-[5px_5px_0px_#2B2118] sm:p-8">
+          <div className="border-2 border-[#2B2118] bg-[#FFFDF7] p-6 shadow-[4px_4px_0px_#2B2118]">
 
-            {/* Brand */}
-            <div className="mb-7 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#2B2118] bg-[#FFC72C] text-lg">
+            {/* Logo */}
+            <div className="mb-6 flex items-center gap-2">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#2B2118] bg-[#FFC72C]">
                 🍜
               </div>
 
               <div>
-                <p className="text-sm font-black tracking-[0.15em]">
+                <p className="text-sm font-black tracking-widest">
                   KUMO
                 </p>
-                <p className="text-[10px] font-bold tracking-[0.25em] text-[#D62828]">
+
+                <p className="text-[9px] font-bold tracking-[0.2em] text-[#D62828]">
                   RAMEN SHOP
                 </p>
               </div>
             </div>
 
-            {sent ? (
-              /* SUCCESS */
-              <div>
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#2B2118] bg-[#FFC72C] text-xl">
-                  ✓
-                </div>
+            {/* Heading */}
+            <h1 className="text-xl font-black">
+              Forgot your password?
+            </h1>
 
-                <h1 className="text-2xl font-black tracking-tight">
-                  Check your inbox
-                </h1>
+            <p className="mt-2 text-sm leading-5 text-[#6F6256]">
+              Enter your email and we'll send you a password reset link.
+            </p>
 
-                <p className="mt-3 text-sm leading-6 text-[#6F6256]">
-                  If an account matches{" "}
-                  <span className="font-semibold text-[#2B2118]">
-                    {value}
-                  </span>
-                  , we've sent you a link to reset your password.
-                </p>
+            {/* Form Design */}
+            <div className="mt-5">
 
-                <button
-                  type="button"
-                  onClick={onBack}
-                  className="mt-7 w-full border-2 border-[#2B2118] bg-[#D62828] py-3 text-sm font-bold text-white shadow-[3px_3px_0px_#2B2118] transition hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#2B2118]"
-                >
-                  Back to login
-                </button>
-              </div>
-            ) : (
-              /* FORM */
-              <>
-                <div className="mb-7">
-                  <h1 className="text-2xl font-black tracking-tight">
-                    Forgot your password?
-                  </h1>
+              <label className="mb-1.5 block text-xs font-bold uppercase tracking-wide">
+                Email address
+              </label>
 
-                  <p className="mt-2 text-sm leading-6 text-[#6F6256]">
-                    Enter the email connected to your Kumo Ramen account and
-                    we'll send you a password reset link.
-                  </p>
-                </div>
+              <input
+                value={email}
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                required
+                className="w-full border-2 border-[#2B2118] bg-[#FDF6E3] px-3 py-2.5 text-sm outline-none placeholder:text-[#9A8D7D] focus:border-[#D62828]" />
 
-                <form onSubmit={handleSubmit}>
+              <button onClick={() =>handleSubmit(email)}  type="button" className="mt-4 w-full border-2 border-[#2B2118] bg-[#D62828] py-2.5 text-sm font-bold text-white shadow-[2px_2px_0px_#2B2118] hover:translate-x-[1px] hover:translate-y-[1px]" >
+                Send reset link
+              </button>
 
-                  <label
-                    htmlFor="email"
-                    className="mb-2 block text-xs font-bold uppercase tracking-wider text-[#2B2118]"
-                  >
-                    Email address
-                  </label>
+            </div>
 
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    autoComplete="email"
-                    className="w-full border-2 border-[#2B2118] bg-[#FDF6E3] px-4 py-3 text-sm text-[#2B2118] outline-none placeholder:text-[#9A8D7D] focus:border-[#D62828]"
-                  />
-
-                  {error && (
-                    <p className="mt-2 text-sm font-medium text-[#D62828]">
-                      {error}
-                    </p>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="mt-6 flex w-full items-center justify-center gap-2 border-2 border-[#2B2118] bg-[#D62828] py-3 text-sm font-bold text-white shadow-[3px_3px_0px_#2B2118] transition hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#2B2118] disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {loading && (
-                      <Loader2
-                        className="h-4 w-4 animate-spin"
-                        strokeWidth={2}
-                      />
-                    )}
-
-                    {loading ? "Sending..." : "Send reset link"}
-                  </button>
-                </form>
-              </>
-            )}
           </div>
 
-          {/* Small footer */}
-          <p className="mt-6 text-center text-xs text-[#8A7B6B]">
+          <p className="mt-4 text-center text-[11px] text-[#8A7B6B]">
             Kumo Ramen · Simple food, good mood 🍜
           </p>
 

@@ -7,10 +7,12 @@ import CartDrawer from "./client_folder/component/cartDrawer";
 import CheckoutPage from "./client_folder/checkoutpage";
 import ProfilePage from "./client_folder/profilepage";
 import ForgotPasswordPage from "./client_folder/forget-password";
+import Forget_gmail from "./client_folder/forget_gmail";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/forgot-gmail" element={<Forget_gmail/>} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
        <Route path="/profile" element={<ProfilePage/>} />
        <Route path="/proceed" element={<CheckoutPage/>} />

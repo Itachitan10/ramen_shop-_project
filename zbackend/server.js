@@ -49,6 +49,7 @@ const login =require('./routes/login')
 const product= require('./api/procductname')
 const user_cart = require('./api/user_cart')
 const delete_item = require('./api/remove')
+const forgot_password = require('./routes/forgot_passwrod')
 
 app.use('/image', express.static(path.join(__dirname, 'routes/image')))
 app.use('/' , product)
@@ -56,6 +57,7 @@ app.use('/' , login)
 app.use('/', register)
 app.use('/', user_cart)
 app.use('/' , delete_item)
+app.use('/', forgot_password)
 
 const port = process.env.PORT || 4000
 
