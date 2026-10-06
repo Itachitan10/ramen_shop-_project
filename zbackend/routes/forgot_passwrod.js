@@ -34,27 +34,16 @@ routes.post('/forgot-password' , async (req , res) =>{
            }
 
         
-           process.env.CORS || `http://localhost:3000/forgot-gmail`
-           
-           
+           process.env.CORS || `http://localhost:3000/forgot-gmail`     
            const token = crypto.randomBytes(32).toString('hex')
+             const resetLink = `${process.env.CORS || "http://localhost:3000"}/forgot-gmail?token=${token}`;
+             
 
-          
-           
-           
-        //    console.log(token);
-           
-
-
-        //    console.log(`${process.env.CORS || "http://localhost:3000"}/forgot-gmail`)
-           
-        //    console.log(transporter);
-           
            await transporter.sendMail({ 
             from : process.env.USER_EMAIL,
             to : response[0].email, 
             subject: "Reset your password",
-             text: `Click this link to reset your password:  ${process.env.CORS || "http://localhost:3000"}/forgot-gmail`,
+             text: `Click this link to reset your password:{} ` 
             
            })
            console.log("EMAIL SENT!");
