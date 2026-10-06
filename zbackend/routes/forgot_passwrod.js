@@ -43,7 +43,7 @@ routes.post('/forgot-password' , async (req , res) =>{
             from : process.env.USER_EMAIL,
             to : response[0].email, 
             subject: "Reset your password",
-             text: `Click this link to reset your password:{} ` 
+             text: `Click this link to reset your password:${resetLink}` 
             
            })
            console.log("EMAIL SENT!");
