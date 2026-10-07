@@ -1,42 +1,39 @@
 const express = require('express')
 const routes = express.Router()
-const   nodemailer  = require ('nodemailer')
 require('dotenv').config();
 const crypto = require('crypto')
 const conn = require('../database/database');
-    
+const { Resend } = require('resend');
 
 
-const transporter = nodemailer.createTransport({ 
-    service : 'Gmail', 
-    auth : { 
-        user : process.env.EMAIL_USER, 
-        pass : process.env.EMAIL_PASS
-    }
-})
- 
 // forget password send email
 routes.post('/forgot-password' , async (req , res) =>{ 
     const email = req.body ; 
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 
-    console.log(email.gmail);
     
     if(!email){ 
-        res.status(400).json({mess : 'no email send '})
+         return res.status(400).json({mess : 'no email send '})
     }
     const sql ='SELECT * FROM register WHERE email = ? '
       const response = await conn(sql , [email.gmail]) 
            
-           if(!response.length > 0){
+           if(!response.length === 0){
             console.log('user not found');  
              return res.status(401).json({ mess: 'no exixting gamil' })
               
            }
-              process.env.CORS || `http://localhost:3000/forgot-gmail`     
+            //   process.env.CORS || `http://localhost:3000/forgot-gmail`     
            const token = crypto.randomBytes(32).toString('hex')
-             const resetLink = process.env.CORS
-                 const htmldesign = `
+
+  
+           
+           const resetLink = `${process.env.FRONTEND_URL || "http://localhost:3000"}/forgot-gmail?token=${token}`;
+            
+            
+
+                   const htmldesign = `
                 <!DOCTYPE html>
                 <html lang="en">
                 <body style="margin:0;padding:0;background:#F7F1E5;">
@@ -67,7 +64,7 @@ routes.post('/forgot-password' , async (req , res) =>{
                                 Enter a new password for your Kumo Ramen account.
                             </p>
 
-                            <a href="${resetLink}/forgot-gmail"
+                            <a href="${resetLink}"
                                 style="display:block;padding:13px;background:#D62828;color:#FFFFFF;text-align:center;text-decoration:none;border-radius:6px;font-weight:bold;">
                                 Reset Password
                             </a>
@@ -91,31 +88,34 @@ routes.post('/forgot-password' , async (req , res) =>{
 
                 </body>
                 </html>
-        `;
+                  `;
+       
+           const {  data ,error } = await resend.emails.send({
+            from : `onboarding@resend.dev`, 
+            to : response[0].email, 
+            subject : 'Reset Your Kumo Ramen password', 
+            html : htmldesign,
 
-        
-             console.log(resetLink);
-                 await transporter.sendMail({
-                        from: process.env.EMAIL_USER,
-                        to: response[0].email,
-                        subject: "Reset your Kumo Ramen Password",
-                        html : htmldesign    
-                        
-                    });
-           console.log("EMAIL SENT!");
-           
+    
 
-           console.log(resetLink);
-           
+            
+           })
+             
+                console.log(data);
+                
+
     
 })
 
 
 // forger password and sent to data base with gmail and token
-routes.post('/forgot-password2' , async (req , res) =>{
-    console.log(req.body);
+// routes.post('/forgot-password2' , async (req , res) =>{
+//     console.log(req.body);
      
 
-})
+// }) 
 
 module.exports =  routes
+
+
+
