@@ -1,11 +1,88 @@
 import { ArrowLeft } from "lucide-react";
+import { useState , useEffect} from "react";
+import { sileo, Toaster } from "sileo";
+
+
+
+
+
+
+
 
 export default function ResetPassword() {
+
+
+const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
+const parameter = new URLSearchParams(window.location.search)
+const TokenForUrl  = parameter.get('token')
+
+  const [newpass , setnewpass] = useState('')
+  const [confirmpass , setconfirr] = useState('')
+  
+
+console.log(api_url);
+
+    const handle_submit = async () => {
+        try {
+
+            // Check password fields
+            if (!newpass || !confirmpass) {
+
+              sileo.warning({ title: "Please fill in both password fields." });
+                
+                return;
+            }
+            if (newpass !== confirmpass) {
+              sileo.warning({ title: "Passwords do not match." });
+                
+                return;
+            }
+            if (newpass.length < 8) {
+                alert("Password must be at least 8 characters.");
+                return;
+            }
+            if (!token) {
+                alert("Invalid or missing reset token.");
+                return;
+            }
+
+            const response = await fetch(`${api_url}/forgot-password2`, {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    token: TokenForUrl,
+                    newPassword: newpass
+                })
+            });
+
+            const data = await response.json();
+
+            console.log(data);
+
+            if (!response.ok) {
+                alert(data.mess || "Failed to reset password.");
+                return;
+            }
+
+            alert("Password successfully changed!");
+
+        } catch (error) {
+            console.error("Reset password error:", error);
+            alert("Something went wrong.");
+        }
+    };
+
+
+
   return (
     <div className="min-h-screen bg-[#F7F1E5] px-4 py-8 text-[#2B2118]">
-
+           <Toaster position="center"  />
       <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-sm items-center justify-center">
-
+   
         <div className="w-full">
 
           <button
@@ -54,8 +131,9 @@ export default function ResetPassword() {
                 New password
               </label>
 
-              <input
+              <input value={newpass}
                 type="password"
+                onChange={(e) => setnewpass(e.target.value)}
                 placeholder="Enter new password"
                 className="w-full border-2 border-[#2B2118] bg-[#FDF6E3] px-3 py-2.5 text-sm outline-none placeholder:text-[#9A8D7D] focus:border-[#D62828]"
               />
@@ -65,12 +143,14 @@ export default function ResetPassword() {
               </label>
 
               <input
+              value={confirmpass}
+              onChange={(e) => setconfirr(e.target.value)}
                 type="password"
                 placeholder="Confirm new password"
                 className="w-full border-2 border-[#2B2118] bg-[#FDF6E3] px-3 py-2.5 text-sm outline-none placeholder:text-[#9A8D7D] focus:border-[#D62828]"
               />
 
-              <button
+              <button onClick={handle_submit}
                 type="button"
                 className="mt-5 w-full border-2 border-[#2B2118] bg-[#D62828] py-2.5 text-sm font-bold text-white shadow-[2px_2px_0px_#2B2118] hover:translate-x-[1px] hover:translate-y-[1px]"
               >
