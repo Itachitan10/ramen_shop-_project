@@ -33,55 +33,74 @@ routes.post('/forgot-password' , async (req , res) =>{
              return res.status(401).json({ mess: 'no exixting gamil' })
               
            }
-
-        
-           process.env.CORS || `http://localhost:3000/forgot-gmail`     
+              process.env.CORS || `http://localhost:3000/forgot-gmail`     
            const token = crypto.randomBytes(32).toString('hex')
              const resetLink = process.env.CORS
+                 const htmldesign = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <body style="margin:0;padding:0;background:#F7F1E5;">
+
+                <table width="100%" cellpadding="0" cellspacing="0" style="background:#F7F1E5;">
+                    <tr>
+                    <td align="center" style="padding:30px 15px;">
+
+                        <table width="380" cellpadding="0" cellspacing="0"
+                        style="width:100%;max-width:380px;background:#FFFDF7;border:1px solid #E8DDC8;border-radius:10px;">
+
+                        <tr>
+                            <td style="padding:24px;font-family:Arial;color:#2B2118;">
+
+                            <p style="margin:0;font-size:15px;font-weight:bold;letter-spacing:2px;">
+                                🍜 KUMO
+                            </p>
+
+                            <p style="margin:2px 0 18px 30px;font-size:10px;font-weight:bold;letter-spacing:2px;color:#D62828;">
+                                RAMEN SHOP
+                            </p>
+
+                            <h2 style="margin:0;font-size:20px;">
+                                Reset your password
+                            </h2>
+
+                            <p style="margin:7px 0 18px;font-size:14px;line-height:1.5;color:#6F6256;">
+                                Enter a new password for your Kumo Ramen account.
+                            </p>
+
+                            <a href="${resetLink}/forgot-gmail"
+                                style="display:block;padding:13px;background:#D62828;color:#FFFFFF;text-align:center;text-decoration:none;border-radius:6px;font-weight:bold;">
+                                Reset Password
+                            </a>
+
+                            <p style="margin:16px 0 0;font-size:12px;color:#8A7B6B;">
+                                This link will expire after 15 minutes.
+                            </p>
+
+                            <p style="margin:6px 0 0;font-size:12px;color:#8A7B6B;">
+                                If you didn't request this, you can ignore this email.
+                            </p>
+
+                            </td>
+                        </tr>
+
+                        </table>
+
+                    </td>
+                    </tr>
+                </table>
+
+                </body>
+                </html>
+        `;
+
+        
              console.log(resetLink);
                  await transporter.sendMail({
                         from: process.env.EMAIL_USER,
                         to: response[0].email,
                         subject: "Reset your Kumo Ramen Password",
-                         html: `
-                            <div style="margin:0;padding:30px 15px;background:#F7F1E5;font-family:Arial,sans-serif;color:#2B2118">
-
-                            <div style="max-width:380px;margin:auto;background:#FFFDF7;border:2px solid #2B2118;padding:24px;box-shadow:4px 4px 0 #2B2118">
-
-                                <div style="margin-bottom:20px">
-                                <span style="font-size:22px">🍜</span>
-                                <b style="margin-left:8px;font-size:14px;letter-spacing:2px">KUMO</b>
-                                <small style="display:block;margin-left:31px;color:#D62828;font-weight:bold;letter-spacing:2px">
-                                    RAMEN SHOP
-                                </small>
-                                </div>
-
-                                <h2 style="margin:0;font-size:21px">Reset your password</h2>
-
-                                <p style="margin:8px 0 18px;color:#6F6256;font-size:13px;line-height:1.5">
-                                We received a request to reset your Kumo Ramen password.
-                                </p>
-
-                                <a
-                                href="${resetLink}"
-                                style="display:block;padding:11px;background:#D62828;border:2px solid #2B2118;color:white;text-align:center;text-decoration:none;font-weight:bold;font-size:13px;box-shadow:2px 2px 0 #2B2118"
-                                >
-                                Reset password
-                                </a>
-
-                                <p style="margin:18px 0 0;color:#8A7B6B;font-size:11px;line-height:1.5">
-                                This link expires in 15 minutes.<br>
-                                If you didn't request this, simply ignore this email.
-                                </p>
-
-                            </div>
-
-                            <p style="text-align:center;color:#8A7B6B;font-size:10px;margin-top:16px">
-                                Kumo Ramen · Account Security 🍜
-                            </p>
-
-                            </div>
-                             `
+                        html : htmldesign    
+                        
                     });
            console.log("EMAIL SENT!");
            
