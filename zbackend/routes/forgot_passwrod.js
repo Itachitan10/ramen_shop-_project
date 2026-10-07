@@ -37,43 +37,51 @@ routes.post('/forgot-password' , async (req , res) =>{
         
            process.env.CORS || `http://localhost:3000/forgot-gmail`     
            const token = crypto.randomBytes(32).toString('hex')
-             const resetLink = `${process.env.CORS || "http://localhost:3000"}/forgot-gmail?token=${token}`;
-             
-
+             const resetLink = process.env.CORS
              console.log(resetLink);
-             
                  await transporter.sendMail({
                         from: process.env.EMAIL_USER,
                         to: response[0].email,
                         subject: "Reset your Kumo Ramen Password",
+                         html: `
+                            <div style="margin:0;padding:30px 15px;background:#F7F1E5;font-family:Arial,sans-serif;color:#2B2118">
 
-                        html: `
-                            <div style="font-family:Arial,sans-serif;background:#f7f1e5;padding:30px;text-align:center">
-                                <div style="max-width:450px;margin:auto;background:white;padding:30px;border-radius:12px">
-                                    
-                                    <h1 style="color:#d62828">🍜 Kumo Ramen</h1>
-                                    <h2 style="color:#2b2118">Reset Your Password</h2>
+                            <div style="max-width:380px;margin:auto;background:#FFFDF7;border:2px solid #2B2118;padding:24px;box-shadow:4px 4px 0 #2B2118">
 
-                                    <p style="color:#666">
-                                        We received a request to reset your password.
-                                    </p>
-
-                                    <a href="${resetLink}"
-                                    style="display:inline-block;padding:12px 24px;background:#d62828;color:white;text-decoration:none;border-radius:7px;font-weight:bold">
-                                        Reset Password
-                                    </a>
-
-                                    <p style="color:#999;font-size:12px;margin-top:20px">
-                                        This link will expire after 15 minutes.
-                                    </p>
-
-                                    <p style="color:#aaa;font-size:11px">
-                                        If you didn't request this, you can ignore this email.
-                                    </p>
-
+                                <div style="margin-bottom:20px">
+                                <span style="font-size:22px">🍜</span>
+                                <b style="margin-left:8px;font-size:14px;letter-spacing:2px">KUMO</b>
+                                <small style="display:block;margin-left:31px;color:#D62828;font-weight:bold;letter-spacing:2px">
+                                    RAMEN SHOP
+                                </small>
                                 </div>
+
+                                <h2 style="margin:0;font-size:21px">Reset your password</h2>
+
+                                <p style="margin:8px 0 18px;color:#6F6256;font-size:13px;line-height:1.5">
+                                We received a request to reset your Kumo Ramen password.
+                                </p>
+
+                                <a
+                                href="${resetLink}"
+                                style="display:block;padding:11px;background:#D62828;border:2px solid #2B2118;color:white;text-align:center;text-decoration:none;font-weight:bold;font-size:13px;box-shadow:2px 2px 0 #2B2118"
+                                >
+                                Reset password
+                                </a>
+
+                                <p style="margin:18px 0 0;color:#8A7B6B;font-size:11px;line-height:1.5">
+                                This link expires in 15 minutes.<br>
+                                If you didn't request this, simply ignore this email.
+                                </p>
+
                             </div>
-                        `
+
+                            <p style="text-align:center;color:#8A7B6B;font-size:10px;margin-top:16px">
+                                Kumo Ramen · Account Security 🍜
+                            </p>
+
+                            </div>
+                             `
                     });
            console.log("EMAIL SENT!");
            
