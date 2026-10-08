@@ -73,6 +73,7 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
               title: "Password reset successful",
               description: "You can now log in with your new password.",
             });
+            window,location.reload()
 
 
         } catch (error) {
