@@ -74,6 +74,9 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
               description: "You can now log in with your new password.",
             });
             
+            setInterval(() => {
+              window.location.reload()
+            }, 5000);
 
 
         } catch (error) {
