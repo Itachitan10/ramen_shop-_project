@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
              headers: {
              "Content-Type": "application/json",
              },
-            body: JSON.stringify({gmail : email}),
+            body: JSON.stringify({email : email}),
             }) 
             if(!req.ok){ 
                    sileo.error({title: "Something went wrong" });

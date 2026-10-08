@@ -4,35 +4,42 @@ require('dotenv').config();
 const crypto = require('crypto')
 const conn = require('../database/database');
 const { Resend } = require('resend');
-
+const e = require('express');
+const bcrypt = require('bcrypt');
 
 // forget password send email
 routes.post('/forgot-password' , async (req , res) =>{ 
-    const email = req.body ; 
+    try{ 
+         const {email} = req.body ; 
 const resend = new Resend(process.env.RESEND_API_KEY)
-
-
-    
     if(!email){ 
          return res.status(400).json({mess : 'no email send '})
     }
     const sql ='SELECT * FROM register WHERE email = ? '
-      const response = await conn(sql , [email.gmail]) 
-           
-           if(!response.length === 0){
-            console.log('user not found');  
+      const response = await conn(sql , [email]) 
+           console.log(response);
+
+           if(response.length === 0){
+
+        console.log('user not found');  
              return res.status(401).json({ mess: 'no exixting gamil' })
               
-           }
-            //   process.env.CORS || `http://localhost:3000/forgot-gmail`     
+        }   
            const token = crypto.randomBytes(32).toString('hex')
-
-  
            
-           const resetLink = `${process.env.FRONTEND_URL || "http://localhost:3000"}/forgot-gmail?token=${token}`;
-            
-            
 
+           const expiresMinutes = 5;
+
+                const expires = new Date();
+                expires.setMinutes(expires.getMinutes() + expiresMinutes);
+
+
+            const result = await conn( "UPDATE register SET reset_token = ?, reset_token_expires = ? WHERE email = ? ;",[token, expires, email] );
+           const resetLink = `${process.env.CORS || "http://localhost:3000"}/forgot-gmail?token=${token}`;        
+
+        //    console.log(process.env.RESEND_API_KEY)
+        //    console.log(resetLink);
+           
                    const htmldesign = `
                 <!DOCTYPE html>
                 <html lang="en">
@@ -87,33 +94,145 @@ const resend = new Resend(process.env.RESEND_API_KEY)
                 </table>
 
                 </body>
-                </html>
+                 </html>
                   `;
+                  console.log(result);
+                  
        
            const {  data ,error } = await resend.emails.send({
             from : `onboarding@resend.dev`, 
             to : response[0].email, 
             subject : 'Reset Your Kumo Ramen password', 
             html : htmldesign,
-
-    
-
-            
            })
-             
-                console.log(data);
-                
 
+             setInterval(async () => {
+                    try {
+                        const result = await conn(`
+                            UPDATE register
+                            SET reset_token = NULL,
+                                reset_token_expires = NULL
+                            WHERE reset_token_expires < NOW()
+                        `);
+
+                        if (result.affectedRows > 0) {
+                            console.log(
+                                `Cleaned ${result.affectedRows} expired token(s)`
+                            );
+                        }
+
+                    } catch (error) {
+                        console.error('Token cleanup error:', error);
+                    }
+                }, 60 * 1000);
+      if (error) {
+            console.log('Resend error:', error);
+
+            return res.status(500).json({
+                mess: 'Failed to send email'
+            });
+        }
+
+        return res.status(200).json({
+            mess: 'Reset email sent successfully'
+        });
     
+    }catch(err){ 
+         console.error('Forgot password error:', error);
+
+        return res.status(500).json({
+            mess: 'Server error'
+        });
+    }
+   
 })
 
 
-// forger password and sent to data base with gmail and token
-// routes.post('/forgot-password2' , async (req , res) =>{
-//     console.log(req.body);
-     
+    
 
-// }) 
+// forger password and sent to data base with gmail and token
+
+
+
+// RESET PASSWORD
+routes.post('/forgot-password2', async (req, res) => {
+
+    try {
+
+        console.log(req.body);
+
+        const { token, newPassword } = req.body;
+
+
+        // Check if token and password were sent
+        if (!token || !newPassword) {
+            return res.status(400).json({
+                mess: 'Token and new password are required'
+            });
+        }
+
+
+        // Find token AND check if it is still valid
+        const response = await conn(
+            `SELECT id
+             FROM register
+             WHERE reset_token = ?
+             AND reset_token_expires > NOW()`,
+            [token]
+        );
+
+
+        console.log('Token result:', response);
+
+
+        // Token does not exist OR already expired
+        if (response.length === 0) {
+
+            return res.status(400).json({
+                mess: 'Invalid or expired token'
+            });
+
+        }
+
+
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+
+        // Update password
+        // Also delete the token so it can only be used once
+        const result = await conn(
+            `UPDATE register
+             SET password = ?,
+                 reset_token = NULL,
+                 reset_token_expires = NULL
+             WHERE id = ?`,
+            [hashedPassword, response[0].id]
+        );
+
+
+        console.log('Password update:', result);
+
+
+        return res.status(200).json({
+            mess: 'Password reset successfully'
+        });
+
+
+    } catch (error) {
+
+        console.error('Reset password error:', error);
+
+        return res.status(500).json({
+            mess: 'Server error'
+        });
+
+    }
+
+});
+
+
+
 
 module.exports =  routes
 

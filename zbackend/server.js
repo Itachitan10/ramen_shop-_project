@@ -43,7 +43,6 @@ app.use(session({
 
 
 
-
 const register = require('./routes/register')
 const login =require('./routes/login')
 const product= require('./api/procductname')

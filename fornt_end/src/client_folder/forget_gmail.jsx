@@ -5,7 +5,8 @@ import { sileo, Toaster } from "sileo";
 
 
 
-
+const parameter = new URLSearchParams(window.location.search)
+const TokenForUrl  = parameter.get('token')
 
 
 
@@ -13,18 +14,19 @@ export default function ResetPassword() {
 
 
 const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
-const parameter = new URLSearchParams(window.location.search)
-const TokenForUrl  = parameter.get('token')
+
 
   const [newpass , setnewpass] = useState('')
   const [confirmpass , setconfirr] = useState('')
   
 
-console.log(api_url);
+  
 
     const handle_submit = async () => {
         try {
 
+
+          
             // Check password fields
             if (!newpass || !confirmpass) {
 
@@ -38,11 +40,14 @@ console.log(api_url);
                 return;
             }
             if (newpass.length < 8) {
-                alert("Password must be at least 8 characters.");
+               sileo.warning({ title: "Password must be at least 8 characters." });
+
                 return;
             }
-            if (!token) {
-                alert("Invalid or missing reset token.");
+            if (!TokenForUrl) {
+              sileo.warning({ title: "Invalid or missing reset token.." });
+
+          
                 return;
             }
 
@@ -57,12 +62,12 @@ console.log(api_url);
                     token: TokenForUrl,
                     newPassword: newpass
                 })
+              
             });
 
             const data = await response.json();
 
             console.log(data);
-
             if (!response.ok) {
                 alert(data.mess || "Failed to reset password.");
                 return;
@@ -132,7 +137,7 @@ console.log(api_url);
               </label>
 
               <input value={newpass}
-                type="password"
+                
                 onChange={(e) => setnewpass(e.target.value)}
                 placeholder="Enter new password"
                 className="w-full border-2 border-[#2B2118] bg-[#FDF6E3] px-3 py-2.5 text-sm outline-none placeholder:text-[#9A8D7D] focus:border-[#D62828]"
@@ -145,7 +150,7 @@ console.log(api_url);
               <input
               value={confirmpass}
               onChange={(e) => setconfirr(e.target.value)}
-                type="password"
+                  bd
                 placeholder="Confirm new password"
                 className="w-full border-2 border-[#2B2118] bg-[#FDF6E3] px-3 py-2.5 text-sm outline-none placeholder:text-[#9A8D7D] focus:border-[#D62828]"
               />
