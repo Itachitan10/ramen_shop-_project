@@ -23,10 +23,7 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
   
 
     const handle_submit = async () => {
-        try {
-
-
-          
+        try {          
             // Check password fields
             if (!newpass || !confirmpass) {
 
@@ -46,9 +43,7 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
             }
             if (!TokenForUrl) {
               sileo.warning({ title: "Invalid or missing reset token.." });
-
-          
-                return;
+                return ;
             }
 
             const response = await fetch(`${api_url}/forgot-password2`, {
@@ -65,15 +60,20 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
               
             });
 
-            const data = await response.json();
 
-            console.log(data);
-            if (!response.ok) {
-                alert(data.mess || "Failed to reset password.");
-                return;
-            }
+              if (!response.ok) {
+                  if (response.status === 401 || response.status === 410) {
+                     sileo.warning()
+                     sileo.error({title: "Something went wrong", description: "Please try again later.",});
+                      window.location.href = "/forgot-password";
+                      return;
+                  }                
+              }
+           sileo.success({
+              title: "Password reset successful",
+              description: "You can now log in with your new password.",
+            });
 
-            alert("Password successfully changed!");
 
         } catch (error) {
             console.error("Reset password error:", error);

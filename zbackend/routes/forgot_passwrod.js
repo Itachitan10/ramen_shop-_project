@@ -29,9 +29,8 @@ const resend = new Resend(process.env.RESEND_API_KEY)
            
 
            const expiresMinutes = 5;
-
-                const expires = new Date();
-                expires.setMinutes(expires.getMinutes() + expiresMinutes);
+            const expires = new Date();
+            expires.setMinutes(expires.getMinutes() + expiresMinutes);
 
 
             const result = await conn( "UPDATE register SET reset_token = ?, reset_token_expires = ? WHERE email = ? ;",[token, expires, email] );
@@ -88,7 +87,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
                         </tr>
 
                         </table>
-
+    
                     </td>
                     </tr>
                 </table>
@@ -148,10 +147,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 })
 
 
-    
-
 // forger password and sent to data base with gmail and token
-
 
 
 // RESET PASSWORD
@@ -162,45 +158,26 @@ routes.post('/forgot-password2', async (req, res) => {
         console.log(req.body);
 
         const { token, newPassword } = req.body;
-
-
         // Check if token and password were sent
         if (!token || !newPassword) {
             return res.status(400).json({
                 mess: 'Token and new password are required'
             });
         }
-
-
         // Find token AND check if it is still valid
         const response = await conn(
-            `SELECT id
-             FROM register
-             WHERE reset_token = ?
-             AND reset_token_expires > NOW()`,
-            [token]
-        );
-
-
-        console.log('Token result:', response);
-
-
+            `SELECT id  FROM register WHERE reset_token = ?AND reset_token_expires > NOW()`,[token]);
         // Token does not exist OR already expired
         if (response.length === 0) {
-
             return res.status(400).json({
                 mess: 'Invalid or expired token'
             });
 
         }
 
-
-        // Hash the new password
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-
-        // Update password
-        // Also delete the token so it can only be used once
+    
         const result = await conn(
             `UPDATE register
              SET password = ?,
@@ -222,7 +199,6 @@ routes.post('/forgot-password2', async (req, res) => {
     } catch (error) {
 
         console.error('Reset password error:', error);
-
         return res.status(500).json({
             mess: 'Server error'
         });
