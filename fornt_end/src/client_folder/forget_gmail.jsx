@@ -62,12 +62,14 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
 
               if (!response.ok) {
-                  if (response.status === 401 || response.status === 410) {
-                     sileo.warning()
-                     sileo.error({title: "Something went wrong", description: "Please try again later.",});
-                      window.location.href = "/forgot-password";
-                      return;
-                  }                
+                if (response.status === 400) {
+                  sileo.error({
+                    title: "Invalid or expired token",
+                    description: data.mess || "Please request a new reset link.",
+                  });
+                  return;
+                }
+                            
               }
            sileo.success({
               title: "Password reset successful",

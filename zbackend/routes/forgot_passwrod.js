@@ -129,7 +129,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
             mess: 'Reset email sent successfully'
         });
     
-    }catch(err){ 
+    }catch(error){ 
          console.error('Forgot password error:', error);
 
         return res.status(500).json({
