@@ -2,16 +2,16 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
 import { sileo, Toaster } from "sileo";
-
-
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 
 
 export default function Login() {
   const [info, set_info] = useState({email: ""  ,password : "" , remember : false })
   const [loading, set_loading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false);
-
+  const [showpass , setshowpass ] = useState(false)
+  console.log(showpass);
+  
   
   const handechange_email= (e)=>{ 
     e.preventDefault()
@@ -88,157 +88,151 @@ else{
 
 };
 
+ 
+return (
+  <div className="min-h-screen bg-[#F7F1E5] text-[#2B2118]">
+    {/* NAVBAR */}
+    <nav className="h-16 flex items-center justify-between px-5 md:px-10 bg-[#FFFDF7] border-b-2 border-[#2B2118]">
+      <Link to="/" className="text-xl font-black">
+        KUMO <span className="text-[#D62828]">RAMEN</span>
+      </Link>
 
+      <Link
+        to="/register"
+        className="text-sm font-bold hover:text-[#D62828] transition"
+      >
+        Create Account →
+      </Link>
+    </nav>
 
+    <Toaster position="center" />
 
-
-
-
-  return (
-    <div className="min-h-screen bg-[#f7f1e5] text-[#211b16]">
-
-      {/* NAVBAR */}
-      <nav className="h-[74px] bg-[#fffdf8] border-b-[3px] border-dashed border-[#211b16] flex items-center justify-between px-5 md:px-12">
-        <Link to="/" className="font-display font-extrabold text-[22px]">
-          KUMO <span className="text-[#d62828]">RAMEN</span>
-        </Link>
-       
-
-        <Link to="/register" className="font-bold text-sm hover:text-[#d62828] transition">
-          Create Account →
-        </Link>
-      </nav>
-       <Toaster position="center"  />
-      
-      {/* BACKGROUND */}
-      <main className="min-h-[calc(100vh-74px)] flex items-center justify-center px-5 py-14 bg-[repeating-linear-gradient(-45deg,#ffc72c_0px,#ffc72c_40px,#ffd35c_40px,#ffd35c_80px)]">  
-        {/* CARD */}
-        <section className="relative w-full max-w-[440px] bg-[#fffdf8] border-[4px] border-[#211b16] rounded-2xl p-7 sm:p-10 shadow-[10px_10px_0_#211b16]">
-
-          {/* BADGE */}
-          <div className="absolute -top-4 right-6 bg-[#ffc72c] border-[2px] border-[#211b16] px-3 py-1.5 rounded rotate-3 shadow-[3px_3px_0_#211b16]">
-            <span className="font-mono text-[9px] font-bold">
-              WELCOME BACK 🍜
-            </span>
-          </div>
-
-          {/* ICON */}
-          <div className="w-16 h-16 bg-[#211b16] rounded-xl flex items-center justify-center text-3xl mb-5">
+    {/* LOGIN CARD */}
+    <main className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-8">
+      <section className="w-full max-w-sm rounded-xl border-2 border-[#2B2118] bg-[#FFFDF7] p-6 shadow-[5px_5px_0_#2B2118]">
+        {/* LOGO */}
+        <div className="flex items-center gap-3 mb-5">
+          <div className="flex h-11 w-11 items-center justify-center rounded-lg border-2 border-[#2B2118] bg-[#FFC72C] text-2xl">
             🍜
           </div>
+          <div>
+            <p className="font-black tracking-widest">KUMO</p>
+            <p className="text-[10px] font-bold tracking-[0.2em] text-[#D62828]">
+              RAMEN SHOP
+            </p>
+          </div>
+        </div>
 
-          {/* EYEBROW */}
-          <div className="inline-block bg-[#211b16] text-[#ffc72c] px-3 py-1.5 rounded mb-4 rotate-[-2deg]">
-            <span className="font-mono text-[9px] font-bold">
-              KUMO RAMEN ACCOUNT
-            </span>
+        <h1 className="text-3xl font-black tracking-tight">
+          Welcome <span className="text-[#D62828]">back.</span>
+        </h1>
+
+        <p className="mt-2 mb-5 text-sm leading-5 text-[#766B5E]">
+          Sign in to order your favorite ramen.
+        </p>
+
+        <form onSubmit={handle_submit}>
+          {/* EMAIL */}
+          <div className="mb-4">
+            <label className="mb-1.5 block text-xs font-bold">
+              Email address
+            </label>
+
+            <input
+              placeholder="you@email.com"
+              onChange={handechange_email}
+              type="email"
+              name="email"
+              required
+              className="w-full rounded-lg border-2 border-[#2B2118] bg-[#F7F1E5] px-3 py-2.5 text-sm outline-none transition focus:border-[#168AAD] focus:bg-white"
+            />
           </div>
 
-          <h1 className="font-display font-extrabold text-[40px] leading-[.95] tracking-[-2px]">
-            WELCOME
-            <br />
-            <span className="text-[#d62828]">BACK.</span>
-          </h1>
+          {/* PASSWORD */}
+          <div className="mb-3">
+            <label className="mb-1.5 block text-xs font-bold">
+              Password
+            </label>
 
-          <p className="text-[#766b5e] text-sm leading-6 mt-3 mb-7">
-            Sign in to order your favorite bowl, track deliveries, and get member deals.
-          </p>
-
-          {/* FORM */}
-          <form  onSubmit={handle_submit} >
-
-            {/* EMAIL */}
-            <div className="mb-5">
-              <label className="block font-mono text-[10px] font-bold uppercase text-[#766b5e] mb-2">
-                Email Address
-              </label>
-
+            <div className="relative">
               <input
-                placeholder="you@email.com"
-                onChange={handechange_email}
-                type="email"
-               name='email'
+                type={showpass ? 'password' : 'text'}
+                name="password"
                 required
-                className="w-full p-3.5 bg-[#f7f1e5] border-2 border-[#211b16] rounded-lg outline-none transition focus:bg-white focus:border-[#168aad] focus:shadow-[4px_4px_0_#211b16]"
+                className="w-full rounded-lg border-2 border-[#2B2118] bg-[#F7F1E5] px-3 py-2.5 pr-14 text-sm outline-none transition focus:border-[#168AAD] focus:bg-white"
               />
+
+              <button
+              type="button"
+              onClick={() =>setshowpass(!showpass)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-[#766B5E] hover:text-[#D62828]"
+              >
+                {showpass ? <FaEyeSlash /> : <FaEye />}
+            
+              </button>
             </div>
-
-            {/* PASSWORD */}
-            <div className="mb-4">
-              <label className="block font-mono text-[10px] font-bold uppercase text-[#766b5e] mb-2">
-                Password
-              </label>
-
-              <div className="relative">
-          
-                <input
-                onChange={handechange_password}
-                  name="password"
-                  required
-                  className="w-full p-3.5 pr-12 bg-[#f7f1e5] border-2 border-[#211b16] rounded-lg outline-none transition focus:bg-white focus:border-[#168aad] focus:shadow-[4px_4px_0_#211b16]"
-                />
-
-                <button required
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 hover:bg-[#ffc72c] rounded"
-                >
-                </button>
-              </div>
-            </div>
-
-            {/* OPTIONS */}
-            <div className="flex justify-between items-center mb-6 text-xs">
-              <label className="flex items-center gap-2 text-[#766b5e]">
-              <input type="checkbox" checked={info.remember} name='remember' onChange={handelechange_checkbox}/>
-              </label>
-
-              <Link to= "/forgot-password" className="text-[#d62828] font-bold hover:underline">
-                Forgot password?
-              </Link>
-            </div>
-
-            {/* LOGIN */}
-            <button
-              type="submit"  disabled={loading}
-              className="w-full bg-[#d62828] text-white border-[3px] border-[#211b16] rounded-lg py-3.5 font-extrabold shadow-[6px_6px_0_#211b16] transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0_#211b16] active:translate-x-1 active:translate-y-1 active:shadow-[2px_2px_0_#211b16]"
-            >
-              {loading ? "Loading..." : "Login"}
-            </button>
-
-          </form>
-
-          {/* DIVIDER */}
-          <div className="flex items-center gap-3 my-7 text-[#766b5e] text-xs font-bold">
-            <div className="flex-1 border-t-2 border-dashed border-[#d0c5b5]" />
-            OR
-            <div className="flex-1 border-t-2 border-dashed border-[#d0c5b5]" />
           </div>
 
-          {/* GOOGLE */}
-          <button 
-          
-          
-            type="button"
-            className="w-full bg-white border-2 border-[#211b16] rounded-lg py-3 font-bold text-sm hover:bg-[#168aad] hover:text-white transition"
-          >
-            <span className="mr-2">G</span>
-            Continue with Google
-          </button>
+          {/* OPTIONS */}
+          <div className="mb-5 flex items-center justify-between gap-2 text-xs">
+            <label className="flex cursor-pointer items-center gap-2 text-[#766B5E]">
+              <input
+                type="checkbox"
+                checked={info.remember}
+                name="remember"
+                onChange={handelechange_checkbox}
+                className="h-4 w-4 cursor-pointer accent-[#D62828]"
+/>
+              Remember me
+            </label>
 
-          {/* REGISTER */}
-          <p className="text-center text-sm text-[#766b5e] mt-7">
-            Don't have an account?{" "}
             <Link
-              to="/register"
-              className="text-[#d62828] font-bold hover:underline"
+              to="/forgot-password"
+              className="font-bold text-[#D62828] hover:underline"
             >
-              Create one
+              Forgot password?
             </Link>
-          </p>
+          </div>
 
-        </section>
-      </main>
-    </div>
-  );
+          {/* LOGIN */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-lg border-2 border-[#2B2118] bg-[#D62828] py-3 text-sm font-extrabold text-white shadow-[3px_3px_0_#2B2118] transition hover:translate-y-0.5 hover:shadow-[1px_1px_0_#2B2118] disabled:opacity-60"
+          >
+            {loading ? "Loading..." : "Login"}
+          </button>
+        </form>
+
+        {/* DIVIDER */}
+        <div className="my-5 flex items-center gap-3 text-xs text-[#766B5E]">
+          <div className="h-px flex-1 bg-[#D0C5B5]" />
+          OR
+          <div className="h-px flex-1 bg-[#D0C5B5]" />
+        </div>
+
+        {/* GOOGLE */}
+        <button
+          type="button"
+          className="w-full rounded-lg border-2 border-[#2B2118] bg-white py-2.5 text-sm font-bold transition hover:bg-[#168AAD] hover:text-white"
+        >
+          <span className="mr-2">G</span>
+          Continue with Google
+        </button>
+
+        {/* REGISTER */}
+        <p className="mt-5 text-center text-xs text-[#766B5E]">
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            className="font-bold text-[#D62828] hover:underline"
+          >
+            Create one
+          </Link>
+        </p>
+      </section>
+    </main>
+  </div>
+);
+
 }
