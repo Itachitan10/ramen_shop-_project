@@ -105,25 +105,18 @@ const resend = new Resend(process.env.RESEND_API_KEY)
             html : htmldesign,
            })
 
-             setInterval(async () => {
-                    try {
-                        const result = await conn(`
-                            UPDATE register
-                            SET reset_token = NULL,
-                                reset_token_expires = NULL
-                            WHERE reset_token_expires < NOW()
-                        `);
+             if (new Date(tokenExpires) < new Date()) {
+                    await conn(`
+                        UPDATE register
+                        SET reset_token = NULL,
+                            reset_token_expires = NULL
+                        WHERE reset_token = ?
+                    `, [token]);
 
-                        if (result.affectedRows > 0) {
-                            console.log(
-                                `Cleaned ${result.affectedRows} expired token(s)`
-                            );
-                        }
-
-                    } catch (error) {
-                        console.error('Token cleanup error:', error);
-                    }
-                }, 60 * 1000);
+                    return res.status(400).json({
+                        message: "Reset link has expired. Please request a new one."
+                    });
+                }
       if (error) {
             console.log('Resend error:', error);
 
@@ -166,7 +159,7 @@ routes.post('/forgot-password2', async (req, res) => {
         }
         // Find token AND check if it is still valid
         const response = await conn(
-            `SELECT id  FROM register WHERE reset_token = ?AND reset_token_expires > NOW()`,[token]);
+            `SELECT id FROM register WHERE reset_token = ? AND reset_token_expires > NOW()`,[token]);
         // Token does not exist OR already expired
         if (response.length === 0) {
             return res.status(400).json({
@@ -174,6 +167,7 @@ routes.post('/forgot-password2', async (req, res) => {
             });
 
         }
+
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 

@@ -7,11 +7,12 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 
 export default function Login() {
-  const [info, set_info] = useState({email: ""  ,password : "" , remember : false })
+  const [info, set_info] = useState({email: ""  ,password : ""  })
   const [loading, set_loading] = useState(false)
   const [showpass , setshowpass ] = useState(false)
-  console.log(showpass);
+  const [remember , setremeber ]= useState(false)
   
+;
   
   const handechange_email= (e)=>{ 
     e.preventDefault()
@@ -50,6 +51,7 @@ const handle_submit = async (e) => {
     body: JSON.stringify({
       email: info.email,
       password: info.password,
+      remember : remember
     }),
   
   }).then(async(response) => {
@@ -177,12 +179,10 @@ return (
           <div className="mb-5 flex items-center justify-between gap-2 text-xs">
             <label className="flex cursor-pointer items-center gap-2 text-[#766B5E]">
               <input
-                type="checkbox"
-                checked={info.remember}
-                name="remember"
-                onChange={handelechange_checkbox}
-                className="h-4 w-4 cursor-pointer accent-[#D62828]"
-/>
+              value={remeber}
+              type="checkbox"
+              onClick={(e) => setremeber(true)}
+                className="h-4 w-4 cursor-pointer accent-[#D62828]"/>
               Remember me
             </label>
 

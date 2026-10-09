@@ -6,9 +6,9 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config();
 
 router.post('/login', async (req, res) => {
-    const {email , password} = req.body
+    const {email , password , remember} = req.body
 
-    console.log(email , password);
+  
     
    if(!email || !password){ 
     res.status(400) .json({mess: 'please check your eamil or your password'})
@@ -36,7 +36,7 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign(
           {userid : user.id},
           process.env.JWT_SECRET,
-          {expiresIn : '1h'}
+          {expiresIn : remember ? 30 : 7}
         )
         
           res.json({token , email :user.email , name : user.name })
