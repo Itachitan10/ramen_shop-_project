@@ -158,6 +158,7 @@ return (
 
             <div className="relative">
               <input
+                onChange={handechange_password}
                 type={showpass ? 'password' : 'text'}
                 name="password"
                 required

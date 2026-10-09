@@ -8,6 +8,7 @@ require('dotenv').config();
 router.post('/login', async (req, res) => {
     const {email , password , remember} = req.body
 
+  console.log( password );
   
     
    if(!email || !password){ 
