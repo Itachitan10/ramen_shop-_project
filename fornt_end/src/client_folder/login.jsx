@@ -11,7 +11,7 @@ export default function Login() {
   const [loading, set_loading] = useState(false)
   const [showpass , setshowpass ] = useState(false)
   const [remember , setremeber ]= useState(false)
-  
+
 ;
   
   const handechange_email= (e)=>{ 
@@ -179,7 +179,7 @@ return (
           <div className="mb-5 flex items-center justify-between gap-2 text-xs">
             <label className="flex cursor-pointer items-center gap-2 text-[#766B5E]">
               <input
-              value={remeber}
+              value={remember}
               type="checkbox"
               onClick={(e) => setremeber(true)}
                 className="h-4 w-4 cursor-pointer accent-[#D62828]"/>
