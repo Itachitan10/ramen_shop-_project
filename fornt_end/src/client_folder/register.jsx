@@ -52,7 +52,7 @@ return (
         KUMO <span className="text-[#D62828]">RAMEN</span>
       </Link>
 
-      <div className="rounded-2xl border border-[#E5DCCB] bg-[#FFFDF7] p-5 shadow-[0_8px_30px_rgba(43,33,24,0.07)] sm:p-7">
+     <div className="rounded-2xl border-[2px] border-[#2B2118] bg-[#FFFDF7] p-5 shadow-[6px_6px_0_#2B2118] sm:p-7">
         <div className="mb-5">
           <span className="text-xs font-bold uppercase tracking-[2px] text-[#D62828]">
             Join the bowl club
