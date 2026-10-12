@@ -22,8 +22,9 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
   
 
+
     const handle_submit = async () => {
-      sileo.loading({ title: "Loading..." })
+     
 
         try {          
             // Check password fields
@@ -62,12 +63,15 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
               
             });
 
+             sileo.loading({ title: "Resetting password..." });
+
+
 
               if (!response.ok) {
                 if (response.status === 400) {
                   sileo.error({
                     title: "Invalid or expired token",
-                    description: data.mess || "Please request a new reset link.",
+                    description: response.mess || "Please request a new reset link.",
                   });
                   return;
                 }
