@@ -39,7 +39,7 @@ export default function Register() {
   }
 return (
   <div className="min-h-screen bg-[#F7F1E5] flex items-center justify-center px-4 py-8">
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-sm">
       <Toggle identify={identify} />
 
       <Link
