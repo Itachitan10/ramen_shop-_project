@@ -37,156 +37,165 @@ export default function Register() {
     throw new Error(data.message  || "Registration failed");
    }
   }
-  return (
-    <div className="min-h-screen bg-[#ffc72c] flex items-center justify-center p-5">
-      <div className="w-full max-w-[500px]">
+return (
+  <div className="min-h-screen bg-[#F7F1E5] flex items-center justify-center px-4 py-8">
+    <div className="w-full max-w-md">
+      <Toggle identify={identify} />
 
-        <Toggle identify={identify} />
+      <Link
+        to="/"
+        className="mb-5 flex items-center justify-center gap-2 text-xl font-black tracking-tight text-[#2B2118]"
+      >
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#D62828] text-lg">
+          🍜
+        </span>
+        KUMO <span className="text-[#D62828]">RAMEN</span>
+      </Link>
 
-        <Link to="/"   className="block text-center text-3xl font-black tracking-[-2px] text-[#211b16] mb-8" >
-          KUMO <span className="text-[#d62828]">RAMEN</span>
-        </Link>
-        
+      <div className="rounded-2xl border border-[#E5DCCB] bg-[#FFFDF7] p-5 shadow-[0_8px_30px_rgba(43,33,24,0.07)] sm:p-7">
+        <div className="mb-5">
+          <span className="text-xs font-bold uppercase tracking-[2px] text-[#D62828]">
+            Join the bowl club
+          </span>
 
-        <div className="relative bg-[#fffdf8] border-[4px] border-[#211b16] rounded-2xl p-8 shadow-[8px_8px_0_#211b16]">
-          <span className="absolute -top-4 right-6 bg-[#ffc72c] border-2 border-[#211b16] px-3 py-1 rounded font-mono text-xs font-bold rotate-3">  NEW 🍜 </span>
-
-          <span className="inline-block bg-[#211b16] text-[#ffc72c] px-3 py-1.5 rounded font-mono text-xs font-bold -rotate-2 mb-4"> JOIN THE BOWL CLUB </span>
-
-          <h1 className="text-4xl font-black leading-none tracking-[-2px]">MAKE AN  <br />  ACCOUNT,{" "}
-            <span className="text-[#d62828]">  EAT FAST.  </span>
+          <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-[#2B2118]">
+            Create your account
           </h1>
 
-          <p className="text-[#766b5e] text-sm mt-3 mb-7">
-            Save your address, track orders, and get member-only deals.
+          <p className="mt-1 text-sm text-[#766B5E]">
+            Sign up to enjoy your favorite ramen.
           </p>
-
-          <form  onSubmit={handle_submit} className="space-y-5">
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-              <div>
-                <label className="block font-mono text-xs font-bold uppercase mb-2">
-                  First name
-                </label>
-
-                <input value={first_name} onChange={(e) => set_first(e.target.value)}
-                type="text"
-                  placeholder="Juan"
-                  className="w-full bg-[#f7f1e5] border-2 border-[#211b16] rounded-lg px-4 py-3 outline-none focus:bg-white focus:border-[#168aad]"
-                />
-              </div>
-
-              <div>
-                <label className="block font-mono text-xs font-bold uppercase mb-2">
-                  Last name
-                </label>
-
-                <input value={last_name} onChange={(e)=> set_last(e.target.value)}
-                  type="text"
-                  placeholder="Dela Cruz"
-                  className="w-full bg-[#f7f1e5] border-2 border-[#211b16] rounded-lg px-4 py-3 outline-none focus:bg-white focus:border-[#168aad]"
-                />
-              </div>
-
-            </div>
-
-            <div>
-              <label className="block font-mono text-xs font-bold uppercase mb-2">
-                Email
-              </label>
-
-              <input value={email} onChange={(e) => set_email(e.target.value)}
-                type="email"
-                placeholder="you@email.com"
-                className="w-full bg-[#f7f1e5] border-2 border-[#211b16] rounded-lg px-4 py-3 outline-none focus:bg-white focus:border-[#168aad]"
-              />
-            </div>
-
-            <div>
-              <label className="block font-mono text-xs font-bold uppercase mb-2">
-                Mobile number
-              </label>
-
-              <input value={mobile} onChange={(e) =>set_mobile(e.target.value)}
-                type="numberda"
-                placeholder="09XX XXX XXXX"
-                className="w-full bg-[#f7f1e5] border-2 border-[#211b16] rounded-lg px-4 py-3 outline-none focus:bg-white focus:border-[#168aad]"
-              />
-            </div>
-
-            <div>
-              <label className="block font-mono text-xs font-bold uppercase mb-2">
-                Password
-              </label>
-
-              <input value={password } onChange={(e) =>setpass(e.target.value)}
-                type="password"
-                placeholder="••••••••"
-                className="w-full bg-[#f7f1e5] border-2 border-[#211b16] rounded-lg px-4 py-3 outline-none focus:bg-white focus:border-[#168aad]"
-              />
-
-              <div className="flex gap-1 mt-2">
-                <span className="flex-1 h-1 bg-[#d62828] rounded" />
-                <span className="flex-1 h-1 bg-[#d62828] rounded" />
-                <span className="flex-1 h-1 bg-[#e8e0cf] rounded" />
-                <span className="flex-1 h-1 bg-[#e8e0cf] rounded" />
-              </div>
-
-              <p className="text-xs text-[#766b5e] mt-2">
-                At least 8 characters, with a number.
-              </p>
-            </div>
-
-            <label className="flex gap-3 text-sm text-[#766b5e]">
-              <input type="checkbox" className="mt-1 accent-[#d62828]" />
-              <span>
-                I agree to the{" "}
-                <a className="text-[#168aad] font-bold">
-                  Terms of Service
-                </a>{" "}
-                and{" "}
-                <a className="text-[#168aad] font-bold">
-                  Privacy Policy
-                </a>
-                .
-              </span>
-            </label>
-
-            <button 
-              type="submit"
-              className="w-full bg-[#d62828] text-white border-[3px] border-[#211b16] py-3.5 rounded-lg font-black shadow-[5px_5px_0_#211b16] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0_#211b16] transition"
-            >
-              CREATE ACCOUNT →
-            </button>
-
-          </form>
-
-          <div className="flex items-center gap-3 my-7 text-xs font-bold text-[#766b5e]">
-            <div className="flex-1 border-t-2 border-dashed border-[#cfc4b0]" />
-            OR
-            <div className="flex-1 border-t-2 border-dashed border-[#cfc4b0]" />
-          </div>
-
-          <button onClick={ () =>{ 
-             window.location.href ="http://localhost:4000/auth/google"
-          }} className="w-full border-2 border-[#211b16] py-3 rounded-lg font-bold hover:bg-[#168aad] hover:text-white hover:border-[#168aad] transition">
-            🌐 Sign up with Google
-          </button>
-
-          <p className="text-center text-sm text-[#766b5e] mt-7">
-            Already have an account?{" "}
-            <Link
-              to="/"
-              className="text-[#d62828] font-bold hover:underline"
-            >
-              Log in
-            </Link>
-          </p>
-
         </div>
 
+        <form onSubmit={handle_submit} className="space-y-3.5">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold text-[#2B2118]">
+                First name
+              </label>
+              <input
+                value={first_name}
+                onChange={(e) => set_first(e.target.value)}
+                type="text"
+                placeholder="Juan"
+                className="w-full rounded-lg border border-[#E5DCCB] bg-white px-3 py-2.5 text-sm text-[#2B2118] outline-none transition focus:border-[#D62828] focus:ring-2 focus:ring-[#D62828]/10"
+              />
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold text-[#2B2118]">
+                Last name
+              </label>
+              <input
+                value={last_name}
+                onChange={(e) => set_last(e.target.value)}
+                type="text"
+                placeholder="Dela Cruz"
+                className="w-full rounded-lg border border-[#E5DCCB] bg-white px-3 py-2.5 text-sm text-[#2B2118] outline-none transition focus:border-[#D62828] focus:ring-2 focus:ring-[#D62828]/10"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-xs font-semibold text-[#2B2118]">
+              Email address
+            </label>
+            <input
+              value={email}
+              onChange={(e) => set_email(e.target.value)}
+              type="email"
+              placeholder="you@email.com"
+              className="w-full rounded-lg border border-[#E5DCCB] bg-white px-3 py-2.5 text-sm text-[#2B2118] outline-none transition focus:border-[#D62828] focus:ring-2 focus:ring-[#D62828]/10"
+            />
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-xs font-semibold text-[#2B2118]">
+              Mobile number
+            </label>
+            <input
+              value={mobile}
+              onChange={(e) => set_mobile(e.target.value)}
+              type="tel"
+              placeholder="09XX XXX XXXX"
+              className="w-full rounded-lg border border-[#E5DCCB] bg-white px-3 py-2.5 text-sm text-[#2B2118] outline-none transition focus:border-[#D62828] focus:ring-2 focus:ring-[#D62828]/10"
+            />
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-xs font-semibold text-[#2B2118]">
+              Password
+            </label>
+            <input
+              value={password}
+              onChange={(e) => setpass(e.target.value)}
+              type="password"
+              placeholder="Enter your password"
+              className="w-full rounded-lg border border-[#E5DCCB] bg-white px-3 py-2.5 text-sm text-[#2B2118] outline-none transition focus:border-[#D62828] focus:ring-2 focus:ring-[#D62828]/10"
+            />
+
+            <p className="mt-1.5 text-xs text-[#766B5E]">
+              Use at least 8 characters and include a number.
+            </p>
+          </div>
+
+          <label className="flex cursor-pointer items-start gap-2 pt-1 text-xs leading-5 text-[#766B5E]">
+            <input
+              type="checkbox"
+              className="mt-1 accent-[#D62828]"
+            />
+            <span>
+              I agree to the{" "}
+              <a href="/terms" className="font-semibold text-[#D62828] hover:underline">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a href="/privacy" className="font-semibold text-[#D62828] hover:underline">
+                Privacy Policy
+              </a>.
+            </span>
+          </label>
+
+          <button
+            type="submit"
+            className="w-full rounded-lg bg-[#D62828] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#B91F24] active:scale-[0.99]"
+          >
+            Create account <span className="ml-1">→</span>
+          </button>
+        </form>
+
+        <div className="my-4 flex items-center gap-3">
+          <div className="h-px flex-1 bg-[#E5DCCB]" />
+          <span className="text-xs text-[#A49A89]">OR</span>
+          <div className="h-px flex-1 bg-[#E5DCCB]" />
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            window.location.href = `${api_url}/auth/google`;
+          }}
+          className="w-full rounded-lg border border-[#E5DCCB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2B2118] transition hover:border-[#168AAD] hover:bg-[#168AAD]/5"
+        >
+          🌐 Sign up with Google
+        </button>
+
+        <p className="mt-5 text-center text-sm text-[#766B5E]">
+          Already have an account?{" "}
+          <Link
+            to="/"
+            className="font-bold text-[#D62828] hover:underline"
+          >
+            Log in
+          </Link>
+        </p>
       </div>
+
+      <p className="mt-4 text-center text-xs text-[#A49A89]">
+        Made with ❤️ for ramen lovers.
+      </p>
     </div>
-  );
+  </div>
+);
+
 }

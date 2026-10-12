@@ -96,8 +96,6 @@ const resend = new Resend(process.env.RESEND_API_KEY)
                  </html>
                   `;
                   console.log(result);
-                  
-       
            const {  data ,error } = await resend.emails.send({
             from : `onboarding@resend.dev`, 
             to : response[0].email, 
@@ -145,11 +143,8 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 // RESET PASSWORD
 routes.post('/forgot-password2', async (req, res) => {
-
     try {
-
         console.log(req.body);
-
         const { token, newPassword } = req.body;
         // Check if token and password were sent
         if (!token || !newPassword) {
@@ -171,7 +166,6 @@ routes.post('/forgot-password2', async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    
         const result = await conn(
             `UPDATE register
              SET password = ?,

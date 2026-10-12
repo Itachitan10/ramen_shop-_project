@@ -23,6 +23,8 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
   
 
     const handle_submit = async () => {
+      sileo.loading ({ title: "Loading..." })
+
         try {          
             // Check password fields
             if (!newpass || !confirmpass) {
