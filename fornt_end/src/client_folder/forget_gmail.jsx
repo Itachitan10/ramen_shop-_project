@@ -1,5 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { useState , useEffect} from "react";
+import { data } from "react-router-dom";
 import { sileo, Toaster } from "sileo";
 
 
@@ -21,9 +22,9 @@ console.log(newpass ,confirmpass);
 
 
     const handle_submit = async () => {
-     
-
-        try {          
+        
+          
+  
             // Check password fields
             if (!newpass || !confirmpass) {
 
@@ -45,8 +46,8 @@ console.log(newpass ,confirmpass);
               sileo.warning({ title: "Invalid or missing reset token.." });
                 return ;
             }
-           sileo.loading({ title: "Resetting password..." });
-            const response = await fetch(`${api_url}/forgot-password2`, {
+          
+            const response =  fetch(`${api_url}/forgot-password2`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -56,32 +57,28 @@ console.log(newpass ,confirmpass);
                     newPassword: newpass
                 })
               
-            });
-           const data = await response.json();
-            if (!response.ok) {
-              sileo.error({
-                 title: "Password reset failed",
-                description: data.mess || "Please try again later.",
-              });
-
-              return;
-            }
-            sileo.success({
-              title: "Password reset successful",
-              description: "You can now log in with your new password.",
-            });
-            
-            setInterval(() => {
-              window.location.reload()
-            }, 5000);
-
-
-        } catch (error) {
-             sileo.error({
-              title: "Something went wrong",
-              description: "Please try again later."
-            });
-        }
+            }).then((response)=>{ 
+              data = response.json()
+               if (!response.ok) {
+            throw new Error(data.mess || "Password reset failed.");
+                 }
+                 return data
+            })
+            sileo.promise(response, {
+            loading: { title: "Loading..." },
+            success: { title: "Done!" },
+            error: { title: "Failed" },
+          })
+            try {
+        await promise;
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 3000);
+          } catch (error) {
+              console.error("Reset password error:", error);
+          }
+          
+     
     };
 
 
