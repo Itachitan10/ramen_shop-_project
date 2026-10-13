@@ -5,20 +5,14 @@ import { sileo, Toaster } from "sileo";
 
 
 
-const parameter = new URLSearchParams(window.location.search)
-const TokenForUrl  = parameter.get('token')
-
-
-
 export default function ResetPassword() {
-
-
+const params = new URLSearchParams(window.location.search);
+const TokenForUrl = params.get("token");
 const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
-
-
   const [newpass , setnewpass] = useState('')
   const [confirmpass , setconfirr] = useState('')
   
+console.log(TokenForUrl);
 
   
 

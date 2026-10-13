@@ -6,7 +6,6 @@ const conn = require('../database/database');
 const { Resend } = require('resend');
 const e = require('express');
 const bcrypt = require('bcrypt');
-
 // forget password send email
 routes.post('/forgot-password' , async (req , res) =>{ 
     try{ 
@@ -95,7 +94,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
                 </body>
                  </html>
                   `;
-                  console.log(result);
+        console.log(result);
            const {  data ,error } = await resend.emails.send({
             from : `onboarding@resend.dev`, 
             to : response[0].email, 
@@ -103,18 +102,6 @@ const resend = new Resend(process.env.RESEND_API_KEY)
             html : htmldesign,
            })
 
-             if (new Date(tokenExpires) < new Date()) {
-                    await conn(`
-                        UPDATE register
-                        SET reset_token = NULL,
-                            reset_token_expires = NULL
-                        WHERE reset_token = ?
-                    `, [token]);
-
-                    return res.status(400).json({
-                        message: "Reset link has expired. Please request a new one."
-                    });
-                }
       if (error) {
             console.log('Resend error:', error);
 
@@ -136,7 +123,6 @@ const resend = new Resend(process.env.RESEND_API_KEY)
     }
    
 })
-
 
 // forger password and sent to data base with gmail and token
 
