@@ -1,6 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { useState , useEffect} from "react";
-import { data } from "react-router-dom";
+
 import { sileo, Toaster } from "sileo";
 
 
