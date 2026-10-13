@@ -14,6 +14,9 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
   
 console.log(TokenForUrl);
 
+console.log(newpass ,confirmpass);
+
+
   
 
 
@@ -149,10 +152,7 @@ console.log(TokenForUrl);
 
               <input
               value={confirmpass}
-              onChange={(e) => setconfirr(e.target.value)}
-                  bd
-                placeholder="Confirm new password"
-                className="w-full border-2 border-[#2B2118] bg-[#FDF6E3] px-3 py-2.5 text-sm outline-none placeholder:text-[#9A8D7D] focus:border-[#D62828]"
+              onChange={(e) => setconfirr(e.target.value)}   placeholder="Confirm new password" className="w-full border-2 border-[#2B2118] bg-[#FDF6E3] px-3 py-2.5 text-sm outline-none placeholder:text-[#9A8D7D] focus:border-[#D62828]"
               />
 
               <button onClick={handle_submit}
