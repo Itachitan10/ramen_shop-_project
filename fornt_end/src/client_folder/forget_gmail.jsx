@@ -46,7 +46,7 @@ console.log(newpass ,confirmpass);
                 return ;
             }
           
-            const response =  fetch(`${api_url}/forgot-password2`, {
+            const  promise =  fetch(`${api_url}/forgot-password2`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -57,7 +57,7 @@ console.log(newpass ,confirmpass);
                 })
               
             }).then(async(response)=>{ 
-              data = response.json()
+             const data = await response.json();
                if (!response.ok) {
             throw new Error(data.mess || "Password reset failed.");
                  }
