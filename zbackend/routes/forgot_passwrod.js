@@ -144,17 +144,16 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 // RESET PASSWORD
 routes.post('/forgot-password2', async (req, res) => {
     try {
-        console.log(req.body);
+      
         const { token, newPassword } = req.body;
         // Check if token and password were sent
         if (!token || !newPassword) {
             return res.status(400).json({
-                mess: 'Token and new password are required'
+              mess: 'Please provide your reset token and new password.'
             });
         }
         // Find token AND check if it is still valid
-        const response = await conn(
-            `SELECT id FROM register WHERE reset_token = ? AND reset_token_expires > NOW()`,[token]);
+        const response = await conn( `SELECT id FROM register WHERE reset_token = ? AND reset_token_expires > NOW()`,[token]);
         // Token does not exist OR already expired
         if (response.length === 0) {
             return res.status(400).json({
@@ -163,16 +162,11 @@ routes.post('/forgot-password2', async (req, res) => {
 
         }
 
+        
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-        const result = await conn(
-            `UPDATE register
-             SET password = ?,
-                 reset_token = NULL,
-                 reset_token_expires = NULL
-             WHERE id = ?`,
-            [hashedPassword, response[0].id]
+        const result = await conn( `UPDATE register SET password = ?,  reset_token = NULL,reset_token_expires = NULL WHERE id = ?`, [hashedPassword, response[0].id]
         );
 
 

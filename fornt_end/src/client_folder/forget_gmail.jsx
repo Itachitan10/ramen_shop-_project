@@ -37,7 +37,7 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
             if (newpass !== confirmpass) {
               sileo.warning({ title: "Passwords do not match." });
                 
-                return;
+                    return;
             }
             if (newpass.length < 8) {
                sileo.warning({ title: "Password must be at least 8 characters." });
@@ -48,36 +48,28 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
               sileo.warning({ title: "Invalid or missing reset token.." });
                 return ;
             }
-
+           sileo.loading({ title: "Resetting password..." });
             const response = await fetch(`${api_url}/forgot-password2`, {
                 method: "POST",
-
                 headers: {
                     "Content-Type": "application/json"
                 },
-
                 body: JSON.stringify({
                     token: TokenForUrl,
                     newPassword: newpass
                 })
               
             });
+           const data = await response.json();
+            if (!response.ok) {
+              sileo.error({
+                 title: "Password reset failed",
+                description: data.mess || "Please try again later.",
+              });
 
-             sileo.loading({ title: "Resetting password..." });
-
-
-
-              if (!response.ok) {
-                if (response.status === 400) {
-                  sileo.error({
-                    title: "Invalid or expired token",
-                    description: response.mess || "Please request a new reset link.",
-                  });
-                  return;
-                }
-                            
-              }
-           sileo.success({
+              return;
+            }
+            sileo.success({
               title: "Password reset successful",
               description: "You can now log in with your new password.",
             });
@@ -88,8 +80,10 @@ const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
 
         } catch (error) {
-            console.error("Reset password error:", error);
-            alert("Something went wrong.");
+             sileo.error({
+              title: "Something went wrong",
+              description: "Please try again later."
+            });
         }
     };
 
