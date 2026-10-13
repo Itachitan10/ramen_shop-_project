@@ -23,7 +23,6 @@ console.log(newpass ,confirmpass);
 
     const handle_submit = async () => {
         
-          
   
             // Check password fields
             if (!newpass || !confirmpass) {
@@ -57,27 +56,34 @@ console.log(newpass ,confirmpass);
                     newPassword: newpass
                 })
               
-            }).then((response)=>{ 
+            }).then(async(response)=>{ 
               data = response.json()
                if (!response.ok) {
             throw new Error(data.mess || "Password reset failed.");
                  }
                  return data
             })
-            sileo.promise(response, {
-            loading: { title: "Loading..." },
-            success: { title: "Done!" },
-            error: { title: "Failed" },
-          })
-            try {
-        await promise;
+        
+         try {
+        await sileo.promise(promise, {
+            loading: { title: "Resetting password..." },
+            success: {
+                title: "Password reset successful",
+                description: "You can now log in."
+            },
+            error: {
+                title: "Password reset failed"
+            }
+        });
+
         setTimeout(() => {
             window.location.href = "/";
         }, 3000);
+
           } catch (error) {
               console.error("Reset password error:", error);
           }
-          
+                
      
     };
 
