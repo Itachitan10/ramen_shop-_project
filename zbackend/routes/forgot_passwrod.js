@@ -131,51 +131,51 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 routes.post('/forgot-password2', async (req, res) => {
     console.log(req.body);
     
-    // try {
+    try {
       
-    //     const { token, newPassword } = req.body;
-    //     console.log(token);
+        const { token, newPassword } = req.body;
+        console.log(token);
         
-    //     // Check if token and password were sent
-    //     if (!token || !newPassword) {
-    //         return res.status(400).json({
-    //           mess: 'Please provide your reset token and new password.'
-    //         });
-    //     }
-    //     // Find token AND check if it is still valid
-    //     const response = await conn( `SELECT id FROM register WHERE reset_token = ? AND reset_token_expires > NOW()`,[token]);
-    //     // Token does not exist OR already expired
-    //     if (response.length === 0) {
-    //         return res.status(400).json({
-    //             mess: 'Invalid or expired token'
-    //         });
+        // Check if token and password were sent
+        if (!token || !newPassword) {
+            return res.status(400).json({
+              mess: 'Please provide your reset token and new password.'
+            });
+        }
+        // Find token AND check if it is still valid
+        const response = await conn( `SELECT id FROM register WHERE reset_token = ? AND reset_token_expires > NOW()`,[token]);
+        // Token does not exist OR already expired
+        if (response.length === 0) {
+            return res.status(400).json({
+                mess: 'Invalid or expired token'
+            });
 
-    //     }
+        }
 
         
 
-    //     const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    //     const result = await conn( `UPDATE register SET password = ?,  reset_token = NULL,reset_token_expires = NULL WHERE id = ?`, [hashedPassword, response[0].id]
-    //     );
-
-
-    //     console.log('Password update:', result);
+        const result = await conn( `UPDATE register SET password = ?,  reset_token = NULL,reset_token_expires = NULL WHERE id = ?`, [hashedPassword, response[0].id]
+        );
 
 
-    //     return res.status(200).json({
-    //         mess: 'Password reset successfully'
-    //     });
+        console.log('Password update:', result);
 
 
-    // } catch (error) {
+        return res.status(200).json({
+            mess: 'Password reset successfully'
+        });
 
-    //     console.error('Reset password error:', error);
-    //     return res.status(500).json({
-    //         mess: 'Server error'
-    //     });
 
-    // }
+    } catch (error) {
+
+        console.error('Reset password error:', error);
+        return res.status(500).json({
+            mess: 'Server error'
+        });
+
+    }
 
 });
 
