@@ -69,7 +69,7 @@ console.log(newpass ,confirmpass);
             loading: { title: "Resetting password..." },
             success: {
                 title: "Password reset successful",
-                description: <div className="text-center">you can login?</div>
+               description: <div className="text-center font-medium">You can log in now!</div>
             },
             error: {
                 title: "Password reset failed"
