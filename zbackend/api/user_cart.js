@@ -32,7 +32,6 @@ routes.post('/cart_insert_item', verifytoken , async(req ,res , next)=>{
     const user_Id = req.id
   const body = req.body
 
-
         const { product_name,description, price, category,image_url , quantity } = body
           const required = { product_name, description, price, category, image_url, quantity };
       const missing = Object.keys(required).filter(k => !required[k]);

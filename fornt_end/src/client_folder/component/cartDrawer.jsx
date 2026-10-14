@@ -4,20 +4,13 @@ const api_url = import.meta.env.VITE_API_URL ||  "http://localhost:4000"
 
 
 
-
-
-
 export default function CartDrawer({ isOpen, setIsOpen ,token ,}) {
 const [items, setItems] = useState([]);
 const [filter , setfilter] = useState(() =>{ 
   return JSON.parse(localStorage.getItem('cart')) || []
 })
 
-console.log(filter);
-
-
-
-
+console.log(token);
 
 
 useEffect(() => {

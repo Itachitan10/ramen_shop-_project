@@ -8,19 +8,33 @@ import CheckoutPage from "./client_folder/checkoutpage";
 import ProfilePage from "./client_folder/profilepage";
 import ForgotPasswordPage from "./client_folder/forget-password";
 import Forget_gmail from "./client_folder/forget_gmail";
+import ProtectedRoute  from "./client_folder/protectedRoute";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/forgot-gmail" element={<Forget_gmail/>} />
+
+        
+       
+
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-       <Route path="/profile" element={<ProfilePage/>} />
+        <Route element={<ProtectedRoute/>}>
+         <Route path="/forgot-gmail" element={<Forget_gmail/>} />
+        00000000</Route>
+
+        <Route path="/register" element={<Register/>}/>
+        <Route path="/" element={<Login />} />
+
+        <Route element={<ProtectedRoute/>}>
+         <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/profile" element={<ProfilePage/>} />
        <Route path="/proceed" element={<CheckoutPage/>} />
         <Route path="/cart" element={<CartDrawer/>} />
          <Route path="/menu" element={<MenuPage/>} />
-        <Route path="/register" element={<Register/>}/>
-        <Route path="/dashboard" element={<Dashboard/>} />
-        <Route path="/" element={<Login />} />
+        </Route>
+
+        
+ 
 
       </Routes>
     </BrowserRouter>

@@ -6,6 +6,8 @@ const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
 
 
 
+
+
 const categories = ["All", "Ramen", "Rice Bowls", "Sides", "Drinks", "Combos"];
 
 
@@ -19,13 +21,11 @@ function dashboard() {
   const newLocal = JSON.parse(localStorage.getItem('token'));
   const jwt = newLocal
 
-// console.log(cart_item);
 
-// console.log('this is jwt',jwt);
+console.log(jwt);
+
 const handlecartitem = async (product) => {
-  console.log("product received:", JSON.stringify(product, null, 2));
-  console.log("jwt:", jwt, "| token:", jwt?.token);
-
+ 
   if (!jwt) return;
 
   try {
