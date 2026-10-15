@@ -20,7 +20,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route element={<ProtectedRoute/>}>
          <Route path="/forgot-gmail" element={<Forget_gmail/>} />
-        00000000</Route>
+        </Route>
 
         <Route path="/register" element={<Register/>}/>
         <Route path="/" element={<Login />} />

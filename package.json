@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "resend": "^6.32.1",
-    "sileo": "^0.1.5"
-  }
-}

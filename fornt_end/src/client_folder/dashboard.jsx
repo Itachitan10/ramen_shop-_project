@@ -5,9 +5,6 @@ import CartDrawerTest from "./component/cartDrawer";
 const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
 
 
-
-
-
 const categories = ["All", "Ramen", "Rice Bowls", "Sides", "Drinks", "Combos"];
 
 
@@ -24,8 +21,11 @@ function dashboard() {
 
 console.log(jwt);
 
+// console.log('this is jwt',jwt);
 const handlecartitem = async (product) => {
- 
+  console.log("product received:", JSON.stringify(product, null, 2));
+  console.log("jwt:", jwt, "| token:", jwt?.token);
+
   if (!jwt) return;
 
   try {
@@ -101,18 +101,12 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className="min-h-[440px] relative flex items-center justify-center">
-          <div className="relative flex items-center justify-center w-[min(430px,80vw)] aspect-square rounded-full bg-[#ffc72c] shadow-[20px_20px_0_#211b16]">
-            <div className="absolute -inset-5 border-2 border-dashed border-[#211b16] rounded-full" />
-
-            <div className="w-[78%] aspect-square rounded-full flex items-center justify-center border-[10px] border-[#211b16] shadow-[inset_0_-20px_30px_rgba(0,0,0,.25),0_18px_25px_rgba(33,27,22,.3)]" style={{ background: "radial-gradient(circle at 50% 45%, #e7a52e 0 12%, #5b301c 13% 17%, #c47726 18% 30%, #e6a638 31% 48%, #8a4a20 49% 53%, #f2b83d 54% 67%, #332019 68% 100%)" }}>
-              <span className="text-[80px] sm:text-[100px] drop-shadow-[0_8px_5px_rgba(0,0,0,.25)]">🍜</span>
-            </div>
-
-            <div className="absolute top-5 right-0 bg-[#fffdf8] border-2 border-[#211b16] px-[18px] py-[14px] rounded-[10px] shadow-[5px_5px_0_#211b16] rotate-[5deg] font-['Space_Mono',monospace] text-[11px] font-bold">🔥 SPICY MISO</div>
-            <div className="absolute bottom-[30px] left-0 bg-[#fffdf8] border-2 border-[#211b16] px-[18px] py-[14px] rounded-[10px] shadow-[5px_5px_0_#211b16] -rotate-[5deg] font-['Space_Mono',monospace] text-[11px] font-bold">★ 4.9 · BESTSELLER</div>
-          </div>
-        </div>
+    
+<img
+  src="https://png.pngtree.com/png-clipart/20230516/original/pngtree-colorful-ramen-noodle-artwork-png-image_9162654.png"
+  alt="Colorful ramen noodles"
+  className="hidden sm:block w-[90%] h-[90%] object-contain"
+/>
       </section>
 
  
