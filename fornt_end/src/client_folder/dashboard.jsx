@@ -86,63 +86,57 @@ useEffect(() => {
       </header>
       {/* HERO */}
      
-
 <section
-  className="relative overflow-hidden min-h-[400px] lg:min-h-[650px] px-4 sm:px-8 lg:px-[clamp(20px,6vw,100px)] py-8 sm:py-12 lg:py-20 grid grid-cols-2 items-center gap-3 sm:gap-8 lg:gap-[70px]"
+  className="relative overflow-hidden px-5 py-8 sm:px-8 sm:py-14 lg:min-h-[650px] lg:px-[clamp(20px,6vw,100px)] lg:py-20 grid grid-cols-1 lg:grid-cols-2 items-center gap-6 lg:gap-[70px]"
   style={{
     background:
       "radial-gradient(circle at 90% 20%, rgba(255,199,44,.35), transparent 28%), radial-gradient(circle at 10% 90%, rgba(214,40,40,.08), transparent 30%)",
   }}
 >
-  <div className="absolute w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] border border-[#211b16]/10 rounded-full -right-[180px] -bottom-[220px]" />
+  <div className="absolute w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] border border-[#211b16]/10 rounded-full -right-[180px] -bottom-[220px] pointer-events-none" />
 
-  {/* Hero Content */}
-  <div className="relative z-10 min-w-0 max-w-[650px] text-left">
-    <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#211b16] text-[#ffc72c] px-2 sm:px-3 py-1.5 sm:py-2 rounded-[5px] mb-4 sm:mb-6 font-['Space_Mono',monospace] text-[7px] sm:text-[11px] font-bold">
+  {/* IMAGE: sa taas sa mobile, sa kanan sa desktop */}
+  <div className="relative z-10 w-full max-w-[320px] sm:max-w-[400px] mx-auto lg:max-w-none lg:order-2">
+    <img
+      src="https://png.pngtree.com/png-clipart/20230516/original/pngtree-colorful-ramen-noodle-artwork-png-image_9162654.png"
+      alt="Colorful ramen noodles"
+      className="block w-full h-auto max-h-[260px] sm:max-h-[350px] lg:max-h-none object-contain drop-shadow-xl"
+    />
+  </div>
+
+  {/* TEXT */}
+  <div className="relative z-10 min-w-0 text-center lg:text-left lg:order-1">
+    <div className="inline-flex items-center gap-2 bg-[#211b16] text-[#ffc72c] px-3 py-2 rounded-md mb-4 font-['Space_Mono',monospace] text-[11px] sm:text-xs font-bold">
       <i className="w-[6px] h-[6px] shrink-0 bg-[#d62828] rounded-full" />
       SIMMERED 12 HOURS · DAILY
     </div>
 
-    <h1 className="font-['Manrope',sans-serif] font-extrabold text-[clamp(27px,5vw,94px)] leading-[.95] tracking-[-1.5px] sm:tracking-[-3px] lg:tracking-[-5px]">
+    <h1 className="font-['Manrope',sans-serif] font-extrabold text-[clamp(40px,11vw,94px)] leading-[1] tracking-[-1px] sm:tracking-[-3px] lg:tracking-[-5px]">
       BOLD BROTH.
       <br />
       BIG <span className="text-[#d62828]">FLAVOR.</span>
     </h1>
 
-    <p className="max-w-[500px] mt-3 sm:mt-6 text-[10px] sm:text-[15px] lg:text-[17px] leading-[1.6] text-[#766b5e]">
+    <p className="max-w-[500px] mx-auto lg:mx-0 mt-4 lg:mt-6 text-[15px] sm:text-base lg:text-[17px] leading-[1.6] text-[#766b5e]">
       Slow-simmered tonkotsu broth, handmade noodles, and toppings stacked
       high. Your favorite ramen, ready in around 20 minutes.
     </p>
 
-    {/* Buttons */}
-    <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-3 mt-4 sm:mt-6">
-     
-<div className="flex flex-col sm:flex-row items-start gap-2 mt-3">
-  <button
-    onClick={scrollToMenu}
-    className="border border-[#211b16] px-1.5 py-1 rounded-[5px] text-[8px] sm:text-[10px] font-bold bg-[#211b16] text-white shadow-[2px_2px_0_#d62828] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
-  >
-    Order Now →
-  </button>
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 mt-6 lg:mt-8">
+      <button
+        onClick={scrollToMenu}
+        className="min-h-[48px] border-2 border-[#211b16] px-6 py-3 rounded-[8px] text-sm font-extrabold bg-[#211b16] text-white shadow-[3px_3px_0_#d62828] active:translate-x-[2px] active:translate-y-[2px] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+      >
+        Order Now →
+      </button>
 
-  <button
-    onClick={scrollToMenu}
-    className="border border-[#211b16] px-1.5 py-1 rounded-[5px] text-[8px] sm:text-[10px] font-bold bg-[#fffdf8] text-[#211b16] hover:bg-[#ffc72c] transition-all"
-  >
-    View Menu
-  </button>
-</div>
-
+      <button
+        onClick={scrollToMenu}
+        className="min-h-[48px] border-2 border-[#211b16] px-6 py-3 rounded-[8px] text-sm font-extrabold bg-[#fffdf8] text-[#211b16] hover:bg-[#ffc72c] active:bg-[#ffc72c] transition-all"
+      >
+        View Menu
+      </button>
     </div>
-  </div>
-
-  {/* Ramen Image */}
-  <div className="relative z-10 min-w-0 w-full">
-    <img
-      src="https://png.pngtree.com/png-clipart/20230516/original/pngtree-colorful-ramen-noodle-artwork-png-image_9162654.png"
-      alt="Colorful ramen noodles"
-      className="block w-full h-auto object-contain"
-    />
   </div>
 </section>
 
