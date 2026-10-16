@@ -85,34 +85,64 @@ useEffect(() => {
         </div>
       </header>
       {/* HERO */}
-      <section className="relative overflow-hidden min-h-[650px] px-[clamp(20px,6vw,100px)] py-20 grid grid-cols-1 lg:grid-cols-2 items-center gap-[70px]" style={{ background: "radial-gradient(circle at 90% 20%, rgba(255,199,44,.35), transparent 28%), radial-gradient(circle at 10% 90%, rgba(214,40,40,.08), transparent 30%)" }}>
-        <div className="absolute w-[500px] h-[500px] border border-[#211b16]/10 rounded-full -right-[180px] -bottom-[220px]" />
+     
+<section
+  className="relative overflow-hidden min-h-[650px] px-5 sm:px-8 lg:px-[clamp(20px,6vw,100px)] py-12 sm:py-16 lg:py-20 grid grid-cols-2 items-center gap-3 sm:gap-8 lg:gap-[70px]"
+  style={{
+    background:
+      "radial-gradient(circle at 90% 20%, rgba(255,199,44,.35), transparent 28%), radial-gradient(circle at 10% 90%, rgba(214,40,40,.08), transparent 30%)",
+  }}
+>
+  <div className="absolute w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] border border-[#211b16]/10 rounded-full -right-[180px] -bottom-[220px]" />
 
-        <div className="relative z-10 max-w-[650px] text-center lg:text-left">
-          <div className="inline-flex items-center gap-2 bg-[#211b16] text-[#ffc72c] px-3 py-2 rounded-[5px] mb-6 font-['Space_Mono',monospace] text-[11px] font-bold"><i className="w-[7px] h-[7px] bg-[#d62828] rounded-full" />SIMMERED 12 HOURS · DAILY</div>
+  <div className="relative z-10 min-w-0 max-w-[650px] text-left">
+    <div className="inline-flex items-center gap-2 bg-[#211b16] text-[#ffc72c] px-2 sm:px-3 py-2 rounded-[5px] mb-4 sm:mb-6 font-['Space_Mono',monospace] text-[8px] sm:text-[11px] font-bold">
+      <i className="w-[7px] h-[7px] shrink-0 bg-[#d62828] rounded-full" />
+      SIMMERED 12 HOURS · DAILY
+    </div>
 
-          <h1 className="font-['Manrope',sans-serif] font-extrabold text-[clamp(54px,7vw,94px)] leading-[.91] tracking-[-5px]">BOLD BROTH.<br />BIG <span className="text-[#d62828]">FLAVOR.</span></h1>
+    <h1 className="font-['Manrope',sans-serif] font-extrabold text-[clamp(27px,5vw,94px)] leading-[.95] tracking-[-1.5px] sm:tracking-[-3px] lg:tracking-[-5px]">
+      BOLD BROTH.
+      <br />
+      BIG <span className="text-[#d62828]">FLAVOR.</span>
+    </h1>
 
-          <p className="max-w-[500px] mt-7 mx-auto lg:mx-0 text-[17px] leading-[1.7] text-[#766b5e]">Slow-simmered tonkotsu broth, handmade noodles, and toppings stacked high. Your favorite ramen, ready in around 20 minutes.</p>
+    <p className="max-w-[500px] mt-4 sm:mt-7 text-[11px] sm:text-[15px] lg:text-[17px] leading-[1.6] text-[#766b5e]">
+      Slow-simmered tonkotsu broth, handmade noodles, and toppings stacked high. Your favorite ramen, ready in around 20 minutes.
+    </p>
 
-          <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-[14px] mt-8">
-            <button onClick={scrollToMenu} className="border-2 border-[#211b16] px-6 py-[14px] rounded-[9px] font-extrabold bg-[#d62828] text-white shadow-[5px_5px_0_#211b16] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[2px_2px_0_#211b16] transition-all">Order Now →</button>
-            <button onClick={scrollToMenu} className="border-2 border-[#211b16] px-6 py-[14px] rounded-[9px] font-extrabold bg-[#fffdf8] hover:bg-[#ffc72c] transition-all">View Menu</button>
-          </div>
-        </div>
+    <div className="flex flex-col sm:flex-row gap-2 sm:gap-[14px] mt-5 sm:mt-8">
+      <button
+        onClick={scrollToMenu}
+        className="border-2 border-[#211b16] px-2 sm:px-6 py-3 sm:py-[14px] rounded-[9px] text-[11px] sm:text-base font-extrabold bg-[#d62828] text-white shadow-[3px_3px_0_#211b16] sm:shadow-[5px_5px_0_#211b16] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[2px_2px_0_#211b16] transition-all"
+      >
+        Order Now →
+      </button>
 
-    
-<img
-  src="https://png.pngtree.com/png-clipart/20230516/original/pngtree-colorful-ramen-noodle-artwork-png-image_9162654.png"
-  alt="Colorful ramen noodles"
-  className="hidden sm:block w-[90%] h-[90%] object-contain"
-/>
-      </section>
+      <button
+        onClick={scrollToMenu}
+        className="border-2 border-[#211b16] px-2 sm:px-6 py-3 sm:py-[14px] rounded-[9px] text-[11px] sm:text-base font-extrabold bg-[#fffdf8] hover:bg-[#ffc72c] transition-all"
+      >
+        View Menu
+      </button>
+    </div>
+  </div>
+
+  <div className="relative z-10 min-w-0 w-full">
+    <img
+      src="https://png.pngtree.com/png-clipart/20230516/original/pngtree-colorful-ramen-noodle-artwork-png-image_9162654.png"
+      alt="Colorful ramen noodles"
+      className="block w-full h-auto object-contain"
+    />
+  </div>
+</section>
+
 
  
 
       {/* MENU */}
       <section id="menu" className="max-w-[1250px] mx-auto px-5 py-[90px]">
+       
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5 mb-[35px]">
           <div>
             <div className="font-['Space_Mono',monospace] text-[#d62828] text-[12px] font-bold mb-2">// OUR MENU</div>
