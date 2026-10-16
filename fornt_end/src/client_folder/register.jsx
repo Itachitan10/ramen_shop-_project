@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState , useEffect } from "react";
-import Toggle from './toogle'
+import Toggle from './component/toggle'
 const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000"
 
 
@@ -17,6 +17,8 @@ export default function Register() {
    const [identify , setidentify ] = useState(null) 
 
 
+   console.log(identify);
+   
 
    const handle_submit = async(e) =>{
         e.preventDefault()

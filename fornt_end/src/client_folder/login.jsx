@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
 import { sileo, Toaster } from "sileo";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
+import icon from './icons/naruto-japanese-cuisine-japan-ramen-japanese-food-food-svgrepo-com.svg'
 
 
 export default function Login() {
@@ -114,9 +114,8 @@ return (
       <section className="w-full max-w-sm rounded-xl border-2 border-[#2B2118] bg-[#FFFDF7] p-6 shadow-[5px_5px_0_#2B2118]">
         {/* LOGO */}
         <div className="flex items-center gap-3 mb-5">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg border-2 border-[#2B2118] bg-[#FFC72C] text-2xl">
-            🍜
-          </div>
+           <img src={icon} alt="Ramen icon" className="sm:block w-16 h-16 object-contain"/>
+
           <div>
             <p className="font-black tracking-widest">KUMO</p>
             <p className="text-[10px] font-bold tracking-[0.2em] text-[#D62828]">

@@ -1,7 +1,6 @@
 import { useState , useEffect} from "react";
 const api_url = import.meta.env.VITE_API_URL ||  "http://localhost:4000"
-import icon from '../icons/ram-svgrepo-com (1).svg'
-
+import icon from '../icons/naruto-japanese-cuisine-japan-ramen-japanese-food-food-svgrepo-com.svg'
 
 
 export default function CartDrawer({ isOpen, setIsOpen ,token ,}) {
