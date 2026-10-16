@@ -2,9 +2,7 @@ import { Link } from "react-router-dom";
 import { useState , useEffect } from "react";
 import Toggle from './component/toggle'
 const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000"
-
-
-
+import icon from './icons/naruto-japanese-cuisine-japan-ramen-japanese-food-food-svgrepo-com.svg'
 export default function Register() {
 
     // const [user_info , setuser_in] = useState({first_name:"ellow" , last_name :" " , email : " " ,mobile_number : " "}) 
@@ -39,150 +37,197 @@ export default function Register() {
     throw new Error(data.message  || "Registration failed");
    }
   }
-return (
-  <div className="min-h-screen bg-[#F7F1E5] flex items-center justify-center px-4 py-8">
-    <div className="w-full max-w-sm">
-      <Toggle identify={identify} />
+  
 
-      <Link
-        to="/"
-        className="mb-5 flex items-center justify-center gap-2 text-xl font-black tracking-tight text-[#2B2118]"
-      >
-        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#D62828] text-lg">
-          🍜
-        </span>
+return (
+  <div className="min-h-screen bg-[#F7F1E5] text-[#2B2118]">
+    {/* NAVBAR — SAME AS LOGIN */}
+    <nav className="flex h-16 items-center justify-between border-b-2 border-[#2B2118] bg-[#FFFDF7] px-5 md:px-10">
+      <Link to="/" className="text-xl font-black">
         KUMO <span className="text-[#D62828]">RAMEN</span>
       </Link>
 
-     <div className="rounded-2xl border-[2px] border-[#2B2118] bg-[#FFFDF7] p-5 shadow-[6px_6px_0_#2B2118] sm:p-7">
-        <div className="mb-5">
-          <span className="text-xs font-bold uppercase tracking-[2px] text-[#D62828]">
-            Join the bowl club
-          </span>
+      <Link
+        to="/"
+        className="text-sm font-bold transition hover:text-[#D62828]"
+      >
+        ← Back to Login
+      </Link>
+    </nav>
 
-          <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-[#2B2118]">
-            Create your account
-          </h1>
+    {/* REGISTRATION NOTICE */}
+    <Toggle identify={identify} />
 
-          <p className="mt-1 text-sm text-[#766B5E]">
-            Sign up to enjoy your favorite ramen.
-          </p>
+    {/* REGISTER CARD */}
+    <main className="flex min-h-[calc(100vh-64px)] items-center justify-center px-4 py-8">
+      <section className="w-full max-w-sm rounded-xl border-2 border-[#2B2118] bg-[#FFFDF7] p-6 shadow-[5px_5px_0_#2B2118]">
+        {/* LOGO — SAME AS LOGIN */}
+        <div className="mb-5 flex items-center gap-3">
+          <img
+            src={icon}
+            alt="Ramen icon"
+            className="h-16 w-16 object-contain"
+          />
+
+          <div>
+            <p className="font-black tracking-widest">KUMO</p>
+            <p className="text-[10px] font-bold tracking-[0.2em] text-[#D62828]">
+              RAMEN SHOP
+            </p>
+          </div>
         </div>
 
-        <form onSubmit={handle_submit} className="space-y-3.5">
-          <div className="grid grid-cols-2 gap-3">
+        {/* HEADING */}
+        <h1 className="text-3xl font-black tracking-tight">
+          Create <span className="text-[#D62828]">account.</span>
+        </h1>
+
+        <p className="mb-5 mt-2 text-sm leading-5 text-[#766B5E]">
+          Join Kumo Ramen and order your favorite ramen.
+        </p>
+
+        <form onSubmit={handle_submit}>
+          {/* FIRST NAME + LAST NAME */}
+          <div className="mb-4 grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1.5 block text-xs font-semibold text-[#2B2118]">
+              <label className="mb-1.5 block text-xs font-bold">
                 First name
               </label>
+
               <input
                 value={first_name}
                 onChange={(e) => set_first(e.target.value)}
                 type="text"
                 placeholder="Juan"
-                className="w-full rounded-lg border border-[#E5DCCB] bg-white px-3 py-2.5 text-sm text-[#2B2118] outline-none transition focus:border-[#D62828] focus:ring-2 focus:ring-[#D62828]/10"
+                required
+                className="w-full rounded-lg border-2 border-[#2B2118] bg-[#F7F1E5] px-3 py-2.5 text-sm outline-none transition focus:border-[#168AAD] focus:bg-white"
               />
             </div>
 
             <div>
-              <label className="mb-1.5 block text-xs font-semibold text-[#2B2118]">
+              <label className="mb-1.5 block text-xs font-bold">
                 Last name
               </label>
+
               <input
                 value={last_name}
                 onChange={(e) => set_last(e.target.value)}
                 type="text"
                 placeholder="Dela Cruz"
-                className="w-full rounded-lg border border-[#E5DCCB] bg-white px-3 py-2.5 text-sm text-[#2B2118] outline-none transition focus:border-[#D62828] focus:ring-2 focus:ring-[#D62828]/10"
+                required
+                className="w-full rounded-lg border-2 border-[#2B2118] bg-[#F7F1E5] px-3 py-2.5 text-sm outline-none transition focus:border-[#168AAD] focus:bg-white"
               />
             </div>
           </div>
 
-          <div>
-            <label className="mb-1.5 block text-xs font-semibold text-[#2B2118]">
+          {/* EMAIL */}
+          <div className="mb-4">
+            <label className="mb-1.5 block text-xs font-bold">
               Email address
             </label>
+
             <input
               value={email}
               onChange={(e) => set_email(e.target.value)}
               type="email"
               placeholder="you@email.com"
-              className="w-full rounded-lg border border-[#E5DCCB] bg-white px-3 py-2.5 text-sm text-[#2B2118] outline-none transition focus:border-[#D62828] focus:ring-2 focus:ring-[#D62828]/10"
+              required
+              className="w-full rounded-lg border-2 border-[#2B2118] bg-[#F7F1E5] px-3 py-2.5 text-sm outline-none transition focus:border-[#168AAD] focus:bg-white"
             />
           </div>
 
-          <div>
-            <label className="mb-1.5 block text-xs font-semibold text-[#2B2118]">
+          {/* MOBILE */}
+          <div className="mb-4">
+            <label className="mb-1.5 block text-xs font-bold">
               Mobile number
             </label>
+
             <input
               value={mobile}
               onChange={(e) => set_mobile(e.target.value)}
               type="tel"
               placeholder="09XX XXX XXXX"
-              className="w-full rounded-lg border border-[#E5DCCB] bg-white px-3 py-2.5 text-sm text-[#2B2118] outline-none transition focus:border-[#D62828] focus:ring-2 focus:ring-[#D62828]/10"
+              required
+              className="w-full rounded-lg border-2 border-[#2B2118] bg-[#F7F1E5] px-3 py-2.5 text-sm outline-none transition focus:border-[#168AAD] focus:bg-white"
             />
           </div>
 
-          <div>
-            <label className="mb-1.5 block text-xs font-semibold text-[#2B2118]">
+          {/* PASSWORD */}
+          <div className="mb-4">
+            <label className="mb-1.5 block text-xs font-bold">
               Password
             </label>
+
             <input
               value={password}
               onChange={(e) => setpass(e.target.value)}
               type="password"
-              placeholder="Enter your password"
-              className="w-full rounded-lg border border-[#E5DCCB] bg-white px-3 py-2.5 text-sm text-[#2B2118] outline-none transition focus:border-[#D62828] focus:ring-2 focus:ring-[#D62828]/10"
+              placeholder="At least 8 characters"
+              required
+              className="w-full rounded-lg border-2 border-[#2B2118] bg-[#F7F1E5] px-3 py-2.5 text-sm outline-none transition focus:border-[#168AAD] focus:bg-white"
             />
 
-            <p className="mt-1.5 text-xs text-[#766B5E]">
+            <p className="mt-2 text-xs leading-4 text-[#766B5E]">
               Use at least 8 characters and include a number.
             </p>
           </div>
 
-          <label className="flex cursor-pointer items-start gap-2 pt-1 text-xs leading-5 text-[#766B5E]">
+          {/* TERMS */}
+          <label className="mb-5 flex cursor-pointer items-start gap-2 text-xs leading-5 text-[#766B5E]">
             <input
               type="checkbox"
-              className="mt-1 accent-[#D62828]"
+              className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#D62828]"
             />
+
             <span>
               I agree to the{" "}
-              <a href="/terms" className="font-semibold text-[#D62828] hover:underline">
+              <a
+                href="/terms"
+                className="font-bold text-[#D62828] hover:underline"
+              >
                 Terms of Service
               </a>{" "}
               and{" "}
-              <a href="/privacy" className="font-semibold text-[#D62828] hover:underline">
+              <a
+                href="/privacy"
+                className="font-bold text-[#D62828] hover:underline"
+              >
                 Privacy Policy
-              </a>.
+              </a>
+              .
             </span>
           </label>
 
+          {/* CREATE ACCOUNT — SAME BUTTON STYLE */}
           <button
             type="submit"
-            className="w-full rounded-lg bg-[#D62828] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#B91F24] active:scale-[0.99]"
+            className="w-full rounded-lg border-2 border-[#2B2118] bg-[#D62828] py-3 text-sm font-extrabold text-white shadow-[3px_3px_0_#2B2118] transition hover:translate-y-0.5 hover:shadow-[1px_1px_0_#2B2118]"
           >
-            Create account <span className="ml-1">→</span>
+            Create account →
           </button>
         </form>
 
-        <div className="my-4 flex items-center gap-3">
-          <div className="h-px flex-1 bg-[#E5DCCB]" />
-          <span className="text-xs text-[#A49A89]">OR</span>
-          <div className="h-px flex-1 bg-[#E5DCCB]" />
+        {/* DIVIDER */}
+        <div className="my-5 flex items-center gap-3 text-xs text-[#766B5E]">
+          <div className="h-px flex-1 bg-[#D0C5B5]" />
+          OR
+          <div className="h-px flex-1 bg-[#D0C5B5]" />
         </div>
 
+        {/* GOOGLE */}
         <button
           type="button"
           onClick={() => {
             window.location.href = `${api_url}/auth/google`;
           }}
-          className="w-full rounded-lg border border-[#E5DCCB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2B2118] transition hover:border-[#168AAD] hover:bg-[#168AAD]/5"
+          className="w-full rounded-lg border-2 border-[#2B2118] bg-white py-2.5 text-sm font-bold transition hover:bg-[#168AAD] hover:text-white"
         >
-          🌐 Sign up with Google
+          <span className="mr-2">G</span>
+          Sign up with Google
         </button>
 
-        <p className="mt-5 text-center text-sm text-[#766B5E]">
+        {/* LOGIN LINK */}
+        <p className="mt-5 text-center text-xs text-[#766B5E]">
           Already have an account?{" "}
           <Link
             to="/"
@@ -191,13 +236,8 @@ return (
             Log in
           </Link>
         </p>
-      </div>
-
-      <p className="mt-4 text-center text-xs text-[#A49A89]">
-        Made with ❤️ for ramen lovers.
-      </p>
-    </div>
+      </section>
+    </main>
   </div>
 );
-
 }
