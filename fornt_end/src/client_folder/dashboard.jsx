@@ -13,13 +13,19 @@ function dashboard() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [cartCount, setCartCount] = useState(0);
   const [products, setProducts] = useState([]);   
-  const [cart_toogle , set_togle] = useState(false)
   // const [cart_item , setitem] = useState('')
   const newLocal = JSON.parse(localStorage.getItem('token'));
   const jwt = newLocal
 
 
-console.log(jwt);
+
+const [cart_toogle, set_togle] = useState(()=>{ 
+  return localStorage.getItem('toggle') === "true"
+});
+
+useEffect(()=>{ 
+localStorage.setItem('toggle', cart_toogle)
+},[cart_toogle])
 
 // console.log('this is jwt',jwt);
 const handlecartitem = async (product) => {
@@ -86,59 +92,59 @@ useEffect(() => {
       </header>
       {/* HERO */}
      
-<section
-  className="relative overflow-hidden px-5 py-8 sm:px-8 sm:py-14 lg:min-h-[650px] lg:px-[clamp(20px,6vw,100px)] lg:py-20 grid grid-cols-1 lg:grid-cols-2 items-center gap-6 lg:gap-[70px]"
-  style={{
-    background:
-      "radial-gradient(circle at 90% 20%, rgba(255,199,44,.35), transparent 28%), radial-gradient(circle at 10% 90%, rgba(214,40,40,.08), transparent 30%)",
-  }}
->
-  <div className="absolute w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] border border-[#211b16]/10 rounded-full -right-[180px] -bottom-[220px] pointer-events-none" />
-
-  {/* IMAGE: sa taas sa mobile, sa kanan sa desktop */}
-  <div className="relative z-10 w-full max-w-[320px] sm:max-w-[400px] mx-auto lg:max-w-none lg:order-2">
-    <img
-      src="https://png.pngtree.com/png-clipart/20230516/original/pngtree-colorful-ramen-noodle-artwork-png-image_9162654.png"
-      alt="Colorful ramen noodles"
-      className="block w-full h-auto max-h-[260px] sm:max-h-[350px] lg:max-h-none object-contain drop-shadow-xl"
-    />
-  </div>
-
-  {/* TEXT */}
-  <div className="relative z-10 min-w-0 text-center lg:text-left lg:order-1">
-    <div className="inline-flex items-center gap-2 bg-[#211b16] text-[#ffc72c] px-3 py-2 rounded-md mb-4 font-['Space_Mono',monospace] text-[11px] sm:text-xs font-bold">
-      <i className="w-[6px] h-[6px] shrink-0 bg-[#d62828] rounded-full" />
-      SIMMERED 12 HOURS · DAILY
-    </div>
-
-    <h1 className="font-['Manrope',sans-serif] font-extrabold text-[clamp(40px,11vw,94px)] leading-[1] tracking-[-1px] sm:tracking-[-3px] lg:tracking-[-5px]">
-      BOLD BROTH.
-      <br />
-      BIG <span className="text-[#d62828]">FLAVOR.</span>
-    </h1>
-
-    <p className="max-w-[500px] mx-auto lg:mx-0 mt-4 lg:mt-6 text-[15px] sm:text-base lg:text-[17px] leading-[1.6] text-[#766b5e]">
-      Slow-simmered tonkotsu broth, handmade noodles, and toppings stacked
-      high. Your favorite ramen, ready in around 20 minutes.
-    </p>
-
-    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 mt-6 lg:mt-8">
-      <button
-        onClick={scrollToMenu}
-        className="min-h-[48px] border-2 border-[#211b16] px-6 py-3 rounded-[8px] text-sm font-extrabold bg-[#211b16] text-white shadow-[3px_3px_0_#d62828] active:translate-x-[2px] active:translate-y-[2px] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+      <section
+        className="relative overflow-hidden px-5 py-8 sm:px-8 sm:py-14 lg:min-h-[650px] lg:px-[clamp(20px,6vw,100px)] lg:py-20 grid grid-cols-1 lg:grid-cols-2 items-center gap-6 lg:gap-[70px]"
+        style={{
+          background:
+            "radial-gradient(circle at 90% 20%, rgba(255,199,44,.35), transparent 28%), radial-gradient(circle at 10% 90%, rgba(214,40,40,.08), transparent 30%)",
+        }}
       >
-        Order Now →
-      </button>
+        <div className="absolute w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] border border-[#211b16]/10 rounded-full -right-[180px] -bottom-[220px] pointer-events-none" />
 
-      <button
-        onClick={scrollToMenu}
-        className="min-h-[48px] border-2 border-[#211b16] px-6 py-3 rounded-[8px] text-sm font-extrabold bg-[#fffdf8] text-[#211b16] hover:bg-[#ffc72c] active:bg-[#ffc72c] transition-all"
-      >
-        View Menu
-      </button>
-    </div>
-  </div>
-</section>
+        {/* IMAGE: sa taas sa mobile, sa kanan sa desktop */}
+        <div className="relative z-10 w-full max-w-[320px] sm:max-w-[400px] mx-auto lg:max-w-none lg:order-2">
+          <img
+            src="https://png.pngtree.com/png-clipart/20230516/original/pngtree-colorful-ramen-noodle-artwork-png-image_9162654.png"
+            alt="Colorful ramen noodles"
+            className="block w-full h-auto max-h-[260px] sm:max-h-[350px] lg:max-h-none object-contain drop-shadow-xl"
+          />
+        </div>
+
+        {/* TEXT */}
+        <div className="relative z-10 min-w-0 text-center lg:text-left lg:order-1">
+          <div className="inline-flex items-center gap-2 bg-[#211b16] text-[#ffc72c] px-3 py-2 rounded-md mb-4 font-['Space_Mono',monospace] text-[11px] sm:text-xs font-bold">
+            <i className="w-[6px] h-[6px] shrink-0 bg-[#d62828] rounded-full" />
+            SIMMERED 12 HOURS · DAILY
+          </div>
+
+          <h1 className="font-['Manrope',sans-serif] font-extrabold text-[clamp(40px,11vw,94px)] leading-[1] tracking-[-1px] sm:tracking-[-3px] lg:tracking-[-5px]">
+            BOLD BROTH.
+            <br />
+            BIG <span className="text-[#d62828]">FLAVOR.</span>
+          </h1>
+
+          <p className="max-w-[500px] mx-auto lg:mx-0 mt-4 lg:mt-6 text-[15px] sm:text-base lg:text-[17px] leading-[1.6] text-[#766b5e]">
+            Slow-simmered tonkotsu broth, handmade noodles, and toppings stacked
+            high. Your favorite ramen, ready in around 20 minutes.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 mt-6 lg:mt-8">
+            <button
+              onClick={scrollToMenu}
+              className="min-h-[48px] border-2 border-[#211b16] px-6 py-3 rounded-[8px] text-sm font-extrabold bg-[#211b16] text-white shadow-[3px_3px_0_#d62828] active:translate-x-[2px] active:translate-y-[2px] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            >
+              Order Now →
+            </button>
+
+            <button
+              onClick={scrollToMenu}
+              className="min-h-[48px] border-2 border-[#211b16] px-6 py-3 rounded-[8px] text-sm font-extrabold bg-[#fffdf8] text-[#211b16] hover:bg-[#ffc72c] active:bg-[#ffc72c] transition-all"
+            >
+              View Menu
+            </button>
+          </div>
+        </div>
+      </section>
 
 
  
