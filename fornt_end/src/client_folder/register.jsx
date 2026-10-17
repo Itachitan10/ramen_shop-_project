@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState , useEffect } from "react";
-import Toggle from './component/toggle'
+import Sileo_Toggle from "./sileo_toogle";
 const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000"
 import icon from './icons/naruto-japanese-cuisine-japan-ramen-japanese-food-food-svgrepo-com.svg'
 export default function Register() {
@@ -56,7 +56,7 @@ return (
     </nav>
 
     {/* REGISTRATION NOTICE */}
-    <Toggle identify={identify} />
+    <Sileo_Toggle identify={identify} />
 
     {/* REGISTER CARD */}
     <main className="flex min-h-[calc(100vh-64px)] items-center justify-center px-4 py-8">
