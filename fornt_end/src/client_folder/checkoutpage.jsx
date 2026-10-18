@@ -3,6 +3,9 @@ import { Lock, ArrowLeft, Check } from "lucide-react";
 
 const heading = { fontFamily: "'Manrope', sans-serif" };
 
+
+
+
 const CART_ITEMS = [
   { id: 1, name: "Tonkotsu Ramen", qty: 2, price: 560 },
   { id: 2, name: "Gyoza (6 pcs)", qty: 1, price: 160 },

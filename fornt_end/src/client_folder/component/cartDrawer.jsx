@@ -3,36 +3,50 @@ const api_url = import.meta.env.VITE_API_URL ||  "http://localhost:4000"
 import icon from '../icons/naruto-japanese-cuisine-japan-ramen-japanese-food-food-svgrepo-com.svg'
 
 
+
+
 export default function CartDrawer({ isOpen, setIsOpen ,token ,}) {
 const [items, setItems] = useState([]);
 const [filter , setfilter] = useState(() =>{ 
-  return JSON.parse(localStorage.getItem('cart')) || []
+  return JSON.parse(localStorage.getItem('user_item')) || []
 })
 
-console.log(token);
 
+
+
+const handle_checkout = () => { 
+
+  console.log(filter);
+  
+}
 
 useEffect(() => {
-  localStorage.setItem("cart", JSON.stringify(filter));
-}, [filter]);
+    if (items.length === 0) return;
 
-useEffect(() => {
+
+  const save = JSON.parse(localStorage.getItem('user_item') ||  [])
+
+
   const cart_val = [];
-  items.forEach((v) => {
-    const item = cart_val.find((p) => p.product_name === v.product_name);
 
-    if (item) {
-      item.quantity += 1;
-      item.realprice = item.quantity * Number(item.price);
-      item.all_Id.push(v.product_id);
-    } else {cart_val.push({
+  items.forEach((v) => {
+    const existing = cart_val.find((p) => p.product_name === v.product_name);
+
+    if (existing) {
+
+      existing.all_Id.push(v.product_id);
+    } 
+    else{
+      const old = save.find((p) => p.product_name === v.product_name)
+        const quantity = old ? old.quantity : 1;
+      cart_val.push({
         product_id: v.product_id,
         all_Id: [v.product_id],
         product_name: v.product_name,
         description: v.description,
         price: Number(v.price),
         image_url: v.image_url,
-        quantity: 1,
+        quantity ,
         realprice: Number(v.price),
       });
     }
@@ -40,6 +54,11 @@ useEffect(() => {
 
   setfilter(cart_val);
 }, [items]);
+
+
+useEffect(() => {
+  localStorage.setItem("user_item", JSON.stringify(filter));
+}, [filter]);
 
 useEffect(()=>{ 
     if(!token) return
@@ -96,9 +115,6 @@ const decrement = (item) => {
 };
   
 
-
-
-  
 const removeItem = async (id) => {
   try {
     const response = await fetch(`${api_url}/delete`, {
@@ -125,22 +141,13 @@ const removeItem = async (id) => {
 
 
 const subtotal = filter.reduce(
-  (total, item) => total + item.realprice,
-  0
-);
+  (total, item) => total + item.realprice,0);
 
 const deliveryFee = subtotal >= 800 ? 0 : 49;
 
 const total = subtotal + deliveryFee;
 
-const totalItems = filter.reduce(
-  (total, item) => total + item.quantity,
-  0
-);
-
-
-
-  if (!isOpen) return null;
+const totalItems = filter.reduce((total, item) => total + item.quantity,0);
 
 if (!isOpen) return null;
 
@@ -316,12 +323,10 @@ return (
           type="button"
           disabled={filter.length === 0}
           onClick={() => {
-            window.location.href = "/proceed";
+            handle_checkout()
+            // window.location.href = "/proceed";
           }}
-          className="mt-4 w-full rounded-lg border-2 border-[#2B2118] bg-[#D62828] px-4 py-3 text-sm font-bold text-white shadow-[3px_3px_0_#2B2118] transition hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0_#2B2118] active:translate-x-0 active:translate-y-0 active:shadow-none disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          Proceed to checkout →
-        </button>
+          className="mt-4 w-full rounded-lg border-2 border-[#2B2118] bg-[#D62828] px-4 py-3 text-sm font-bold text-white shadow-[3px_3px_0_#2B2118] transition hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0_#2B2118] active:translate-x-0 active:translate-y-0 active:shadow-none disabled:cursor-not-allowed disabled:opacity-50" > Proceed to checkout →</button>
 
         <p className="mt-3 text-center text-xs text-[#766B5E]">
           {deliveryFee === 0
