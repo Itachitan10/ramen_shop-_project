@@ -7,38 +7,43 @@ import icon from '../icons/naruto-japanese-cuisine-japan-ramen-japanese-food-foo
 
 export default function CartDrawer({ isOpen, setIsOpen ,token ,}) {
 const [items, setItems] = useState([]);
-const [filter , setfilter] = useState(() =>{ 
-  return JSON.parse(localStorage.getItem('user_item')) || []
-})
+const [filter, setfilter] = useState(() => {
+  try {
+    return JSON.parse(
+      localStorage.getItem('user_item') || '[]'
+    );
+  } catch {
+    return [];
+  }
+});
+
+
+console.log(filter);
+
 
 
 
 
 const handle_checkout = () => { 
 
-  console.log(filter);
+  
   
 }
 
 useEffect(() => {
-    if (items.length === 0) return;
-
-
-  const save = JSON.parse(localStorage.getItem('user_item') ||  [])
-
-
+  
+  const save = JSON.parse(localStorage.getItem('user_item'))
   const cart_val = [];
-
   items.forEach((v) => {
-    const existing = cart_val.find((p) => p.product_name === v.product_name);
+   const existing = cart_val.find((p) => p.product_name === v.product_name);
 
     if (existing) {
-
+      existing.quantity += 1;
+        existing.realprice = existing.quantity * Number(existing.price);
+        //  existing.all_Id.push(v.product_id);
       existing.all_Id.push(v.product_id);
     } 
     else{
-      const old = save.find((p) => p.product_name === v.product_name)
-        const quantity = old ? old.quantity : 1;
       cart_val.push({
         product_id: v.product_id,
         all_Id: [v.product_id],
@@ -46,7 +51,7 @@ useEffect(() => {
         description: v.description,
         price: Number(v.price),
         image_url: v.image_url,
-        quantity ,
+        quantity : 1,
         realprice: Number(v.price),
       });
     }
@@ -115,7 +120,10 @@ const decrement = (item) => {
 };
   
 
-const removeItem = async (id) => {
+const removeItem = async (id , product_id) => {
+const save = JSON.parse(localStorage.getItem('user_item') );
+
+const update = save.filter(item => item.product_id !== product_id)
   try {
     const response = await fetch(`${api_url}/delete`, {
       method: "DELETE",
@@ -127,16 +135,16 @@ const removeItem = async (id) => {
     const data = await response.json();
     if (!response.ok) {
       console.log(data); 
-       return;}
-     !data ? console.log("Item not found") : window,location.reload()
-    setfilter((prev) =>
-      prev.filter((item) => item.product_id !== id)
-    );
-
+       return;
+      }
+     !data ? console.log("Item not found") : window.location.reload()
+    setfilter((prev) => prev.filter((item) => item.product_id !== product_id) ); 
+       localStorage.setItem('user_item', JSON.stringify(update));
   } catch (error) {
     console.error(error);
   }
 };
+
 
 
 
@@ -268,7 +276,7 @@ return (
                 {/* REMOVE BUTTON */}
                 <button
                   type="button"
-                  onClick={() => removeItem(item.all_Id)}
+                  onClick={() => removeItem(item.all_Id , item.product_id)}
                   aria-label={`Remove ${item.product_name}`}
                   className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-md text-[#A49A89] transition hover:bg-red-50 hover:text-[#D62828]"
                 >

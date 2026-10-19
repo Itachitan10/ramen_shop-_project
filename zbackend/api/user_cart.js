@@ -10,7 +10,8 @@ const  verifytoken  =(req , res , next ) =>{
     const decoded =jwt.verify(token , process.env.JWT_SECRET)
     req.id = decoded.userid
      next()
-    
+  
+     
     
   }catch(error){ 
    console.log("JWT ERROR:", error.message);
