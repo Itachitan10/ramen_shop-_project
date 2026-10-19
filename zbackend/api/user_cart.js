@@ -3,15 +3,15 @@ const routes = express.Router()
 const jwt =require('jsonwebtoken')
 const conn = require('../database/database')
 
-
-const  verifytoken  =(req , res , next ) =>{ 
+     
+const  verifytoken  = (req , res , next ) =>{ 
   try{
     const token = req.headers.authorization?.split(" ")[1];
     const decoded =jwt.verify(token , process.env.JWT_SECRET)
     req.id = decoded.userid
      next()
   
-     
+
     
   }catch(error){ 
    console.log("JWT ERROR:", error.message);
