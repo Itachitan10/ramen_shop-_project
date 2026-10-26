@@ -18,7 +18,8 @@ const [filter, setfilter] = useState(() => {
 });
 
 
-console.log(filter);
+
+
 
 
 
@@ -26,24 +27,25 @@ console.log(filter);
 
 const handle_checkout = () => { 
 
-  
+  window.location = ''
   
 }
 
 useEffect(() => {
-  
-  const save = JSON.parse(localStorage.getItem('user_item'))
+  const savedCart = JSON.parse( localStorage.getItem("user_item") || "[]");
+  if (items.length === 0) return;
   const cart_val = [];
   items.forEach((v) => {
    const existing = cart_val.find((p) => p.product_name === v.product_name);
 
     if (existing) {
-      existing.quantity += 1;
-        existing.realprice = existing.quantity * Number(existing.price);
-        //  existing.all_Id.push(v.product_id);
-      existing.all_Id.push(v.product_id);
+    existing.all_Id.push(v.product_id);
+existing.quantity = existing.all_Id.length;
+existing.realprice = existing.quantity * existing.price;
     } 
     else{
+      const saveitem = savedCart.find((p) => p.product_name == v.product_name)
+      const quantity = saveitem?.quantity || 1 ;
       cart_val.push({
         product_id: v.product_id,
         all_Id: [v.product_id],
@@ -51,7 +53,7 @@ useEffect(() => {
         description: v.description,
         price: Number(v.price),
         image_url: v.image_url,
-        quantity : 1,
+        quantity ,
         realprice: Number(v.price),
       });
     }
@@ -62,8 +64,9 @@ useEffect(() => {
 
 
 useEffect(() => {
-  localStorage.setItem("user_item", JSON.stringify(filter));
+  localStorage.setItem('user_item', JSON.stringify(filter));
 }, [filter]);
+
 
 useEffect(()=>{ 
     if(!token) return
@@ -349,3 +352,26 @@ return (
 
 
 
+
+// CREATE TABLE orders (
+//     order_id INT AUTO_INCREMENT PRIMARY KEY,
+//     userid INT NOT NULL,
+//     delivery_address TEXT NOT NULL,
+//     payment_method VARCHAR(50) NOT NULL,
+//     total_price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+//     order_status VARCHAR(30) NOT NULL DEFAULT 'Pending',
+//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+// );
+
+// CREATE TABLE order_items (
+//     order_item_id INT AUTO_INCREMENT PRIMARY KEY,
+//     order_id INT NOT NULL,
+//     product_id INT NOT NULL,
+//     product_name VARCHAR(255) NOT NULL,
+//     price DECIMAL(10,2) NOT NULL,
+//     quantity INT NOT NULL,
+//     subtotal DECIMAL(10,2) NOT NULL,
+//     FOREIGN KEY (order_id)
+//         REFERENCES orders(order_id)
+//         ON DELETE CASCADE
+// );
