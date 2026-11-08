@@ -43,12 +43,12 @@ return (
   <div className="min-h-screen bg-[#F7F1E5] text-[#2B2118]">
     {/* NAVBAR — SAME AS LOGIN */}
     <nav className="flex h-16 items-center justify-between border-b-2 border-[#2B2118] bg-[#FFFDF7] px-5 md:px-10">
-      <Link to="/" className="text-xl font-black">
+      <Link to="/login" className="text-xl font-black">
         KUMO <span className="text-[#D62828]">RAMEN</span>
       </Link>
 
       <Link
-        to="/"
+        to="/login"
         className="text-sm font-bold transition hover:text-[#D62828]"
       >
         ← Back to Login
@@ -230,7 +230,7 @@ return (
         <p className="mt-5 text-center text-xs text-[#766B5E]">
           Already have an account?{" "}
           <Link
-            to="/"
+            to="/login "
             className="font-bold text-[#D62828] hover:underline"
           >
             Log in

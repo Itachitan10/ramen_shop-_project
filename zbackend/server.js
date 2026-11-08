@@ -22,7 +22,7 @@ app.use(cors({
     },
     credentials: true
 }))
-console.log('Session secret:', process.env.CORS); // Debugging line
+// console.log('Session secret:', process.env.CORS); // Debugging line
 
 app.use(express.json());
 app.use(session({ secret: 'yourSecret', resave: false, saveUninitialized: true }));
@@ -62,7 +62,7 @@ const port = process.env.PORT || 4000
 console.log(port ,' this is port');
 app.listen(port, () =>{ 
     console.log(`running on port ${port}`);
-    
+
 })
 
 

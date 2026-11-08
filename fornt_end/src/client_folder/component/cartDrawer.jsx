@@ -5,7 +5,7 @@ import icon from '../icons/naruto-japanese-cuisine-japan-ramen-japanese-food-foo
 
 
 
-export default function CartDrawer({ isOpen, setIsOpen ,token ,}) {
+export default function CartDrawer({ isOpen, setIsOpen ,token ,  cartItems, setCartItems}) {
 const [items, setItems] = useState([]);
 const [filter, setfilter] = useState(() => {
   try {
@@ -21,40 +21,58 @@ const [filter, setfilter] = useState(() => {
 
 
 
+const handle_checkout = () => {
+  window.location.href = "/proceed";
+};
 
-
-
-
-const handle_checkout = () => { 
-
-  window.location = ''
-  
-}
 
 useEffect(() => {
-  const savedCart = JSON.parse( localStorage.getItem("user_item") || "[]");
-  if (items.length === 0) return;
+  let savedCart = [];
+
+  try {
+    savedCart = JSON.parse(
+      localStorage.getItem("user_item") || "[]"
+    );
+  } catch {
+    savedCart = [];
+  }
+
+  if (items.length === 0) {
+    setfilter([]);
+    return;
+  }
+
   const cart_val = [];
+
   items.forEach((v) => {
-   const existing = cart_val.find((p) => p.product_name === v.product_name);
+    const existing = cart_val.find(
+      (p) => p.product_name === v.product_name
+    );
 
     if (existing) {
-    existing.all_Id.push(v.product_id);
-existing.quantity = existing.all_Id.length;
-existing.realprice = existing.quantity * existing.price;
-    } 
-    else{
-      const saveitem = savedCart.find((p) => p.product_name == v.product_name)
-      const quantity = saveitem?.quantity || 1 ;
+      existing.all_Id.push(v.product_id);
+      existing.quantity = existing.all_Id.length;
+      existing.realprice = existing.quantity * existing.price;
+    } else {
+      const saveitem = savedCart.find(
+        (p) => p.product_name === v.product_name
+      );
+
+      const price = Number(v.price);
+      const quantity = Math.max(
+        1,
+        Number(saveitem?.quantity) || 1
+      );
+
       cart_val.push({
         product_id: v.product_id,
         all_Id: [v.product_id],
         product_name: v.product_name,
         description: v.description,
-        price: Number(v.price),
+        price,
         image_url: v.image_url,
-        quantity ,
-        realprice: Number(v.price),
+        quantity,
+        realprice: quantity * price,
       });
     }
   });

@@ -15,7 +15,7 @@ function App() {
       <Routes>
 
         
-       
+         <Route path="/" element={<Dashboard/>} />
 
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route element={<ProtectedRoute/>}>
@@ -23,15 +23,15 @@ function App() {
         </Route>
 
         <Route path="/register" element={<Register/>}/>
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
 
         <Route element={<ProtectedRoute/>}>
-         <Route path="/dashboard" element={<Dashboard/>} />
+       
         <Route path="/profile" element={<ProfilePage/>} />
        <Route path="/proceed" element={<CheckoutPage/>} />
         <Route path="/cart" element={<CartDrawer/>} />
          <Route path="/menu" element={<MenuPage/>} />
-        </Route>
+         </Route>
 
         
  

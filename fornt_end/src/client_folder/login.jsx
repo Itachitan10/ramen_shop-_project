@@ -64,7 +64,7 @@ else{
    localStorage.setItem('token' ,JSON.stringify(data))
 
     setTimeout(() => {
-      window.location.href='/dashboard'
+      window.location.href='/'
     }, 1000);
    }
   })

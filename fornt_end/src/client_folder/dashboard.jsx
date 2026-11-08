@@ -17,8 +17,9 @@ function dashboard() {
   const newLocal = JSON.parse(localStorage.getItem('token'));
   const jwt = newLocal
 
+  const [cartItems, setCartItems] = useState([]);
 
-
+  
 const [cart_toogle, set_togle] = useState(()=>{ 
  return localStorage.getItem('toggle') === 'true'
 });
@@ -27,11 +28,32 @@ useEffect(()=> {
 localStorage.setItem('toggle' , cart_toogle)
 },[cart_toogle])
 
+
+
+
+
+const fetchCartItems = async () => {
+  if (!jwt?.token) return;
+
+  try {
+    const response = await fetch(`${api_url}/cart_item`, {
+      headers: {
+        Authorization: `Bearer ${jwt.token}`,
+      },
+    });
+
+    if (!response.ok) throw new Error("Failed to fetch cart");
+
+    const data = await response.json();
+    setCartItems(data || []);
+
+  } catch (error) {
+    console.error("Fetch cart error:", error);
+  }
+};
+
 // console.log('this is jwt',jwt);
 const handlecartitem = async (product) => {
-  console.log("product received:", JSON.stringify(product, null, 2));
-  console.log("jwt:", jwt, "| token:", jwt?.token);
-
   if (!jwt) return;
 
   try {
@@ -45,15 +67,18 @@ const handlecartitem = async (product) => {
     });
 
     if (response.ok) {
+      await fetchCartItems();
       setCartCount((count) => count + 1);
     } else {
       const err = await response.text();
       console.error("Cart error:", response.status, err);
     }
+
   } catch (error) {
     console.error(error);
   }
 };
+
 
 
 
@@ -73,7 +98,7 @@ useEffect(() => {
 
 
   const filteredProducts = activeCategory === "All" ? products : products.filter(product => product.category === activeCategory);
-  const addToCart = () => setCartCount(count => count + 1);
+ 
   const scrollToMenu = () => document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
 
 
@@ -86,8 +111,8 @@ useEffect(() => {
       
         <header className="border-b border-stone-200 bg-white">
         <div className="mx-auto max-w-5xl px-6 py-4 text-lg font-semibold tracking-tight">
-         <Navbar cartCount={cartCount}cart_toogle={cart_toogle} set_togle={set_togle} click={handlecartitem}/>
-         <CartDrawerTest isOpen={cart_toogle}  setIsOpen={set_togle} token={jwt} />
+         <Navbar cartCount={cartCount}cart_toogle={cart_toogle} set_togle={set_togle} click={handlecartitem} token={jwt}/>
+         <CartDrawerTest  isOpen={cart_toogle} setIsOpen={set_togle} token={jwt} cartItems={cartItems} setCartItems={setCartItems} />
         </div>
       </header>
       {/* HERO */}
@@ -172,6 +197,7 @@ useEffect(() => {
       {/* PRODUCTS */}
       <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
         {filteredProducts.slice(0, 6).map((product) => (
+
           <article
             key={product.product_name}
             className="group rounded-2xl overflow-hidden border border-[#e4d9c8] bg-[#fffdf8]"
