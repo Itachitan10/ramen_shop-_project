@@ -31,7 +31,7 @@ useEffect(() => {
 
   try {
     savedCart = JSON.parse(
-      localStorage.getItem("user_item") || "[]"
+ localStorage.getItem("user_item") || "[]"
     );
   } catch {
     savedCart = [];
@@ -51,8 +51,7 @@ useEffect(() => {
 
     if (existing) {
       existing.all_Id.push(v.product_id);
-      existing.quantity = existing.all_Id.length;
-      existing.realprice = existing.quantity * existing.price;
+    
     } else {
       const saveitem = savedCart.find(
         (p) => p.product_name === v.product_name
@@ -111,6 +110,9 @@ useEffect(()=>{
 
   },[token])
 
+
+
+  
    const increment = (item) => {
   setfilter((prevCart) =>
     prevCart.map((cartItem) =>

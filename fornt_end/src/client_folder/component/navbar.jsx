@@ -7,11 +7,6 @@ const Navbar = ({ cartCount, cart_toogle, set_togle, click , token}) => {
 
 
 
-  
-// console.log(token);
-
-
-
   const navLinks = [
     ["Home", "/login"],
     ["Menu", "#menu"],

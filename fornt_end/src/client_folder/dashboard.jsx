@@ -11,22 +11,30 @@ const categories = ["All", "Ramen", "Rice Bowls", "Sides", "Drinks", "Combos"];
 
 function dashboard() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [cartCount, setCartCount] = useState(0);
+
   const [products, setProducts] = useState([]);   
   // const [cart_item , setitem] = useState('')
   const newLocal = JSON.parse(localStorage.getItem('token'));
   const jwt = newLocal
-
   const [cartItems, setCartItems] = useState([]);
+const [cart_toogle, set_togle] = useState(()=>{ return localStorage.getItem('toggle') === 'true'});
 
-  
-const [cart_toogle, set_togle] = useState(()=>{ 
- return localStorage.getItem('toggle') === 'true'
-});
+
+
+const cartCount = cartItems.reduce((total, item) => total + Number(item.quantity || 1),0);
+
+
 
 useEffect(()=> { 
 localStorage.setItem('toggle' , cart_toogle)
 },[cart_toogle])
+
+
+
+
+
+
+
 
 
 
@@ -52,7 +60,18 @@ const fetchCartItems = async () => {
   }
 };
 
-// console.log('this is jwt',jwt);
+
+useEffect(() => {
+  if (!jwt?.token) {
+    setCartItems([]);
+    return;
+  }
+
+  fetchCartItems();
+
+}, [jwt?.token]);
+
+
 const handlecartitem = async (product) => {
   if (!jwt) return;
 
@@ -68,7 +87,18 @@ const handlecartitem = async (product) => {
 
     if (response.ok) {
       await fetchCartItems();
-      setCartCount((count) => count + 1);
+    
+
+
+
+
+
+
+
+
+
+
+
     } else {
       const err = await response.text();
       console.error("Cart error:", response.status, err);
@@ -112,7 +142,7 @@ useEffect(() => {
         <header className="border-b border-stone-200 bg-white">
         <div className="mx-auto max-w-5xl px-6 py-4 text-lg font-semibold tracking-tight">
          <Navbar cartCount={cartCount}cart_toogle={cart_toogle} set_togle={set_togle} click={handlecartitem} token={jwt}/>
-         <CartDrawerTest  isOpen={cart_toogle} setIsOpen={set_togle} token={jwt} cartItems={cartItems} setCartItems={setCartItems} />
+         <CartDrawerTest isOpen={cart_toogle}setIsOpen={set_togle}token={jwt}cartItems={cartItems} setCartItems={setCartItems}/>
         </div>
       </header>
       {/* HERO */}
@@ -196,99 +226,116 @@ useEffect(() => {
         </div>
       {/* PRODUCTS */}
       <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
-        {filteredProducts.slice(0, 6).map((product) => (
+        {filteredProducts.slice(0, 6).map((product) => {
+       
+          
 
-          <article
-            key={product.product_name}
-            className="group rounded-2xl overflow-hidden border border-[#e4d9c8] bg-[#fffdf8]"
-          >
+         const isInCart = cartItems.some((item) => item.product_name === product.product_name);
+         console.log(isInCart);
+         
+          return (
+            <article
+              key={product.product_id}
+              className="group rounded-2xl overflow-hidden border border-[#e4d9c8] bg-[#fffdf8]"
+            >
 
-            {/* IMAGE */}
-            <div className="relative aspect-[1/0.9] overflow-hidden bg-[#eee6da]">
+              {/* IMAGE */}
+              <div className="relative aspect-[1/0.9] overflow-hidden bg-[#eee6da]">
 
-              <img
-                src={product.image_url}
-                alt={product.product_name}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-              />
+                <img
+                  src={product.image_url}
+                  alt={product.product_name}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                />
 
-              {/* BADGE */}
-              {product.badge && (
-                <span className="absolute left-3 top-3 bg-[#8f1d18] px-2 py-1 text-[8px] font-bold uppercase tracking-wider text-white">
-                  {product.badge}
-                </span>
-              )}
-
-              {/* FAVORITE */}
-              <button
-                type="button"
-                className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center bg-white/90 text-lg text-[#171412] transition hover:text-[#8f1d18]"
-              >
-                ♡
-              </button>
-
-            </div>
-
-
-            {/* PRODUCT INFO */}
-            <div className="p-4">
-
-              {/* CATEGORY */}
-              <p className="mb-1 text-[9px] font-bold uppercase tracking-[1.5px] text-[#8f1d18]">
-                {product.category}
-              </p>
-
-              {/* NAME */}
-              <h3 className="text-[16px] font-bold leading-tight text-[#171412] sm:text-[17px]">
-                {product.product_name}
-              </h3>
-
-              {/* RATING */}
-              <div className="mt-2 flex items-center gap-2">
-                <span className="text-[10px] tracking-[-1px] text-[#b18a52]">
-                  ★★★★★
-                </span>
-
-                <span className="text-[10px] text-[#756e66]">
-                  {product.rating || "4.9"}
-                </span>
-              </div>
-
-              {/* DESCRIPTION */}
-              {product.description && (
-                <p className="mt-2 line-clamp-2 text-[10px] leading-relaxed text-[#756e66]">
-                  {product.description}
-                </p>
-              )}
-
-              {/* PRICE + CART */}
-              <div className="mt-4 flex items-center justify-between border-t border-[#e4d9c8] pt-3">
-
-                <div>
-                  <span className="text-[17px] font-bold text-[#171412]">
-                    ₱{product.price}
+                {/* BADGE */}
+                {product.badge && (
+                  <span className="absolute left-3 top-3 bg-[#8f1d18] px-2 py-1 text-[8px] font-bold uppercase tracking-wider text-white">
+                    {product.badge}
                   </span>
+                )}
 
-                  {product.oldPrice && (
-                    <span className="ml-2 text-[10px] text-[#999] line-through">
-                      ₱{product.oldPrice}
-                    </span>
-                  )}
-                </div>
-
+                {/* FAVORITE */}
                 <button
                   type="button"
-                  onClick={() => handlecartitem(product)}
-                  className="flex h-8 w-8 items-center justify-center bg-[#8f1d18] text-lg leading-none text-white transition hover:bg-[#a92820] active:scale-95"
+                  className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center bg-white/90 text-lg text-[#171412] transition hover:text-[#8f1d18]"
                 >
-                  +
+                  ♡
                 </button>
 
               </div>
 
-            </div>
-          </article>
-        ))}
+              {/* PRODUCT INFO */}
+              <div className="p-4">
+
+                {/* CATEGORY */}
+                <p className="mb-1 text-[9px] font-bold uppercase tracking-[1.5px] text-[#8f1d18]">
+                  {product.category}
+                </p>
+
+                {/* NAME */}
+                <h3 className="text-[16px] font-bold leading-tight text-[#171412] sm:text-[17px]">
+                  {product.product_name}
+                </h3>
+
+                {/* RATING */}
+                <div className="mt-2 flex items-center gap-2">
+                  <span className="text-[10px] tracking-[-1px] text-[#b18a52]">
+                    ★★★★★
+                  </span>
+
+                  <span className="text-[10px] text-[#756e66]">
+                    {product.rating || "4.9"}
+                  </span>
+                </div>
+
+                {/* DESCRIPTION */}
+                {product.description && (
+                  <p className="mt-2 line-clamp-2 text-[10px] leading-relaxed text-[#756e66]">
+                    {product.description}
+                  </p>
+                )}
+
+                {/* PRICE + CART */}
+                <div className="mt-4 flex items-center justify-between border-t border-[#e4d9c8] pt-3">
+
+                  <div>
+                    <span className="text-[17px] font-bold text-[#171412]">
+                      ₱{product.price}
+                    </span>
+
+                    {product.oldPrice && (
+                      <span className="ml-2 text-[10px] text-[#999] line-through">
+                        ₱{product.oldPrice}
+                      </span>
+                    )}
+                  </div>
+
+                          {/* CART BUTTON */}
+                      {isInCart ? (
+                        <button
+                          type="button"
+                          onClick={() => set_togle(true)}
+                          className="flex h-8 items-center justify-center bg-[#2B2118] px-3 text-[10px] font-bold text-white transition hover:bg-[#443326] active:scale-95"
+                        >
+                          View Order
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handlecartitem(product)}
+                          className="flex h-8 w-8 items-center justify-center bg-[#8f1d18] text-lg leading-none text-white transition hover:bg-[#a92820] active:scale-95"
+                        >
+                          +
+                        </button>
+              )}
+
+                </div>
+
+              </div>
+            </article>
+          );
+        })}
       </div>
 
         {filteredProducts.length === 0 && <div className="text-center py-20 text-[#766b5e]">No products found in this category.</div>}
