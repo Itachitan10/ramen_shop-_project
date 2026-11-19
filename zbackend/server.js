@@ -48,6 +48,8 @@ const product= require('./api/procductname')
 const user_cart = require('./api/user_cart')
 const delete_item = require('./api/remove')
 const forgot_password = require('./routes/forgot_passwrod')
+const orders = require('./api/orders')
+
 
 app.use('/image', express.static(path.join(__dirname, 'routes/image')))
 app.use('/' , product)
@@ -56,6 +58,10 @@ app.use('/', register)
 app.use('/', user_cart)
 app.use('/' , delete_item)
 app.use('/', forgot_password)
+app.use('/', orders)
+
+
+
 
 const port = process.env.PORT || 4000
 
@@ -64,5 +70,4 @@ app.listen(port, () =>{
     console.log(`running on port ${port}`);
 
 })
-
 

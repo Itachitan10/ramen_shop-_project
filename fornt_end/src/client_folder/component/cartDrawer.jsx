@@ -6,11 +6,11 @@ import icon from '../icons/naruto-japanese-cuisine-japan-ramen-japanese-food-foo
 
 
 export default function CartDrawer({ isOpen, setIsOpen ,token ,  cartItems, setCartItems}) {
-const [items, setItems] = useState([]);
+const [items, setItems] = useState(null);
 const [filter, setfilter] = useState(() => {
   try {
     return JSON.parse(
-      localStorage.getItem('user_item') || '[]'
+      localStorage.getItem('uer_item') || '[]'
     );
   } catch {
     return [];
@@ -18,6 +18,7 @@ const [filter, setfilter] = useState(() => {
 });
 
 
+// console.log(filter);
 
 
 
@@ -26,7 +27,8 @@ const handle_checkout = () => {
 };
 
 
-useEffect(() => {
+useEffect(() => { 
+   if (items === null) return; 
   let savedCart = [];
 
   try {
@@ -45,23 +47,18 @@ useEffect(() => {
   const cart_val = [];
 
   items.forEach((v) => {
-    const existing = cart_val.find(
-      (p) => p.product_name === v.product_name
-    );
+    const existing = cart_val.find((p) => p.product_name === v.product_name );
 
     if (existing) {
       existing.all_Id.push(v.product_id);
-    
+     
     } else {
       const saveitem = savedCart.find(
         (p) => p.product_name === v.product_name
       );
 
       const price = Number(v.price);
-      const quantity = Math.max(
-        1,
-        Number(saveitem?.quantity) || 1
-      );
+      const quantity = Math.max( 1, Number(saveitem?.quantity) || 1 );
 
       cart_val.push({
         product_id: v.product_id,
@@ -112,16 +109,11 @@ useEffect(()=>{
 
 
 
-  
+
    const increment = (item) => {
   setfilter((prevCart) =>
     prevCart.map((cartItem) =>
-      cartItem.product_name === item.product_name
-        ? {
-            ...cartItem,
-            quantity: cartItem.quantity + 1,
-            realprice: (cartItem.quantity + 1) * cartItem.price,
-          }
+      cartItem.product_name === item.product_name ? {...cartItem, quantity: cartItem.quantity + 1, realprice : (cartItem.quantity + 1) * cartItem.price, }
         : cartItem
     )
   );

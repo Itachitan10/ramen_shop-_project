@@ -21,6 +21,9 @@ const [cart_toogle, set_togle] = useState(()=>{ return localStorage.getItem('tog
 
 
 
+
+
+
 const cartCount = cartItems.reduce((total, item) => total + Number(item.quantity || 1),0);
 
 
@@ -28,15 +31,6 @@ const cartCount = cartItems.reduce((total, item) => total + Number(item.quantity
 useEffect(()=> { 
 localStorage.setItem('toggle' , cart_toogle)
 },[cart_toogle])
-
-
-
-
-
-
-
-
-
 
 
 
@@ -73,6 +67,10 @@ useEffect(() => {
 
 
 const handlecartitem = async (product) => {
+
+console.log(product);
+
+  
   if (!jwt) return;
 
   try {
@@ -87,17 +85,7 @@ const handlecartitem = async (product) => {
 
     if (response.ok) {
       await fetchCartItems();
-    
-
-
-
-
-
-
-
-
-
-
+  
 
     } else {
       const err = await response.text();
@@ -131,9 +119,8 @@ useEffect(() => {
  
   const scrollToMenu = () => document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
 
+ 
 
-
-  
   return (
     <div className="min-h-screen text-[#211b16] font-['DM_Sans',sans-serif]" style={{ backgroundColor: "#f7f1e5" }}>
 
@@ -235,7 +222,7 @@ useEffect(() => {
          
           return (
             <article
-              key={product.product_id}
+              key={product.id}
               className="group rounded-2xl overflow-hidden border border-[#e4d9c8] bg-[#fffdf8]"
             >
 

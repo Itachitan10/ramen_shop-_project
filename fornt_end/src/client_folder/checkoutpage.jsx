@@ -1,41 +1,84 @@
-import { useState } from "react";
+
 import { Lock, ArrowLeft, Check } from "lucide-react";
+import { useState , useEffect } from "react";
 
 const heading = { fontFamily: "'Manrope', sans-serif" };
+const user_item = localStorage.getItem("user_item");
+const user_item_parsed = user_item ? JSON.parse(user_item) : null;
+
+const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
+
+const newLocal = JSON.parse(localStorage.getItem('token'));
+  const jwt = newLocal
 
 
-
-
-const CART_ITEMS = [
-  { id: 1, name: "Tonkotsu Ramen", qty: 2, price: 560 },
-  { id: 2, name: "Gyoza (6 pcs)", qty: 1, price: 160 },
-  { id: 3, name: "Iced Green Tea", qty: 2, price: 150 },
-];
-
+  
 const SHIPPING_OPTIONS = [
-  { id: "standard", label: "Standard delivery", eta: "30–45 mins", cost: 49 },
+  { id: "standard", label: "Standard delivery", eta: "30–45 mns", cost: 49 },
   { id: "express", label: "Express delivery", eta: "15–20 mins", cost: 99 },
 ];
-
 const PAY_METHODS = [
   { id: "cod", label: "Cash on Delivery", note: "Pay when your order arrives" },
   { id: "gcash", label: "GCash", note: "Pay using your GCash account" },
   { id: "card", label: "Credit or debit card", note: "Visa or Mastercard" },
 ];
 
-export default function CheckoutPage() {
-  const [shipping, setShipping] = useState("standard");
-  const [payment, setPayment] = useState("cod");
-  const [promo, setPromo] = useState("");
 
-  const subtotal = CART_ITEMS.reduce((sum, item) => sum + item.price, 0);
-  const selectedShipping = SHIPPING_OPTIONS.find(
-    (option) => option.id === shipping
-  );
-  const shipCost = selectedShipping.cost;
+
+export default function CheckoutPage() { 
+
+   const subtotal = user_item_parsed.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const shipCost = 49;
   const discount = 50;
   const total = subtotal + shipCost - discount;
 
+
+
+ const [deliveryDetails, setDeliveryDetails] = useState({
+  fullName: "",
+  phone: "",
+  address: "",
+  city: "",
+  postalCode: "",
+});
+
+
+
+
+const handlePlaceOrder = () => {
+const jwt = JSON.parse(localStorage.getItem("token"));
+
+fetch(`${api_url}/orders`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${jwt.token}`,
+  },
+  body: JSON.stringify({
+    full_name: deliveryDetails.fullName,
+    mobile_number: deliveryDetails.phone,
+    address: deliveryDetails.address,
+    city: deliveryDetails.city,
+    postal_code: deliveryDetails.postalCode,
+    delivery_option: "Standard", // palitan kung may state ka para dito
+    payment_method: "Cash on Delivery", // palitan kung may state ka para dito
+    items: user_item_parsed .map((i)       => ({
+      product_id: i.product_id,
+      quantity: i.quantity,
+    })),
+  }),
+});
+}
+
+
+const handleInputChange = (e) => {
+  const { name, value } = e.target;
+
+  setDeliveryDetails((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
   return (
     <div
       className="min-h-screen bg-[#faf7f0] pb-24 text-[#29231e] lg:pb-10"
@@ -52,7 +95,7 @@ export default function CheckoutPage() {
           </a>
 
           <a
-            href="/menu"
+            href="/"
             className="flex items-center gap-2 text-sm font-medium text-[#655b50] transition hover:text-[#d62828]"
           >
             <ArrowLeft size={16} />
@@ -68,11 +111,7 @@ export default function CheckoutPage() {
               Kumo Ramen / Checkout
             </p>
 
-            <h1
-              className="text-4xl font-extrabold tracking-tight sm:text-5xl"
-              style={heading}
-            >
-              Your order,
+            <h1  className="text-4xl font-extrabold tracking-tight sm:text-5xl" style={heading} >Your order,
               <br />
               <span className="text-[#d62828]">your way.</span>
             </h1>
@@ -83,23 +122,68 @@ export default function CheckoutPage() {
           </div>
 
           {/* Delivery details */}
-          <section className="border-t border-[#29231e]/15 py-7">
-            <StepTitle num="01" title="Delivery details" />
+   <section className="border-t border-[#29231e]/15 py-7">
+  <StepTitle num="01" title="Delivery details" />
 
-            <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2">
-              <Field label="Full name" name="fullName" />
-              <Field label="Mobile number" name="phone" type="tel" />
+  <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2">
 
-              <Field
-                label="Address"
-                name="address"
-                className="sm:col-span-2"
-              />
+    {/* Full Name */}
+    <input
+      type="text"
+      name="fullName"
+      value={deliveryDetails.fullName}
+      onChange={handleInputChange}
+      placeholder="Full name"
+      required
+      className="w-full rounded-lg border border-gray-300 p-3 outline-none focus:border-[#D62828]"
+    />
 
-              <Field label="City / Municipality" name="city" />
-              <Field label="Postal code" name="postalCode" />
-            </div>
-          </section>
+    {/* Mobile Number */}
+    <input
+      type="tel"
+      name="phone"
+      value={deliveryDetails.phone}
+      onChange={handleInputChange}
+      placeholder="09XX XXX XXXX"
+      required
+      className="w-full rounded-lg border border-gray-300 p-3 outline-none focus:border-[#D62828]"
+    />
+
+    {/* Address */}
+    <input
+      type="text"
+      name="address"
+      value={deliveryDetails.address}
+      onChange={handleInputChange}
+      placeholder="Complete address"
+      required
+      className="w-full rounded-lg border border-gray-300 p-3 outline-none focus:border-[#D62828] sm:col-span-2"
+    />
+
+    {/* City / Municipality */}
+    <input
+      type="text"
+      name="city"
+      value={deliveryDetails.city}
+      onChange={handleInputChange}
+      placeholder="City / Municipality"
+      required
+      className="w-full rounded-lg border border-gray-300 p-3 outline-none focus:border-[#D62828]"
+    />
+
+    {/* Postal Code */}
+    <input
+      type="text"
+      name="postalCode"
+      value={deliveryDetails.postalCode}
+      onChange={handleInputChange}
+      placeholder="Postal code"
+      required
+      className="w-full rounded-lg border border-gray-300 p-3 outline-none focus:border-[#D62828]"
+    />
+
+  </div>
+</section>
 
           {/* Delivery option */}
           <section className="border-t border-[#29231e]/15 py-7">
@@ -109,8 +193,7 @@ export default function CheckoutPage() {
               {SHIPPING_OPTIONS.map((option) => (
                 <Tile
                   key={option.id}
-                  active={shipping === option.id}
-                  onClick={() => setShipping(option.id)}
+                  active={option.id === "standard"}
                   title={option.label}
                   note={option.eta}
                   price={`₱${option.cost}`}
@@ -127,32 +210,12 @@ export default function CheckoutPage() {
               {PAY_METHODS.map((method) => (
                 <Tile
                   key={method.id}
-                  active={payment === method.id}
-                  onClick={() => setPayment(method.id)}
+                  active={method.id === "cod"}
                   title={method.label}
                   note={method.note}
                 />
               ))}
             </div>
-
-            {payment === "card" && (
-              <div className="mt-5 grid grid-cols-2 gap-4">
-                <Field
-                  label="Card number"
-                  name="cardNumber"
-                  className="col-span-2"
-                />
-                <Field label="Expiry date" name="expiry" />
-                <Field label="Security code" name="cvc" />
-              </div>
-            )}
-
-            {payment === "gcash" && (
-              <p className="mt-4 border-l-2 border-[#d62828] pl-3 text-sm leading-6 text-[#756b60]">
-                GCash payment instructions will appear here when payment
-                integration is set up.
-              </p>
-            )}
           </section>
         </div>
 
@@ -165,30 +228,33 @@ export default function CheckoutPage() {
                   Order summary
                 </p>
 
-                <h2
-                  className="mt-1 text-2xl font-extrabold"
-                  style={heading}
-                >
+                <h2 className="mt-1 text-2xl font-extrabold" style={heading}>
                   Ang order mo
                 </h2>
               </div>
 
-              <span className="text-sm text-[#756b60]">
-                {CART_ITEMS.reduce((sum, item) => sum + item.qty, 0)} items
+              <span className="text-sm font-bold text-[#756b60]">
+                {user_item_parsed.reduce((sum, item) => sum + item.quantity, 0)} items
+              
               </span>
             </div>
 
             <ul className="divide-y divide-[#29231e]/10">
-              {CART_ITEMS.map((item) => (
-                <li key={item.id} className="flex items-center gap-3 py-4">
+              {user_item_parsed.map((item) => (
+                <li key={item.all_Id} className="flex items-center gap-3 py-4">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center bg-[#f3ede1] text-xs font-bold text-[#d62828]">
-                    {String(item.id).padStart(2, "0")}
+                    <img
+                      src={item.image_url}
+                      alt={item.name}
+                      loading="lazy"
+                      className="h-16 w-16 shrink-0 rounded-lg bg-[#f5f0eb] object-cover shadow-sm"
+                    />
                   </div>
 
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-bold">{item.name}</p>
                     <p className="mt-1 text-xs text-[#82766a]">
-                      Qty: {item.qty}
+                      Qty: {item.quantity}
                     </p>
                   </div>
 
@@ -201,28 +267,16 @@ export default function CheckoutPage() {
 
             {/* Promo code */}
             <div className="border-t border-[#29231e]/10 pt-5">
-              <label
-                htmlFor="promo-code"
-                className="mb-2 block text-sm font-bold"
-              >
+              <label className="mb-2 block text-sm font-bold">
                 Promo code
               </label>
 
               <div className="flex border border-[#29231e]/20">
                 <input
-                  id="promo-code"
-                  value={promo}
-                  onChange={(event) => setPromo(event.target.value)}
-                  className="min-w-0 flex-1 bg-transparent px-3 py-3 text-sm outline-none focus:ring-1 focus:ring-inset focus:ring-[#d62828]"
+                  className="min-w-0 flex-1 bg-transparent px-3 py-3 text-sm outline-none"
                 />
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    // Add promo validation here.
-                  }}
-                  className="px-4 text-sm font-bold text-[#d62828] transition hover:bg-[#faf1e9]"
-                >
+                <button className="px-4 text-sm font-bold text-[#d62828]">
                   Apply
                 </button>
               </div>
@@ -230,10 +284,7 @@ export default function CheckoutPage() {
 
             {/* Price breakdown */}
             <div className="mt-6 space-y-3 text-sm">
-              <Row
-                label="Subtotal"
-                value={`₱${subtotal.toLocaleString()}`}
-              />
+              <Row label="Subtotal" value={`₱${subtotal.toLocaleString()}`} />
               <Row label="Delivery fee" value={`₱${shipCost}`} />
               <Row label="Discount" value={`−₱${discount}`} accent />
             </div>
@@ -254,10 +305,7 @@ export default function CheckoutPage() {
               </span>
             </div>
 
-            <button
-              type="button"
-              className="mt-6 flex min-h-[54px] w-full items-center justify-center gap-2 bg-[#d62828] px-5 font-bold text-white transition hover:bg-[#b51f1f] active:scale-[0.99]"
-            >
+            <button onClick={handlePlaceOrder} className="mt-6 flex min-h-[54px] w-full items-center justify-center gap-2 bg-[#d62828] px-5 font-bold text-white">
               <Lock size={16} />
               Place order
             </button>
@@ -281,7 +329,6 @@ function StepTitle({ num, title }) {
   return (
     <div className="mb-6 flex items-center gap-3">
       <span className="text-sm font-extrabold text-[#d62828]">{num}</span>
-
       <h2 className="text-lg font-extrabold tracking-tight" style={heading}>
         {title}
       </h2>
@@ -293,7 +340,6 @@ function Field({ label, name, type = "text", className = "" }) {
   return (
     <label className={`block ${className}`}>
       <span className="mb-2 block text-sm font-semibold">{label}</span>
-
       <input
         type={type}
         name={name}
@@ -303,16 +349,13 @@ function Field({ label, name, type = "text", className = "" }) {
   );
 }
 
-function Tile({ active, onClick, title, note, price }) {
+function Tile({ active, title, note, price }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={`flex min-h-[76px] w-full items-center justify-between gap-3 border p-4 text-left transition ${
+    <div
+      className={`flex min-h-[76px] w-full items-center justify-between gap-3 border p-4 text-left ${
         active
           ? "border-[#d62828] bg-[#fff8f3]"
-          : "border-[#29231e]/15 bg-transparent hover:border-[#29231e]/40"
+          : "border-[#29231e]/15 bg-transparent"
       }`}
     >
       <span className="flex min-w-0 items-start gap-3">
@@ -337,7 +380,7 @@ function Tile({ active, onClick, title, note, price }) {
       {price && (
         <span className="shrink-0 text-sm font-extrabold">{price}</span>
       )}
-    </button>
+    </div>
   );
 }
 

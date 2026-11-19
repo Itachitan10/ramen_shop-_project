@@ -28,20 +28,24 @@ const  verifytoken  = (req , res , next ) =>{
 routes.post('/cart_insert_item', verifytoken , async(req ,res , next)=>{ 
   
 
-  try{ 
-    
-    const user_Id = req.id
-  const body = req.body
+  try{  const user_Id = req.id 
+         const body = req.body
 
-        const { product_name,description, price, category,image_url , quantity } = body
-          const required = { product_name, description, price, category, image_url, quantity };
+        
+         
+
+        const {  product_id,  product_name,description, price, category,image_url , quantity } = body
+          const  required = {  product_id, product_name, description, price, category, image_url, quantity };
+
+          console.log(product_id, product_name, description, price, category, image_url, quantity);
+          
       const missing = Object.keys(required).filter(k => !required[k]);
 
       if (!user_Id || missing.length) {
         return res.status(400).json({ mess: "Missing fields", missing });
          }
-      const sql  = 'INSERT INTO user_cart(product_name, description, price ,category,userid, image_url , quantity ) VALUES(? ,? , ?  ,? , ? , ? ,? )'
-      const value = [product_name,description, price , category , user_Id,image_url , quantity]
+      const sql  = 'INSERT INTO user_cart(  product_id,  product_name, description, price ,category,userid, image_url , quantity ) VALUES(? ,? ,? , ?  ,? , ? , ? ,? )'
+      const value = [  product_id ,product_name ,description, price , category , user_Id,image_url , quantity]
       const response = await conn(sql,value)
               
         if (response.affectedRows === 0) {
