@@ -1,16 +1,12 @@
 import { useState , useEffect} from "react";
 const api_url = import.meta.env.VITE_API_URL ||  "http://localhost:4000"
 import icon from '../icons/naruto-japanese-cuisine-japan-ramen-japanese-food-food-svgrepo-com.svg'
-
-
-
-
 export default function CartDrawer({ isOpen, setIsOpen ,token ,  cartItems, setCartItems}) {
 const [items, setItems] = useState(null);
 const [filter, setfilter] = useState(() => {
   try {
     return JSON.parse(
-      localStorage.getItem('uer_item') || '[]'
+      localStorage.getItem('user_item') || '[]'
     );
   } catch {
     return [];
@@ -18,7 +14,6 @@ const [filter, setfilter] = useState(() => {
 });
 
 
-// console.log(filter);
 
 
 
@@ -74,7 +69,7 @@ useEffect(() => {
   });
 
   setfilter(cart_val);
-}, [items]);
+}, [ items]);
 
 
 useEffect(() => {
@@ -109,11 +104,15 @@ useEffect(()=>{
 
 
 
-
-   const increment = (item) => {
+const increment = (item) => {
   setfilter((prevCart) =>
     prevCart.map((cartItem) =>
-      cartItem.product_name === item.product_name ? {...cartItem, quantity: cartItem.quantity + 1, realprice : (cartItem.quantity + 1) * cartItem.price, }
+      Number(cartItem.product_id) === Number(item.product_id)
+        ? {
+            ...cartItem,
+            quantity: cartItem.quantity + 1,
+            realprice: (cartItem.quantity + 1) * cartItem.price,
+          }
         : cartItem
     )
   );
@@ -122,7 +121,7 @@ useEffect(()=>{
 const decrement = (item) => {
   setfilter((prevCart) =>
     prevCart.map((cartItem) =>
-      cartItem.product_name === item.product_name
+      Number(cartItem.product_id) === Number(item.product_id)
         ? {
             ...cartItem,
             quantity: Math.max(1, cartItem.quantity - 1),
@@ -136,7 +135,7 @@ const decrement = (item) => {
   
 
 const removeItem = async (id , product_id) => {
-const save = JSON.parse(localStorage.getItem('user_item') );
+const save = JSON.parse(localStorage.getItem('user_item'));
 
 const update = save.filter(item => item.product_id !== product_id)
   try {
@@ -149,7 +148,7 @@ const update = save.filter(item => item.product_id !== product_id)
     });
     const data = await response.json();
     if (!response.ok) {
-      console.log(data); 
+     
        return;
       }
      !data ? console.log("Item not found") : window.location.reload()
@@ -224,7 +223,7 @@ return (
         {filter.length === 0 ? (
           <div className="flex h-full min-h-[260px] flex-col items-center justify-center text-center">
             <img src={icon} alt="Ramen icon"className=" hidden sm:block w-16 h-16 object-contain"/>
-            <h3 className="font-bold text-[#2B2118]">
+            <h3 key="cart-empty" className="font-bold text-[#2B2118]">
               Your cart is empty
             </h3>
             <p className="mt-1 max-w-[230px] text-sm text-[#766B5E]">

@@ -31,8 +31,6 @@ routes.post('/cart_insert_item', verifytoken , async(req ,res , next)=>{
   try{  const user_Id = req.id 
          const body = req.body
 
-        
-         
 
         const {  product_id,  product_name,description, price, category,image_url , quantity } = body
           const  required = {  product_id, product_name, description, price, category, image_url, quantity };

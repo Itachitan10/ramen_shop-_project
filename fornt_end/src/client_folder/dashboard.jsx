@@ -3,6 +3,8 @@ import Navbar from "./component/navbar";
 import Footer from "./component/footer";
 import CartDrawerTest from "./component/cartDrawer";
 const api_url = import.meta.env.VITE_API_URL  || "http://localhost:4000"
+const img = import.meta.env.VITE_IMG_URL  || "http://localhost:4000"
+
 
 
 const categories = ["All", "Ramen", "Rice Bowls", "Sides", "Drinks", "Combos"];
@@ -222,7 +224,7 @@ useEffect(() => {
          
           return (
             <article
-              key={product.id}
+              key={product.product_id}
               className="group rounded-2xl overflow-hidden border border-[#e4d9c8] bg-[#fffdf8]"
             >
 

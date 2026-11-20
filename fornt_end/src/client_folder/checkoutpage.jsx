@@ -14,25 +14,37 @@ const newLocal = JSON.parse(localStorage.getItem('token'));
 
   
 const SHIPPING_OPTIONS = [
-  { id: "standard", label: "Standard delivery", eta: "30–45 mns", cost: 49 },
+  { id: "standard", label: "Standard delivery", eta: "30–45 mins", cost: 49 },
   { id: "express", label: "Express delivery", eta: "15–20 mins", cost: 99 },
 ];
+
 const PAY_METHODS = [
   { id: "cod", label: "Cash on Delivery", note: "Pay when your order arrives" },
   { id: "gcash", label: "GCash", note: "Pay using your GCash account" },
   { id: "card", label: "Credit or debit card", note: "Visa or Mastercard" },
 ];
 
-
-
 export default function CheckoutPage() { 
+  const [selectedShipping, setSelectedShipping] = useState("standard");
+  const [selectedPayment, setSelectedPayment] = useState("cod");
+  
+// Get selected delivery fee
+const deliveryFee_number = SHIPPING_OPTIONS.find((option) => option.id === selectedShipping)?.cost || 0;
 
-   const subtotal = user_item_parsed.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const shipCost = 49;
-  const discount = 50;
-  const total = subtotal + shipCost - discount;
+const deliveryFee_text = SHIPPING_OPTIONS.find((option) => option.id === selectedShipping)?.label || ' ';
+// Get selected payment label
+const paymentMethod = PAY_METHODS.find((method) => method.id === selectedPayment)?.label || "";
 
+const subtotal = user_item_parsed.reduce((sum, item) => sum + item.price * item.quantity,0);
 
+const discount = 0 ;
+const total = subtotal + deliveryFee_number - discount;
+
+console.log(deliveryFee_number , deliveryFee_text, paymentMethod, total);
+
+const shipCost = SHIPPING_OPTIONS.find(
+  (option) => option.id === selectedShipping
+)?.cost || 0;
 
  const [deliveryDetails, setDeliveryDetails] = useState({
   fullName: "",
@@ -60,9 +72,9 @@ fetch(`${api_url}/orders`, {
     address: deliveryDetails.address,
     city: deliveryDetails.city,
     postal_code: deliveryDetails.postalCode,
-    delivery_option: "Standard", // palitan kung may state ka para dito
-    payment_method: "Cash on Delivery", // palitan kung may state ka para dito
-    items: user_item_parsed .map((i)       => ({
+    delivery_option: deliveryFee_text, 
+    payment_method: paymentMethod, 
+    items: user_item_parsed .map((i) => ({
       product_id: i.product_id,
       quantity: i.quantity,
     })),
@@ -185,39 +197,40 @@ const handleInputChange = (e) => {
   </div>
 </section>
 
-          {/* Delivery option */}
-          <section className="border-t border-[#29231e]/15 py-7">
-            <StepTitle num="02" title="Delivery option" />
+<section className="border-t border-[#29231e]/15 py-7">
+  <StepTitle num="02" title="Delivery option" />
 
-            <div className="space-y-3">
-              {SHIPPING_OPTIONS.map((option) => (
-                <Tile
-                  key={option.id}
-                  active={option.id === "standard"}
-                  title={option.label}
-                  note={option.eta}
-                  price={`₱${option.cost}`}
-                />
-              ))}
-            </div>
-          </section>
+  <div className="space-y-3">
+    {SHIPPING_OPTIONS.map((option) => (
+      <Tile
+        key={option.id}
+        active={selectedShipping === option.id}
+        title={option.label}
+        note={option.eta}
+        price={`₱${option.cost}`}
+        onClick={() => setSelectedShipping(option.id)}
+      />
+    ))}
+  </div>
+</section>
 
-          {/* Payment method */}
-          <section className="border-t border-[#29231e]/15 py-7">
-            <StepTitle num="03" title="Payment method" />
+<section className="border-t border-[#29231e]/15 py-7">
+  <StepTitle num="03" title="Payment method" />
 
-            <div className="space-y-3">
-              {PAY_METHODS.map((method) => (
-                <Tile
-                  key={method.id}
-                  active={method.id === "cod"}
-                  title={method.label}
-                  note={method.note}
-                />
-              ))}
-            </div>
-          </section>
-        </div>
+  <div className="space-y-3">
+    {PAY_METHODS.map((method) => (
+      <Tile
+        key={method.id}
+        active={selectedPayment === method.id}
+        title={method.label}
+        note={method.note}
+        onClick={() => setSelectedPayment(method.id)}
+      />
+    ))}
+  </div>
+</section>
+   
+      </div>
 
         {/* Order summary */}
         <aside className="h-fit lg:sticky lg:top-6">
@@ -320,8 +333,8 @@ const handleInputChange = (e) => {
             Need help with your order? Contact Kumo Ramen.
           </p>
         </aside>
-      </main>
-    </div>
+       </main>
+   </div>
   );
 }
 
@@ -349,9 +362,11 @@ function Field({ label, name, type = "text", className = "" }) {
   );
 }
 
-function Tile({ active, title, note, price }) {
+function Tile({ active, title, note, price, onClick }) {
   return (
-    <div
+    <button
+      type="button"
+      onClick={onClick}
       className={`flex min-h-[76px] w-full items-center justify-between gap-3 border p-4 text-left ${
         active
           ? "border-[#d62828] bg-[#fff8f3]"
@@ -380,10 +395,9 @@ function Tile({ active, title, note, price }) {
       {price && (
         <span className="shrink-0 text-sm font-extrabold">{price}</span>
       )}
-    </div>
+    </button>
   );
 }
-
 function Row({ label, value, accent = false }) {
   return (
     <div className="flex items-center justify-between gap-4">
