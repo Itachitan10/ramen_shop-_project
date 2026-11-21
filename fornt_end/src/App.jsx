@@ -9,12 +9,14 @@ import ProfilePage from "./client_folder/profilepage";
 import ForgotPasswordPage from "./client_folder/forget-password";
 import Forget_gmail from "./client_folder/forget_gmail";
 import ProtectedRoute  from "./client_folder/protectedRoute";
+import PaymentSuccess  from './client_folder/component/PaymentSuccess'
 function App() {
   return (
     <BrowserRouter>
       <Routes>
 
-        
+        <Route path="/payment-success" element={<PaymentSuccess />} />
+
          <Route path="/" element={<Dashboard/>} />
 
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />

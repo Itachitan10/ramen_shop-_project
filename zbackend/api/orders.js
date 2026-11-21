@@ -3,7 +3,7 @@ const routes = express.Router()
 const jwt =require('jsonwebtoken')
 const conn = require('../database/database')
 const  createCheckoutSession = require("../api/paymongo")
-
+require('dotenv').config();
 const  verifytoken  = (req , res , next ) =>{ 
   try{
     const token = req.headers.authorization?.split(" ")[1];
@@ -142,25 +142,62 @@ if (registerd_user.length === 0) {
                             message: 'Failed to create order.'
                         });
                     }
+
+
+                    const user_paid_status =  await conn(  `UPDATE orders SET payment_status = 'Paid' WHERE order_id = ?`,[orderId])
+
+
+                  
                     // Online payment  
-                    if (payment_method === 'GCash') {
-                            const amount = Math.round(Number(total_amount) * 100);
-                            const checkoutSession = await createCheckoutSession(amount, orderId);
+                        if (payment_method === 'GCash') {
+                                const amount = Math.round(Number(total_amount) * 100);
+                                const checkoutSession = await createCheckoutSession(amount, orderId);
 
-                            return res.status(201).json({
-                                success: true,
-                                orderId,
-                                checkoutUrl: checkoutSession.attributes.checkout_url
-                            });
-                        }
+                                const checkoutUrl = checkoutSession.attributes.checkout_url;
 
-                        // Cash on Delivery
-                        return res.status(201).json({
-                            success: true,
-                            message: 'Order placed successfully.',
-                            orderId
+                               await conn( `UPDATE orders SET paymongo_checkout_session_id = ?, paymongo_checkout_url = ? WHERE order_id = ?`, [checkoutSession.id, checkoutUrl, orderId] );
+                          
+                                return res.status(201).json({
+                                    success: true,
+                                    orderId,
+                                    checkoutUrl
+                                });
+                            }else{ 
+                            // Cash on Delivery
+                                    res.status(201).json({
+                                        success: true,
+                                        message: 'Order placed successfully.',
+                                        orderId
+                                    });
+
+                                }
+                        routes.post('/webhooks/paymongo', express.json(), async (req, res) => {
+                            try {
+                                const event = req.body.data;
+
+                                if (!event || !event.attributes) {
+                                    return res.sendStatus(400);
+                                }
+
+                                if (event.attributes.type === 'checkout_session.payment.paid') {
+                                    const session = event.attributes.data;
+
+                                    if (!session?.id){
+                                        return res.sendStatus(400);
+                                    }
+
+                                    await conn(`UPDATE orders  SET payment_status = 'Paid'  WHERE paymongo_checkout_session_id = ?`,  [session.id]);
+                                }
+
+                                return res.sendStatus(200);
+
+                            } catch (error) {
+                                console.error('PayMongo webhook error:', error.message);
+                                return res.sendStatus(500);
+                            }
                         });
-                                
+
+                     
                     
             } catch (error) {
             console.error("Order error:", error);

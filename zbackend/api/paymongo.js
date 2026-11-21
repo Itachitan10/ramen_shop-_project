@@ -2,9 +2,10 @@
 const axios = require('axios');
 require('dotenv').config();
 
+const FRONTEND_URL =  (process.env.FRONTEND_URL || 'http://localhost:3000').replace(/\/+$/, '');
+
 // Gumagawa ng PayMongo Checkout Session
 const createCheckoutSession = async (amount, orderId) => {
-
     const response = await axios.post(
         'https://api.paymongo.com/v2/checkout_sessions',
         {
@@ -20,8 +21,8 @@ const createCheckoutSession = async (amount, orderId) => {
                     ],
                     payment_method_types: ['gcash'],
                     reference_number: `ORDER-${orderId}`,
-                    success_url: `${process.env.FRONTEND_URL}/payment-success`,
-                    cancel_url: `${process.env.FRONTEND_URL}/cart`,
+                    success_url: `${FRONTEND_URL}/payment-success`,
+                    cancel_url: `${FRONTEND_URL}/`,
                     metadata: {
                         order_id: String(orderId)
                     }
@@ -42,4 +43,3 @@ const createCheckoutSession = async (amount, orderId) => {
 };
 
 module.exports = createCheckoutSession;
-
