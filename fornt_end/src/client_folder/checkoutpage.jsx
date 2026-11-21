@@ -21,7 +21,6 @@ const SHIPPING_OPTIONS = [
 const PAY_METHODS = [
   { id: "cod", label: "Cash on Delivery", note: "Pay when your order arrives" },
   { id: "gcash", label: "GCash", note: "Pay using your GCash account" },
-  { id: "card", label: "Credit or debit card", note: "Visa or Mastercard" },
 ];
 
 export default function CheckoutPage() { 
@@ -57,29 +56,46 @@ const shipCost = SHIPPING_OPTIONS.find(
 
 
 
-const handlePlaceOrder = () => {
+const handlePlaceOrder  = async () => {
 const jwt = JSON.parse(localStorage.getItem("token"));
 
-fetch(`${api_url}/orders`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${jwt.token}`,
-  },
-  body: JSON.stringify({
-    full_name: deliveryDetails.fullName,
-    mobile_number: deliveryDetails.phone,
-    address: deliveryDetails.address,
-    city: deliveryDetails.city,
-    postal_code: deliveryDetails.postalCode,
-    delivery_option: deliveryFee_text, 
-    payment_method: paymentMethod, 
-    items: user_item_parsed .map((i) => ({
-      product_id: i.product_id,
-      quantity: i.quantity,
-    })),
-  }),
+const response = await fetch(`${api_url}/orders`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt.token}`,
+    },
+    body: JSON.stringify({
+        full_name: deliveryDetails.fullName,
+        mobile_number: deliveryDetails.phone,
+        address: deliveryDetails.address,
+        city: deliveryDetails.city,
+        postal_code: deliveryDetails.postalCode,
+        delivery_option: deliveryFee_text,
+        payment_method: paymentMethod,
+        items: user_item_parsed.map((i) => ({
+            product_id: i.product_id,
+            quantity: i.quantity,
+        })),
+    }),
 });
+
+const data = await response.json();
+
+if (!response.ok) {
+    throw new Error(data.message || "Failed to place order.");
+}
+
+if (paymentMethod === "GCash" && data.checkoutUrl) {
+    window.location.href = data.checkoutUrl;
+    return;
+}
+
+// Cash on Delivery
+if (paymentMethod === "Cash on Delivery" && data.success) {
+    console.log("Order placed:", data.orderId);
+}
+
 }
 
 
