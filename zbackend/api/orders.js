@@ -3,6 +3,7 @@ const routes = express.Router()
 const jwt =require('jsonwebtoken')
 const conn = require('../database/database')
 const  createCheckoutSession = require("../api/paymongo")
+const crypto = require('crypto');
 require('dotenv').config();
 const  verifytoken  = (req , res , next ) =>{ 
   try{
@@ -11,7 +12,7 @@ const  verifytoken  = (req , res , next ) =>{
     req.id = decoded.userid
      next()
   }catch(error){ 
-   console.log("JWT ERROR:", error.message);
+   
 
     return res.status(401).json({
       mess: "Invalid token"
@@ -31,6 +32,8 @@ const  verifytoken  = (req , res , next ) =>{
 routes.post('/orders', verifytoken,  async (req, res) => {
   try{ 
 
+  
+    
     const userId = req.id;
     const  registerd_user = await conn( 'SELECT id FROM register WHERE id = ?',[userId]);
 
@@ -144,9 +147,6 @@ if (registerd_user.length === 0) {
                     }
 
 
-                    const user_paid_status =  await conn(  `UPDATE orders SET payment_status = 'Paid' WHERE order_id = ?`,[orderId])
-
-
                   
                     // Online payment  
                         if (payment_method === 'GCash') {
@@ -162,41 +162,19 @@ if (registerd_user.length === 0) {
                                     orderId,
                                     checkoutUrl
                                 });
-                            }else{ 
+                            }else{                            
+                                await conn( `UPDATE orders SET payment_status='Unpaid' WHERE order_id = ?`,[orderId])
                             // Cash on Delivery
                                     res.status(201).json({
                                         success: true,
                                         message: 'Order placed successfully.',
-                                        orderId
+                                        orderId,
+                                        paymentMethod: 'COD',
+                                         paymentStatus: 'Unpaid'
                                     });
 
                                 }
-                        routes.post('/webhooks/paymongo', express.json(), async (req, res) => {
-                            try {
-                                const event = req.body.data;
-
-                                if (!event || !event.attributes) {
-                                    return res.sendStatus(400);
-                                }
-
-                                if (event.attributes.type === 'checkout_session.payment.paid') {
-                                    const session = event.attributes.data;
-
-                                    if (!session?.id){
-                                        return res.sendStatus(400);
-                                    }
-
-                                    await conn(`UPDATE orders  SET payment_status = 'Paid'  WHERE paymongo_checkout_session_id = ?`,  [session.id]);
-                                }
-
-                                return res.sendStatus(200);
-
-                            } catch (error) {
-                                console.error('PayMongo webhook error:', error.message);
-                                return res.sendStatus(500);
-                            }
-                        });
-
+                  
                      
                     
             } catch (error) {
@@ -211,6 +189,110 @@ if (registerd_user.length === 0) {
              
          
   
+});
+
+
+routes.post('/webhooks/paymongo', async (req, res) => {
+    try {
+        // 1. Kunin ang webhook secret sa environment variables
+        const webhookSecret = process.env.PAYMONGO_WEBHOOK_SECRET;
+
+        if (!webhookSecret) {
+            console.error('Missing PAYMONGO_WEBHOOK_SECRET');
+            return res.sendStatus(500);
+        }
+
+        // 2. Kunin ang raw body at PayMongo signature
+        const rawBody = req.rawBody;
+        const signatureHeader = req.headers['paymongo-signature'];
+
+        if (!rawBody || !signatureHeader) {
+            return res.sendStatus(400);
+        }
+
+        // 3. I-parse ang Paymongo-Signature header
+        const signatureParts = {};
+
+        signatureHeader.split(',').forEach(part => {
+            const [key, value] = part.trim().split('=');
+            signatureParts[key] = value;
+        });
+
+        const timestamp = signatureParts.t;
+
+        if (!timestamp) {
+            return res.sendStatus(401);
+        }
+
+        // 4. Gumawa ng expected signature
+        const signedPayload = `${timestamp}.${rawBody.toString('utf8')}`;
+
+        const expectedSignature = crypto
+            .createHmac('sha256', webhookSecret)
+            .update(signedPayload)
+            .digest('hex');
+
+        // 5. Piliin ang signature depende sa test/live mode
+        const event = req.body?.data;
+        const livemode = event?.attributes?.livemode;
+
+        const receivedSignature = livemode === true
+            ? signatureParts.li
+            : signatureParts.te;
+
+        if (!receivedSignature || !/^[a-f0-9]{64}$/i.test(receivedSignature)) {
+            return res.sendStatus(401);
+        }
+
+        // 6. I-compare nang ligtas ang signatures
+        const expectedBuffer = Buffer.from(expectedSignature, 'hex');
+        const receivedBuffer = Buffer.from(receivedSignature, 'hex');
+
+        if (
+            expectedBuffer.length !== receivedBuffer.length ||
+            !crypto.timingSafeEqual(expectedBuffer, receivedBuffer)
+        ) {
+            console.log('Invalid PayMongo webhook signature');
+            return res.sendStatus(401);
+        }
+
+        console.log('PayMongo webhook signature verified');
+
+        // 7. Kunin ang event type
+        const eventType = event?.attributes?.type;
+
+        console.log('PayMongo Event:', eventType);
+
+        // 8. I-update lamang kapag successful ang Checkout Session payment
+        if (eventType === 'checkout_session.payment.paid') {
+
+            const checkoutSession = event.attributes.data;
+            const checkoutSessionId = checkoutSession?.id;
+
+            if (!checkoutSessionId) {
+                return res.sendStatus(400);
+            }
+
+            const result = await conn(
+                `UPDATE orders
+                 SET payment_status = 'Paid'
+                 WHERE paymongo_checkout_session_id = ?
+                 AND payment_status = 'Unpaid'`,
+                [checkoutSessionId]
+            );
+
+            console.log('Order payment updated:', result.affectedRows);
+        }
+
+        // 9. Acknowledge the webhook
+        return res.status(200).json({
+            received: true
+        });
+
+    } catch (error) {
+        console.error('PayMongo webhook error:', error.message);
+        return res.sendStatus(500);
+    }
 });
 
 

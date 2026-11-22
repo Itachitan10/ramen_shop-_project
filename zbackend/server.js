@@ -5,6 +5,8 @@ const session = require('express-session');
 const path = require('path')
 const app = express()
 
+
+
 const previewRegex = /^https:\/\/ramen-shop-project(-[a-z0-9-]+)?-itachitans-projects\.vercel\.app$/
 
 app.use(cors({
@@ -24,7 +26,14 @@ app.use(cors({
 }))
 // console.log('Session secret:', process.env.CORS); // Debugging line
 
-app.use(express.json());
+
+
+// ma-save ang original request body na ipinapadala ni PayMongo
+app.use(express.json({
+    verify: (req, res, buf) => {
+        req.rawBody = Buffer.from(buf);
+    }
+}));
 app.use(session({ secret: 'yourSecret', resave: false, saveUninitialized: true }));
 // app.use(passport.initialize());
 // app.use(passport.session());
