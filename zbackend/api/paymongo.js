@@ -2,7 +2,7 @@
 const axios = require('axios');
 require('dotenv').config();
 
-const FRONTEND_URL =  (process.env.FRONTEND_URL || 'http://localhost:3000').replace(/\/+$/, '');
+const FRONTEND_URL =  (process.env.CORS || 'http://localhost:3000').replace(/\/+$/, '');
 
 // Gumagawa ng PayMongo Checkout Session
 const createCheckoutSession = async (amount, orderId) => {
