@@ -274,11 +274,7 @@ routes.post('/webhooks/paymongo', async (req, res) => {
             }
 
             const result = await conn(
-                `UPDATE orders
-                 SET payment_status = 'Paid'
-                 WHERE paymongo_checkout_session_id = ?
-                 AND payment_status = 'Unpaid'`,
-                [checkoutSessionId]
+                `UPDATE orders SET payment_status = 'Paid'  WHERE paymongo_checkout_session_id = ? AND payment_status = 'Unpaid'`,[checkoutSessionId]
             );
 
             console.log('Order payment updated:', result.affectedRows);

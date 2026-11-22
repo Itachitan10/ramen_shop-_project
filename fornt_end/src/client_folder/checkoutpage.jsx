@@ -1,7 +1,7 @@
 
 import { Lock, ArrowLeft, Check } from "lucide-react";
-import { useState , useEffect } from "react";
-
+import { useState , useEffect  } from "react";
+import { useNavigate } from "react-router-dom";
 const heading = { fontFamily: "'Manrope', sans-serif" };
 const user_item = localStorage.getItem("user_item");
 const user_item_parsed = user_item ? JSON.parse(user_item) : null;
@@ -53,7 +53,7 @@ const shipCost = SHIPPING_OPTIONS.find(
   postalCode: "",
 });
 
-
+const navigate = useNavigate();
 
 
 const handlePlaceOrder  = async () => {
@@ -94,6 +94,8 @@ if (paymentMethod === "GCash" && data.checkoutUrl) {
 // Cash on Delivery
 if (paymentMethod === "Cash on Delivery" && data.success) {
     console.log("Order placed:", data.orderId);
+    navigate(`/cod`);
+    return;
 }
 
 }

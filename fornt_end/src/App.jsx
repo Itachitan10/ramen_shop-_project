@@ -10,24 +10,28 @@ import ForgotPasswordPage from "./client_folder/forget-password";
 import Forget_gmail from "./client_folder/forget_gmail";
 import ProtectedRoute  from "./client_folder/protectedRoute";
 import PaymentSuccess  from './client_folder/component/PaymentSuccess'
+import COD from "./client_folder/component/cod";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+      
 
-        <Route path="/payment-success" element={<PaymentSuccess />} />
+      
 
          <Route path="/" element={<Dashboard/>} />
 
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route element={<ProtectedRoute/>}>
+
+         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+         <Route element={<ProtectedRoute/>}>
          <Route path="/forgot-gmail" element={<Forget_gmail/>} />
         </Route>
 
-        <Route path="/register" element={<Register/>}/>
+       <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={<Login />} />
-
         <Route element={<ProtectedRoute/>}>
+        <Route path="/cod" element={<COD />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/profile" element={<ProfilePage/>} />
        <Route path="/proceed" element={<CheckoutPage/>} />
         <Route path="/cart" element={<CartDrawer/>} />
