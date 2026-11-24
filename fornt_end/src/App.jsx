@@ -26,7 +26,7 @@ function App() {
          <Route element={<ProtectedRoute/>}>
          <Route path="/forgot-gmail" element={<Forget_gmail/>} />
         </Route>
-
+        
        <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoute/>}>

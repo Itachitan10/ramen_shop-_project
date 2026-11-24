@@ -19,8 +19,10 @@ function dashboard() {
   const newLocal = JSON.parse(localStorage.getItem('token'));
   const jwt = newLocal
   const [cartItems, setCartItems] = useState([]);
-const [cart_toogle, set_togle] = useState(()=>{ return localStorage.getItem('toggle') === 'false'});
+const [cart_toogle, set_togle] = useState(() => {  return localStorage.getItem('toggle') === 'true';});
 
+
+console.log(cart_toogle);
 
 
 
@@ -219,7 +221,7 @@ useEffect(() => {
           
 
          const isInCart = cartItems.some((item) => item.product_name === product.product_name);
-         console.log(isInCart);
+         
          
           return (
             <article

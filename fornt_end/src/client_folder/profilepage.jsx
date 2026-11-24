@@ -1,18 +1,9 @@
 import { useState } from "react";
 import Navbar from "./component/navbar";
-import {
-  User,
-  MapPin,
-  Package,
-  Settings,
-  ChevronRight,
-  Star,
-  Clock,
-  LogOut,
-  Pencil,
-  Plus,
-} from "lucide-react";
+import {User, MapPin,Package, Settings, ChevronRight, Star, Clock, LogOut, Pencil,Plus,} from "lucide-react";
 
+  const newLocal = JSON.parse(localStorage.getItem('token'));
+  const jwt = newLocal
 const TABS = [
   { id: "orders", label: "Order History", icon: Package },
   { id: "addresses", label: "Addresses", icon: MapPin },
@@ -69,7 +60,7 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-[#FBF7EF] text-stone-800">
       <header className="border-b border-stone-200 bg-white">
         <div className="mx-auto max-w-5xl px-6 py-4 text-lg font-semibold tracking-tight">
-         <Navbar/>
+         <Navbar token={jwt}/>
         </div>
       </header>
 

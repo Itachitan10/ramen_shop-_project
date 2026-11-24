@@ -1,23 +1,21 @@
 
 import { useState, useEffect } from "react";
 
-const Navbar = ({ cartCount, cart_toogle, set_togle, click , token}) => {
+const Navbar = ({ cartCount, cart_toogle, set_togle, click, token }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(!!token);
 
-
-
   const navLinks = [
-    ["Home", "/login"],
+    // ['profile' , '/']
+    ["Home", "/dashboard"],
     ["Menu", "#menu"],
     ["Combos", "#promo"],
     ["About", "#footer"],
   ];
 
-
   const handleLogout = () => {
     localStorage.removeItem("token");
-      window.location.href = "/login";
+    window.location.href = "/login";
   };
 
   return (
@@ -33,7 +31,26 @@ const Navbar = ({ cartCount, cart_toogle, set_togle, click , token}) => {
 
       {/* DESKTOP NAV - LOGGED IN */}
       {isLoggedIn && (
-        <div className="hidden items-center gap-[34px] text-[14px] font-semibold md:flex">
+        <div className="hidden items-center gap-[30px] text-[14px] font-semibold md:flex">
+
+          {/* PROFILE ICON */}
+          <a href="/profile"
+            title="My Profile"
+            className="flex items-center justify-center text-[#211b16] transition hover:text-[#d62828]"
+          >
+            <svg
+              className="h-[22px] w-[22px]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            >
+              <circle cx="12" cy="8" r="4" />
+              <path d="M5 21a7 7 0 0 1 14 0" />
+            </svg>
+          </a>
+
+          {/* NAV LINKS */}
           {navLinks.map(([label, href]) => (
             <a
               key={label}
@@ -44,9 +61,10 @@ const Navbar = ({ cartCount, cart_toogle, set_togle, click , token}) => {
             </a>
           ))}
 
+          {/* LOGOUT */}
           <button
             onClick={handleLogout}
-            className="font-semibold text-[#d62828] hover:underline"
+            className="rounded-lg bg-[#d62828] px-5 py-2.5 font-bold text-white transition hover:bg-[#b51f1f]"
           >
             Logout
           </button>
@@ -74,7 +92,7 @@ const Navbar = ({ cartCount, cart_toogle, set_togle, click , token}) => {
 
       {/* RIGHT SIDE - LOGGED IN ONLY */}
       {isLoggedIn && (
-        <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
+        <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3 md:hidden">
 
           {/* CART */}
           <button
@@ -93,18 +111,31 @@ const Navbar = ({ cartCount, cart_toogle, set_togle, click , token}) => {
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((prev) => !prev)}
-            className={`flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-200 md:hidden ${
+            className={`flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-200 ${
               menuOpen
                 ? "border-[#d62828] bg-[#d62828] text-white"
                 : "border-[#211b16]/15 bg-white text-[#211b16]"
             }`}
           >
             {menuOpen ? (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-5 w-5">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                className="h-5 w-5"
+              >
                 <path d="m18 6-12 12M6 6l12 12" />
               </svg>
             ) : (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className="h-5 w-5">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                className="h-5 w-5"
+              >
                 <path d="M4 7h16M4 12h16M4 17h16" />
               </svg>
             )}
@@ -125,6 +156,46 @@ const Navbar = ({ cartCount, cart_toogle, set_togle, click , token}) => {
         <div className="absolute left-0 right-0 top-full z-50 px-3 pt-2 md:hidden sm:px-5">
           <div className="overflow-hidden rounded-xl border border-[#211b16]/15 bg-[#fffdf8] shadow-[0_12px_30px_rgba(33,27,22,0.15)]">
 
+            {/* MY PROFILE */}
+            <a
+              href="/profile"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-3 border-b border-[#211b16]/10 bg-[#f7f1e5] p-4 transition hover:bg-[#eee5d6]"
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#211b16] text-white">
+                <svg
+                  className="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                >
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M5 21a7 7 0 0 1 14 0" />
+                </svg>
+              </div>
+
+              <div className="flex-1">
+                <p className="text-sm font-extrabold text-[#211b16]">
+                  My Profile
+                </p>
+                <p className="text-xs text-[#211b16]/55">
+                  Manage your account
+                </p>
+              </div>
+
+              <svg
+                className="h-5 w-5 text-[#211b16]/50"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </a>
+
+            {/* NAV LINKS */}
             <nav className="flex flex-col p-2">
               {navLinks.map(([label, href]) => (
                 <a
@@ -138,6 +209,7 @@ const Navbar = ({ cartCount, cart_toogle, set_togle, click , token}) => {
               ))}
             </nav>
 
+            {/* LOGOUT */}
             <div className="border-t border-[#211b16]/10 p-2">
               <button
                 type="button"
