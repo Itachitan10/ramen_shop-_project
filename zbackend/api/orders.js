@@ -28,7 +28,6 @@ const  verifytoken  = (req , res , next ) =>{
 
 
 
-
 routes.post('/orders', verifytoken,  async (req, res) => {
   try{ 
 
@@ -164,6 +163,7 @@ if (registerd_user.length === 0) {
                                 });
                             }else{                            
                                 await conn( `UPDATE orders SET payment_status='Unpaid' WHERE order_id = ?`,[orderId])
+                                await conn( 'DELETE FROM user_cart WHERE userid = ?',[userId]);
                             // Cash on Delivery
                                     res.status(201).json({
                                         success: true,

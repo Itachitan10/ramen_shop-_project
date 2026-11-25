@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 
 import { sileo, Toaster } from "sileo";
 
@@ -7,93 +7,93 @@ import { sileo, Toaster } from "sileo";
 
 
 export default function ResetPassword() {
-const params = new URLSearchParams(window.location.search);
-const TokenForUrl = params.get("token");
-const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
-  const [newpass , setnewpass] = useState('')
-  const [confirmpass , setconfirr] = useState('')
-  
-console.log(TokenForUrl);
+  const params = new URLSearchParams(window.location.search);
+  const TokenForUrl = params.get("token");
+  const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000";
+  const [newpass, setnewpass] = useState('')
+  const [confirmpass, setconfirr] = useState('')
 
-console.log(newpass ,confirmpass);
+  console.log(TokenForUrl);
 
-
-  
+  console.log(newpass, confirmpass);
 
 
-    const handle_submit = async () => {
-        
-  
-            // Check password fields
-            if (!newpass || !confirmpass) {
 
-              sileo.warning({ title: "Please fill in both password fields." });
-                
-                return;
-            }
-            if (newpass !== confirmpass) {
-              sileo.warning({ title: "Passwords do not match." });
-                
-                    return;
-            }
-            if (newpass.length < 8) {
-               sileo.warning({ title: "Password must be at least 8 characters." });
 
-                return;
-            }
-            if (!TokenForUrl) {
-              sileo.warning({ title: "Invalid or missing reset token.." });
-                return ;
-            }
-          
-            const  promise =  fetch(`${api_url}/forgot-password2`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    token: TokenForUrl,
-                    newPassword: newpass
-                })
-              
-            }).then(async(response)=>{ 
-             const data = await response.json();
-               if (!response.ok) {
-            throw new Error(data.mess || "Password reset failed.");
-                 }
-                 return data
-            })
-        
-         try {
-        await sileo.promise(promise, {
-            loading: { title: "Resetting password..." },
-            success: {
-                title: "Password reset successful",
-               description: <div className="text-center font-medium">You can log in now!</div>
-            },
-            error: {
-                title: "Password reset failed"
-            }
-        });
 
-        setTimeout(() => {
-            window.location.href = "/";
-        }, 3000);
+  const handle_submit = async () => {
 
-          } catch (error) {
-              console.error("Reset password error:", error);
-          }
-                
-     
-    };
+
+    // Check password fields
+    if (!newpass || !confirmpass) {
+
+      sileo.warning({ title: "Please fill in both password fields." });
+
+      return;
+    }
+    if (newpass !== confirmpass) {
+      sileo.warning({ title: "Passwords do not match." });
+
+      return;
+    }
+    if (newpass.length < 8) {
+      sileo.warning({ title: "Password must be at least 8 characters." });
+
+      return;
+    }
+    if (!TokenForUrl) {
+      sileo.warning({ title: "Invalid or missing reset token.." });
+      return;
+    }
+
+    const promise = fetch(`${api_url}/forgot-password2`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        token: TokenForUrl,
+        newPassword: newpass
+      })
+
+    }).then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.mess || "Password reset failed.");
+      }
+      return data
+    })
+
+    try {
+      await sileo.promise(promise, {
+        loading: { title: "Resetting password..." },
+        success: {
+          title: "Password reset successful",
+          description: <div className="text-center font-medium">You can log in now!</div>
+        },
+        error: {
+          title: "Password reset failed"
+        }
+      });
+
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 3000);
+
+    } catch (error) {
+      console.error("Reset password error:", error);
+    }
+
+
+  };
 
 
 
   return (
     <div className="min-h-screen bg-[#F7F1E5] px-4 py-8 text-[#2B2118]">
-           <Toaster position="center"  />
+      <Toaster position="center" />
       <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-sm items-center justify-center">
-   
+
         <div className="w-full">
 
           <button
@@ -143,7 +143,7 @@ console.log(newpass ,confirmpass);
               </label>
 
               <input value={newpass}
-                
+
                 onChange={(e) => setnewpass(e.target.value)}
                 placeholder="Enter new password"
                 className="w-full border-2 border-[#2B2118] bg-[#FDF6E3] px-3 py-2.5 text-sm outline-none placeholder:text-[#9A8D7D] focus:border-[#D62828]"
@@ -154,8 +154,8 @@ console.log(newpass ,confirmpass);
               </label>
 
               <input
-              value={confirmpass}
-              onChange={(e) => setconfirr(e.target.value)}   placeholder="Confirm new password" className="w-full border-2 border-[#2B2118] bg-[#FDF6E3] px-3 py-2.5 text-sm outline-none placeholder:text-[#9A8D7D] focus:border-[#D62828]"
+                value={confirmpass}
+                onChange={(e) => setconfirr(e.target.value)} placeholder="Confirm new password" className="w-full border-2 border-[#2B2118] bg-[#FDF6E3] px-3 py-2.5 text-sm outline-none placeholder:text-[#9A8D7D] focus:border-[#D62828]"
               />
 
               <button onClick={handle_submit}
