@@ -7,9 +7,6 @@ import CartDrawer from "./component/cartDrawer";
 function Menu() {
 const [product, setProducts] =useState([])
 const [carttoggel , set_togle ]=useState(false)
-
-
-
   const newLocal = JSON.parse(localStorage.getItem('token'));
   const jwt = newLocal
 
@@ -30,8 +27,8 @@ useEffect(() => {
 
       
       {/* NAVBAR */}
-      <Navbar cart_toogle={carttoggel}  set_togle={set_togle}/>
-      <CartDrawer   isOpen={carttoggel} setIsOpen={set_togle} token={jwt} /> 
+      <Navbar cart_toogle={carttoggel}  set_togle={set_togle} token={jwt}/>
+      <CartDrawer   isOpen={carttoggel} setIsOpen={set_togle}  /> 
 
       {/* MENU */}
       <section className="max-w-[1250px] mx-auto px-5 py-[90px]">

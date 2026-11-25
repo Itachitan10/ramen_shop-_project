@@ -136,7 +136,7 @@ if (registerd_user.length === 0) {
                    ] );
 
     
-                    const orderId = orderResult.insertId;
+                  const orderId = orderResult.insertId;
 
                     if (!orderId || !total_amount) {
                         return res.status(400).json({
@@ -163,7 +163,7 @@ if (registerd_user.length === 0) {
                                 });
                             }else{                            
                                 await conn( `UPDATE orders SET payment_status='Unpaid' WHERE order_id = ?`,[orderId])
-                                await conn( 'DELETE FROM user_cart WHERE userid = ?',[userId]);
+                                    await conn(  'DELETE FROM user_cart WHERE userid = ?',[userId]);
                             // Cash on Delivery
                                     res.status(201).json({
                                         success: true,

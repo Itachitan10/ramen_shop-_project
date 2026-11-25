@@ -11,17 +11,26 @@ import Forget_gmail from "./client_folder/forget_gmail";
 import ProtectedRoute  from "./client_folder/protectedRoute";
 import PaymentSuccess  from './client_folder/component/PaymentSuccess'
 import COD from "./client_folder/component/cod";
+import ADMINDashboard from './admin_folder/admin_dashboard'
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-      
+        
+        {/* admin ruoutes */}
+        <Route path="/admin" element={<ADMINDashboard/>} />
 
-      
 
+
+
+
+
+
+
+
+
+      {/* user routes */}
          <Route path="/" element={<Dashboard/>} />
-
-
          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
          <Route element={<ProtectedRoute/>}>
          <Route path="/forgot-gmail" element={<Forget_gmail/>} />

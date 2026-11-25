@@ -3,7 +3,7 @@ import Navbar from "./component/navbar";
 import Footer from "./component/footer";
 import CartDrawerTest from "./component/cartDrawer";
 const api_url = import.meta.env.VITE_API_URL || "http://localhost:4000"
-const img = import.meta.env.VITE_IMG_URL || "http://localhost:4000"
+
 
 
 
